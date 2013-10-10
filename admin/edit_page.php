@@ -14,6 +14,7 @@
  */
 
 $page_name = '';
+$page_title = '';
 $page_content = '';
 
 // Do we have a page to edit?
@@ -32,6 +33,7 @@ if(isset($_GET['passed']) && $_GET['passed'] != '')
 		$content = $data->get_content(PAGES_DIR . $page);
 
 		$page_name = $content['page']['name'];
+		$page_title = $content['page']['title'];
 		$page_content = $content['page']['content'];
 		$page_visible = $content['page']['visible'];
 	}
@@ -46,12 +48,14 @@ if($_POST)
 {
 	$page_file = $_GET['passed'];
 	$page_name = $_POST['page_name'];
+	$page_title = $_POST['page_title'];
 	$page_content = $_POST['page_content'];
 	$page_visible = $_POST['page_visible'] == "true" ? true : false;
 
 	$content = array(
 		'page' => array(
 			'name' => trim($page_name),
+			'title' => trim($page_title),
 			'content' => $page_content,
 			'visible' => $page_visible
 		)				
@@ -86,9 +90,13 @@ if($_POST)
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
+		
+		<!-- Change Page Title-->
+		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
+		
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri"><?php echo $page_name ? strtolower(str_replace(" ", "_", $page_name)) : ''; ?></span>
-		</p>	
+		</p>
 		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
 		<p>
 			Is this page visible to the public?

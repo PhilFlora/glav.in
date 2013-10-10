@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><?php echo $page['name']; ?> - Glav.in - The Not Robust, Not Very Powerful, Simple CMS</title>
+        <title><?php echo $page['title']; ?></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
