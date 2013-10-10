@@ -40,3 +40,7 @@ Thumbs.db
 ##########
 _*.php
 data/users/*.json
+
+vendor
+composer.phar
+composer.lock
