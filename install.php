@@ -18,9 +18,16 @@ $errors = array();
 $msgs = array();
 $login_header = true;
 $created = false;
+$filename = "data/users/*.json";
 
 require_once ( 'config.php' );
 require_once ( SYSTEM_DIR . 'bootstrap.php' );
+
+// check if user exists, and don't display this page
+if ( count(glob($filename)) > 0) {
+	header( "Location: index.php" );
+	unlink( realpath( __FILE__ ) );
+}
 
 if ( $_POST ) {
 
