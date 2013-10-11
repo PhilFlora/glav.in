@@ -24,6 +24,7 @@ class User {
 	 * Construct
 	 */
 	function __construct($data, $password_options) {
+
 		$this->data = $data;
 		$this->password_options = $password_options;
 	}
@@ -107,8 +108,9 @@ class User {
 			// Get Contents
 			$user_data = $this->data->get_content(USERS_DIR . $email);
 			$user = $user_data['user'];
+			$pass = password_hash($password, PASSWORD_DEFAULT, $this->password_options);
 
-			if($password == $user['password'])
+			if($user['password'] == $pass)
 			{			
 				$this->start_session($user);
 

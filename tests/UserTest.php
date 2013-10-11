@@ -1,4 +1,11 @@
 <?php
+/**
+ * COUPLE NOTES:
+ *
+ * I (Matt) have had a hell of a time trying to get sessions to work
+ * nicely with PHPUnit. I haven't had any luck. Anyone know how to fix
+ * this problem?
+ */
 
 require_once('config.php');
 require_once(SYSTEM_DIR . 'bootstrap.php');
@@ -16,6 +23,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		$this->user = new User($this->data, $password_options);
 
 		$this->fakeuser = 'fakeuser@example.com';
+		$this->fakepass = 'test';
 	}
 	
 	/**
@@ -25,8 +33,8 @@ class UserTest extends PHPUnit_Framework_TestCase {
 			
 			// Create a fake user for testing
 			$user = $this->user->create(
-				'fakeuser@example.com',
-				'test',
+				$this->fakeuser,
+				$this->fakepass,
 				1
 			);
 
@@ -48,11 +56,22 @@ class UserTest extends PHPUnit_Framework_TestCase {
 			$this->assertFalse($user);
 	}	
 
+
+    /**
+     * @  runInSeparateProcess
+     * @   preserveGlobalState disabled
+     *
+     * CANNOT GET THIS TO WORK. SOMEONE ELSE WANNA TAKE A CRACK AT IT?
+     */
+	// public function testValidateUserReturnsTrue() {
+	// 	$this->assertTrue($this->user->validate($this->fakeuser, $this->fakepass));
+	// }
+
 	/**
-	 * @expectation exist() returns false when no user found
-	 */
-	public function testExistReturnsFalseWhenNoUserFound() {
-	    $this->assertTrue($this->user->exists($this->fakeuser));
+	 * @expectation validate() returns false with incorrect values
+	 */	
+	public function testValidateUserReturnsFalseWithIncorrectValues() {
+		$this->assertFalse($this->user->validate('pickles@example.com', 'ilovepickles23'));
 	}
 
 	/**
@@ -67,6 +86,12 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testDeleteUserReturnsFalseWhenUserDoesntExist() {
 		$this->assertFalse($this->user->delete($this->fakeuser));
-	}    
+	}
 
+	/**
+	 * @expectation exist() returns false when no user found
+	 */
+	public function testExistReturnsFalseWhenNoUserFound() {
+	    $this->assertFalse($this->user->exists($this->fakeuser));
+	}	
 }

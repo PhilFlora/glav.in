@@ -13,16 +13,12 @@
  * @since		1.0.0-alpha
  */
 
-// Include password class for those using an
-// older version of PHP.
-require_once('../system/password.php');
-
 $logging_in = false;
 
 if($_POST) {
 
 	$email     = clean($_POST['email']);
-	$password  = password_hash(clean($_POST['password']), PASSWORD_DEFAULT, $password_options);
+	$password  = clean($_POST['password']);
 
 	if(!$user->validate($email, $password))
 	{
