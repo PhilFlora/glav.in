@@ -22,14 +22,11 @@
  * Load the configuration file and the bootstrap file. 
  */
 
-	if(file_exists('install.php')) 
-	{
-		header("Location: install.php");
-	} 
-	else 
-	{
-		require_once('config.php');
-		require_once(SYSTEM_DIR . 'bootstrap.php');
+	if ( file_exists( 'install.php' ) ) {
+		header( "Location: install.php" );
+	} else {
+		require_once( 'config.php' );
+		require_once( SYSTEM_DIR . 'bootstrap.php' );
 	}
 
 
@@ -41,16 +38,13 @@
  * Get the requested page and load it.
  */
 
-	if(isset($_GET['page']))
-	{
+	if ( isset( $_GET['page'] ) ) {
 		$requested_page = $_GET['page'];		
-	}
-	else
-	{
+	} else {
 		$requested_page = '';
 	}
 	
 
-	$page->load($requested_page);
+	$page->load( $requested_page );
 
 ?>

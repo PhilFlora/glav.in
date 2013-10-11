@@ -19,16 +19,16 @@ $msgs = array();
 $login_header = true;
 $created = false;
 
-require_once('config.php');
-require_once(SYSTEM_DIR . 'bootstrap.php');
+require_once ( 'config.php' );
+require_once ( SYSTEM_DIR . 'bootstrap.php' );
 
-if( $_POST ) {
+if ( $_POST ) {
 
-	if( ( $_POST['admin_email_address'] == '' ) || ( $_POST['admin_password'] == '' ) ) {
+	if ( ( $_POST['admin_email_address'] == '' ) || ( $_POST['admin_password'] == '' ) ) {
 		$errors[] = "Fields Cannot Be Empty";
 	}
 
-	if( empty( $errors ) ) {
+	if ( empty( $errors ) ) {
 		$email = $_POST['admin_email_address'];
 		$password = $_POST['admin_password'];
 		$user_level = 1;
@@ -45,27 +45,25 @@ if( $_POST ) {
 
 }
 
-require_once( ADMIN_DIR . '/template/header.php' );
+require_once ( ADMIN_DIR . '/template/header.php' );
 ?>
 <div id="login-content">
 	<?php
-	foreach( $msgs as $msg )
-	{
+	foreach ( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
 	}
 
-	foreach( $errors as $errors )
-	{
+	foreach ( $errors as $errors ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
-	if( !$created ) {
+	if ( !$created ) {
 	?>
 	<p>Thanks for installing Glav.in! Please create an admin account.</p>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-	<input type="email" name="admin_email_address" placeholder="Email Address" />
-	<input type="password" name="admin_password" placeholder="Password" />
-	<input type="submit" value="Submit" />
+		<input type="email" name="admin_email_address" placeholder="Email Address" />
+		<input type="password" name="admin_password" placeholder="Password" />
+		<input type="submit" value="Submit" />
 	</form>
 <?php
 	}

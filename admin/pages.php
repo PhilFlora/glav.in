@@ -32,23 +32,18 @@
 			echo '</li>';
 
 			// List the rest of the pages
-			foreach($pages as $page)
-			{
-				$page_name = basename($page, '.json');
+			foreach( $pages as $page ) {
+				$page_name = basename( $page, '.json' );
 
-				if($page_name != '404' && $page_name != 'home')
-				{
+				if ( $page_name != '404' && $page_name != 'home' ) {
 					echo '<li>';
 					echo '<a href="'. base_url() . $page_name . '">' . str_replace('_', ' ', $page_name) . '</a>';
 					echo '<a href="edit_page/' . $page_name . '" class="action-btn">Edit</a>';
-					if($page_name != 'home')
-					{
+					if( $page_name != 'home' ) {
 						echo '<a href="delete_page/' . $page_name . '" class="action-btn">Delete</a>';	
 					}				
 					echo '</li>';
 				}
-				
 			}
-			
 		?>
 	</ul>
