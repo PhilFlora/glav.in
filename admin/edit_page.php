@@ -17,35 +17,28 @@ $page_name = '';
 $page_content = '';
 
 // Do we have a page to edit?
-if(isset($_GET['passed']) && $_GET['passed'] != '')
-{
+if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
+	
 	$page = $_GET['passed'];
 
 	// See if the page exists
-	if(!$data->file_exist(PAGES_DIR . $page))
-	{
+	if( !$data->file_exist( PAGES_DIR . $page ) ) {
 		$errors[] = 'Page Not Found';
-	}
-	// It does, so let's grab the data
-	else
-	{
+	} else {
 		$content = $data->get_content(PAGES_DIR . $page);
 
-		$page_name = $content['page']['name'];
+		$page_name    = $content['page']['name'];
 		$page_content = $content['page']['content'];
 		$page_visible = $content['page']['visible'];
 	}
-}
-else
-{
+} else {
 	$errors[] = 'No Page Selected';
 }
 
 // The form has been submitted
-if($_POST) 
-{
-	$page_file = $_GET['passed'];
-	$page_name = $_POST['page_name'];
+if ( $_POST ) {
+	$page_file    = $_GET['passed'];
+	$page_name    = $_POST['page_name'];
 	$page_content = $_POST['page_content'];
 	$page_visible = $_POST['page_visible'] == "true" ? true : false;
 
@@ -57,8 +50,7 @@ if($_POST)
 		)				
 	);
 
-	if($data->update_file(PAGES_DIR . $page_file, $content))
-	{
+	if ( $data->update_file( PAGES_DIR . $page_file, $content ) ) {
 		$msgs[] = 'Page Updated. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 	}
 }		
@@ -70,19 +62,16 @@ if($_POST)
 <div id="admin-content-body">
 	<?php
 	// Print out any messages or errors
-	foreach($msgs as $msg)
-	{
+	foreach( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
 	}
 
-	foreach($errors as $errors)
-	{
+	foreach( $errors as $errors ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
 	// If there are no errors, continue...
-	if(empty($errors))
-	{
+	if( empty( $errors ) ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />

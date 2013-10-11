@@ -7,8 +7,8 @@
  * this problem?
  */
 
-require_once('config.php');
-require_once(SYSTEM_DIR . 'bootstrap.php');
+require_once( 'config.php' );
+require_once( SYSTEM_DIR . 'bootstrap.php' );
 
 class UserTest extends PHPUnit_Framework_TestCase {
 
@@ -16,11 +16,11 @@ class UserTest extends PHPUnit_Framework_TestCase {
 
 		$password_options = array(
 			'cost' => 11,
-			'salt' => '45tygrfE#$%t6hgr4332@23r4t5y$$%G###'
+			'salt' => '45tygrfE#$%t6hgr4332@23r4t5y$$%G###',
 		);
 
 		$this->data = new Data();
-		$this->user = new User($this->data, $password_options);
+		$this->user = new User( $this->data, $password_options );
 
 		$this->fakeuser = 'fakeuser@example.com';
 		$this->fakepass = 'test';
@@ -38,7 +38,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 				1
 			);
 
-			$this->assertTrue($user);
+			$this->assertTrue( $user );
 	}
 
 	/**
@@ -53,7 +53,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 				1
 			);
 
-			$this->assertFalse($user);
+			$this->assertFalse( $user );
 	}	
 
 
@@ -71,27 +71,27 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	 * @expectation validate() returns false with incorrect values
 	 */	
 	public function testValidateUserReturnsFalseWithIncorrectValues() {
-		$this->assertFalse($this->user->validate('pickles@example.com', 'ilovepickles23'));
+		$this->assertFalse( $this->user->validate( 'pickles@example.com', 'ilovepickles23' ) );
 	}
 
 	/**
 	 * @expectation delete() returns true when user is deleted
 	 */
 	public function testDeleteUserReturnsTrue() {
-		$this->assertTrue($this->user->delete($this->fakeuser));
+		$this->assertTrue( $this->user->delete( $this->fakeuser ) );
 	}
     
 	/**
 	 * @expectation delete() returns false when user doesn't exist
 	 */
 	public function testDeleteUserReturnsFalseWhenUserDoesntExist() {
-		$this->assertFalse($this->user->delete($this->fakeuser));
+		$this->assertFalse( $this->user->delete( $this->fakeuser ) );
 	}
 
 	/**
 	 * @expectation exist() returns false when no user found
 	 */
 	public function testExistReturnsFalseWhenNoUserFound() {
-	    $this->assertFalse($this->user->exists($this->fakeuser));
+	    $this->assertFalse( $this->user->exists( $this->fakeuser ) );
 	}	
 }

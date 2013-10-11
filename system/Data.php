@@ -23,8 +23,8 @@ class Data {
 	 * @param	string	the page name being requested
 	 * @return	bool
 	 */
-	public function file_exist($file) {		
-		return file_exists($file . '.json');
+	public function file_exist($file) {
+		return file_exists( $file . '.json' );
 	}
 
 	/**
@@ -35,12 +35,12 @@ class Data {
 	 */
 	public function get_content($file) {
 
-		$json = file_get_contents($file . '.json');
+		$json = file_get_contents( $file . '.json' );
 
-		if(!$json) {
+		if ( !$json ) {
 			return false;
 		} else {
-			return json_decode($json, true);
+			return json_decode( $json, true );
 		}
 
 	}
@@ -53,10 +53,10 @@ class Data {
 	 */	
 	public function create_file($file_name, $content) {
 
-		$fp = fopen($file_name . '.json', 'w');
+		$fp = fopen( $file_name . '.json', 'w' );
 
-		fwrite($fp, json_encode($content));
-		fclose($fp);
+		fwrite( $fp, json_encode( $content ) );
+		fclose( $fp );
 
 		return true;
 
@@ -72,15 +72,15 @@ class Data {
 	public function update_file($file_name, $content=array()) {
 
 		// Get current file contents
-		$temp = $this->get_content($file_name);
+		$temp = $this->get_content( $file_name );
 
 		// New Content
-		$new = array_replace_recursive($temp, $content);
+		$new = array_replace_recursive( $temp, $content );
 
-		$fp = fopen($file_name . '.json', 'w');
+		$fp = fopen( $file_name . '.json', 'w' );
 
-		fwrite($fp, json_encode($new));
-		fclose($fp);
+		fwrite( $fp, json_encode( $new ) );
+		fclose( $fp );
 
 		return true;
 
@@ -96,8 +96,7 @@ class Data {
 
 		$file = $file_name . '.json';
 
-		return unlink($file);
+		return unlink( $file );
 
 	}
-
 }
