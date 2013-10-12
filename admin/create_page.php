@@ -18,7 +18,8 @@ $page_title = '';
 $page_content = '';
 $page_visible = 'true';
 	
-if($_POST) {
+if($_POST)
+{
 	
 	// Validate the File Name
 	if ( !isset($_POST['page_name']) || empty($_POST['page_name']) ) // First check if the user provided a File Name
@@ -62,7 +63,8 @@ if($_POST) {
 
 	
 	// Validate Page Visible
-	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
+	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) )
+	{
 		$page_visible = 'true';
 	}
 	else {

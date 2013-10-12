@@ -94,10 +94,12 @@ if($_POST)
 	
 	
 	// Validate Page Visible
-	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
+	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) )
+	{
 		$page_visible = 'true';
 	}
-	else {
+	else
+	{
 		$page_visible = $_POST['page_visible'];
 	}
 	
@@ -147,11 +149,13 @@ if($_POST)
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?><!-- Remove Spaces
 			<?php
-				if ($page_name == 'home') { ?>
+				if ($page_name == 'home')
+				{ ?>
 					-->home
 			<?php
 				}
-				 else { ?>
+				else
+				{ ?>
 					--> <input type="text" placeholder="page_name" name="page_name" value="<?php echo $page ? $page : ''; ?>" />
 			<?php
 				}
