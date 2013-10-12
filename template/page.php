@@ -33,7 +33,7 @@
             <div class="main wrapper clearfix">
 
                 <article>
-                    <h1><?php echo $page['name']; ?></h1>
+                    <h1><?php echo $page['title']; ?></h1>
                     <?php echo $page['content']; ?>
                 </article>
 

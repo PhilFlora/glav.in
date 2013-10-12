@@ -16,37 +16,60 @@
 $page_name = '';
 $page_title = '';
 $page_content = '';
+$page_visible = 'true';
 	
 if($_POST) {
-
-	$page_name    = $_POST['page_name'];
-	$page_title   = $_POST['page_title'];
-	$page_content = $_POST['page_content'];
-	$page_visible = $_POST['page_visible'];
-
-	// Simple Validation
-	if($page_name == '')
+	
+	// Validate the File Name
+	if ( !isset($_POST['page_name']) || empty($_POST['page_name']) ) // First check if the user provided a File Name
 	{
-		$errors[] = 'Page Name cannot be blank';
+		$errors[] = 'The Page URL cannot be blank';
+	}
+	else if ( !preg_match( '/^[A-Za-z0-9-\(\)_]+$/', $_POST['page_name']) ) // Then make sure that it contains only valid characters
+	{
+		$errors[] = 'The Page URL contains invalid characters'; 
+	}
+	else if( $data->file_exist(PAGES_DIR . trim( $_POST['page_name'] ) ) ) // Check to make sure there isn't already a page
+	{
+		$errors[] = 'A page with this URL already exists'; // with this name. If so, send error.
+	}
+	else
+	{
+		$page_name = strtolower( $_POST['page_name'] );
 	}
 	
-	if($page_title == '' && $page_name != '') // If page title is blank set to default
+	
+	// Validate the Page Title
+	if ( !isset($_POST['page_title']) || empty($_POST['page_title']) )
 	{
-		$page_title = $_POST['page_name'] . ' - Glav.in - The Not Robust, Not Very Powerful, Simple CMS';
+		$errors[] = 'Page Title cannot be blank';
+	}
+	else
+	{
+		$page_title = htmlentities( $_POST['page_title'], ENT_QUOTES, 'UTF-8' );
 	}
 
-	// Check to make sure there isn't already a page
-	// with this name. If so, send error.
-	if($data->file_exist(PAGES_DIR . trim($page_name)))
-	{
-		$errors[] = "A page with this name already exists. Please update the page name.";
-	}		
-
-	if($page_content == '')
+	
+	// Validate the Page Content
+	if ( !isset($_POST['page_content']) || empty ($_POST['page_content']) )
 	{
 		$errors[] = 'Page Content cannot be empty';
 	}
+	else 
+	{
+		$page_content = $_POST['page_content'];
+	}
 
+	
+	// Validate Page Visible
+	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
+		$page_visible = 'true';
+	}
+	else {
+		$page_visible = $_POST['page_visible'];
+	}
+	
+	
 	$p = array(
 			'page_name'    => $page_name,
 			'page_title'   => $page_title,
@@ -54,6 +77,7 @@ if($_POST) {
 			'page_visible' => $page_visible
 		);
 
+		
 	// If there's no errors create the page
 	if(empty($errors))
 	{
@@ -87,10 +111,10 @@ if($_POST) {
 	}
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-		<input type="text" placeholder="Page Name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
 		<input type="text" placeholder="Page Title" name="page_title" value="<?php echo $page_title ? $page_title : ''; ?>" />
 		<p>
-			<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri"><?php echo $page_name ? strtolower(str_replace(" ", "_", $page_name)) : ''; ?></span>
+			<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri">
+			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
 		</p>
 		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
 		<p>
