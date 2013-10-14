@@ -17,12 +17,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Page {
 
+        /**
+         * Contains the name of the latest page loaded with Page->load
+         * 
+         * @var string 
+         */
+        private $current_page = '';
+    
 	/**
 	 * Construct
 	 */
 	public function __construct( $data ) {
 		$this->data = $data;
 	}
+        
+        /**
+         * Set current page
+         * 
+         * @param string $page attribute
+         */
+        private function set_current_page( $page ) {
+            $this->current_page = $page;
+        }
+        
+        /**
+         * Get current page
+         * 
+         * @return string
+         */
+        private function get_current_page() {
+            return $this->current_page;
+        }
 
 	/**
 	 * Get Pages
@@ -44,18 +69,23 @@ class Page {
 	 * Pages List
 	 *
 	 * @param string optional id attribute
+         * @param string optional class_ul adds class name to <ul>
+         * @param string optional class_li adds class name to <li>
+         * @param string optional class_li_active adds class name to the current page <li>
 	 * @return	html list of all pages
 	 */	
-	public function pages_list( $id='' ) {
+	public function pages_list( $id='', $class_ul='', $class_li='', $class_li_active='active' ) {
 
 		$pages = $this->get_pages();
 
 		$id = $id ? ' id="'.$id.'"' : '';
 
-		$list  = '<ul'.$id.'>';
+		$list  = '<ul' . $id . ($class_ul != '' ? ' class="'.$class_ul.'"' : '') . '>';
 
 		// Make homepage first.
-		$list .= '<li>';
+                $list .= '<li ';
+                $list .= 'class="'.$class_li . " " . ($this->get_current_page() == 'home' ? $class_li_active : '').'"';
+                $list .= '>';
 		$list .= '<a href="' . base_url() .'">';
 		$list .= 'Home</a></li>';
 
@@ -70,9 +100,11 @@ class Page {
 
 				// If the page is visible add it to the list.
 				if ( $page['visible'] === true ) {
-					$list .= '<li>';
+					$list .= '<li ';
+                                        $list .= 'class="'.$class_li." ".($this->get_current_page() == $page_name ? $class_li_active : '').'"';
+                                        $list .= '>';
 					$list .= '<a href="' . base_url() . $page_name . '">';
-					$list .= ucwords(str_replace('_', ' ', $content['page']['title']));
+					$list .= ucwords(str_replace('_', ' ', $page_name));
 					$list .= '</a></li>';
 				}
 			}
@@ -98,6 +130,9 @@ class Page {
 			// If the page can't be found load the 404 page. 
 			$page = '404';
 		}
+                
+                // Set current page
+                $this->set_current_page($page);
 			
 		$content       = $this->data->get_content( PAGES_DIR . $page );
 		$page          = $content['page'];
