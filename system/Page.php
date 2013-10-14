@@ -104,7 +104,7 @@ class Page {
                                         $list .= 'class="'.$class_li." ".($this->get_current_page() == $page_name ? $class_li_active : '').'"';
                                         $list .= '>';
 					$list .= '<a href="' . base_url() . $page_name . '">';
-					$list .= ucwords(str_replace('_', ' ', $page_name));
+					$list .= ucwords(str_replace('_', ' ', $content['page']['title']));
 					$list .= '</a></li>';
 				}
 			}
