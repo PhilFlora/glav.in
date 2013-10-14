@@ -71,6 +71,12 @@ class Data {
 	 */	
 	public function update_file($file_name, $content=array()) {
 
+		rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
+		$file_name = PAGES_DIR . $content['page']['name'];
+		unset($content['page']['name']);
+		
+		$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
+		
 		// Get current file contents
 		$temp = $this->get_content( $file_name );
 

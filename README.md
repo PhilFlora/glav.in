@@ -1,7 +1,7 @@
 Glav.in
 =======
 
-The goal of Glav.in is to provide the most simplistic CMS experience possible. It is **not** intended for large, multifaceted websites - it just ain't got the juice. Glav.in is for simple, informational websites. Maybe a site for a local barber shop? Perhaps even a site for your cat?
+The goal of Glav.in is to provide the simplest CMS experience possible. It is **not** intended for large, multifaceted websites - it just ain't got the juice. Glav.in is for simple, informational websites. Maybe a site for a local barber shop? Perhaps even a site for your cat?
 
 Features
 ========
@@ -23,8 +23,24 @@ Requirements
 * Apache
 * PHP 5.2+
 
+
+Contribute!
+===========
+You want to contribute?!? That's awesome! Let's make Glav.in great! Here are some ways you (yes, you!) can help:
+
+* Contribute Code
+   * Fork Glav.in
+   * Create a branch containing each change/addition/improvement you'd like to make.
+   * Send a pull request from that branch to the DEV branch.
+* Post bug reports, ideas, suggestions, etc to the Issue Tracker
+
+
+
 Notes
 =====
 
 * This project is in the **VERY** early stages. Do not use this on a production site.
-* I would absolutely love input and contributions. All advice/thoughts/ideas/criticisms are welcome. Send any email to glavincms@gmail.com
+* All advice/thoughts/ideas/criticisms are welcome. Join the developer forum [GlavinCMS](https://groups.google.com/forum/#!forum/glavincms)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mattsparks/glav.in/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

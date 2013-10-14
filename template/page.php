@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><?php echo $page['name']; ?> - Glav.in - The Not Robust, Not Very Powerful, Simple CMS</title>
+        <title><?php echo $page['title']; ?></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -33,7 +33,7 @@
             <div class="main wrapper clearfix">
 
                 <article>
-                    <h1><?php echo $page['name']; ?></h1>
+                    <h1><?php echo $page['title']; ?></h1>
                     <?php echo $page['content']; ?>
                 </article>
 
@@ -59,12 +59,5 @@
         <script>window.jQuery || document.write('<script src="template/js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
 
         <script src="template/js/main.js"></script>
-
-        <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src='//www.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>
     </body>
 </html>

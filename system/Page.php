@@ -72,7 +72,7 @@ class Page {
 				if ( $page['visible'] === true ) {
 					$list .= '<li>';
 					$list .= '<a href="' . base_url() . $page_name . '">';
-					$list .= ucwords(str_replace('_', ' ', $page_name));
+					$list .= ucwords(str_replace('_', ' ', $content['page']['title']));
 					$list .= '</a></li>';
 				}
 			}
@@ -125,14 +125,15 @@ class Page {
 	 */
 	public function create($p) {
 		$page_name    = trim($p['page_name']);
+		$page_title   = trim($p['page_title']);
 		$page_content = $p['page_content'];
-		$page_visible = $p['page_visible'] == "true" ? true : false; // making boolean
+		$page_visible = $p['page_visible'] == 'true' ? true : false; // making boolean
 		$page_created = time();
 		$page_file    = PAGES_DIR . str_replace(' ', '_', strtolower($page_name));
 
 		$page = array(
 				'page' => array(
-						'name'     => $page_name,
+						'title'    => $page_title,
 						'content'  => $page_content,
 						'created'  => $page_created,
 						
