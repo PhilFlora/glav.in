@@ -140,16 +140,15 @@ if($_POST)
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
 		<p>
-			<strong>Page Address:</strong> <?php echo base_url(); ?><!-- Remove Spaces
+			<strong>Page Address:</strong> <?php echo base_url(); ?>
 			<?php
 				if ($page_name == 'home')
 				{ ?>
-					-->home
 			<?php
 				}
 				else
 				{ ?>
-					--> <input type="text" placeholder="page_name" name="page_name" value="<?php echo $page ? $page : ''; ?>" />
+				<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page ? $page : ''; ?>" />
 			<?php
 				}
 			?>
@@ -164,3 +163,6 @@ if($_POST)
 		</p>	
 		<input type="submit" value="Submit">
 	</form>
+	<?php
+	}
+	?>
