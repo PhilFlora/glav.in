@@ -249,5 +249,10 @@ input[type="submit"]:hover {
 }
 .btn:visited { color: #fff; }
 
+#admin-content .settings-page h2 { border-bottom: 1px solid #666; padding-bottom: 5px; margin-bottom: 10px; }
+#admin-content .settings-page h3 { margin-bottom: 10px; }
+.settings-radio { margin-left: 20px; }
+	.settings-radio input[type="radio"] { margin-bottom: 5px;}
+
 /* Adding margin to WYSIWYG Editor */ 
 #cke_page-content { margin-bottom: 20px; }
