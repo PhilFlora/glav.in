@@ -34,12 +34,12 @@ class Data {
 	 * @return	array
 	 */
 	public function get_content( $file ) {
-
-		$json = file_get_contents( $file . '.json' );
-
-		if ( !$json ) {
+		
+		if ( !$this->file_exist( $file ) ) {
 			return false;
 		} else {
+			$json = file_get_contents( $file . '.json' );
+
 			return json_decode( $json, true );
 		}
 
@@ -71,24 +71,28 @@ class Data {
 	 */	
 	public function update_file( $file_name, $content=array() ) {
 
-		rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
-		$file_name = PAGES_DIR . $content['page']['name'];
-		unset($content['page']['name']);
-		
-		$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
-		
-		// Get current file contents
-		$temp = $this->get_content( $file_name );
+		if( !$this->file_exist( $file_name ) ) {
+			return false;
+		} else {
+			rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
+			$file_name = PAGES_DIR . $content['page']['name'];
+			unset($content['page']['name']);
+			
+			$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
+			
+			// Get current file contents
+			$temp = $this->get_content( $file_name );
 
-		// New Content
-		$new = array_replace_recursive( $temp, $content );
+			// New Content
+			$new = array_replace_recursive( $temp, $content );
 
-		$fp = fopen( $file_name . '.json', 'w' );
+			$fp = fopen( $file_name . '.json', 'w' );
 
-		fwrite( $fp, json_encode( $new ) );
-		fclose( $fp );
+			fwrite( $fp, json_encode( $new ) );
+			fclose( $fp );
 
-		return true;
+			return true;			
+		}
 
 	}
 
@@ -102,7 +106,11 @@ class Data {
 
 		$file = $file_name . '.json';
 
-		return unlink( $file );
+		if ( $this->file_exist( $file_name ) ) {
+			return unlink( $file );			
+		} else {
+			return false;
+		}
 
 	}
 }
