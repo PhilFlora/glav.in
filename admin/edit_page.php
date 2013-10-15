@@ -27,19 +27,18 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	if ( !$data->file_exist( PAGES_DIR . $page ) ) {
 		$errors[] = 'Page Not Found';
 	} else {
-		$content = $data->get_content(PAGES_DIR . $page);
-		$page_name = $page;
-		$page_title = $content['page']['title'];
+		$content      = $data->get_content(PAGES_DIR . $page);
+		$page_name    = $page;
+		$page_title   = $content['page']['title'];
 		$page_content = $content['page']['content'];
 		$page_visible = $content['page']['visible'];
 	}
 } else {
-	$errors[] = 'No Page Selected';
+	$errors[] = 'No Page Selected <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 }
 
 // The form has been submitted
 if ( $_POST ) {
-	$page_file = $_GET['passed'];
 
 	// Validate the File Name
 	if ($page_name != 'home') {
@@ -74,8 +73,7 @@ if ( $_POST ) {
 	// Validate Page Visible
 	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
 		$page_visible = 'true';
-	}
-	else {
+	} else {
 		$page_visible = $_POST['page_visible'];
 	}
 	
@@ -90,10 +88,8 @@ if ( $_POST ) {
 	
 	// If there's no errors update the page
 	if ( empty( $errors ) ) {
-		if ( $data->update_file( PAGES_DIR . $page_file, $content ) ) {
-			$msgs[] = 'Page Updated. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
-			header('Location: ' . urlencode( $page_name ) ); // Redirect to the new edit_page url
-			die();
+		if ( $data->update_file( PAGES_DIR . $page, $content ) ) {
+			$msgs[] = 'Page Updated. <a href="'. base_url() . $page .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 		}
 	}
 }		
@@ -113,6 +109,9 @@ if ( $_POST ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
+	// Don't show the form if a page hasn't been passed.
+	// It looks wacky.
+	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
@@ -121,7 +120,7 @@ if ( $_POST ) {
 			<?php
 			if ( $page_name != 'home' ) { 
 			?>
-				<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page ? $page : ''; ?>" />
+			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page ? $page : ''; ?>" />
 			<?php
 			}
 			?>
@@ -136,3 +135,6 @@ if ( $_POST ) {
 		</p>	
 		<input type="submit" value="Submit">
 	</form>
+	<?php
+	}
+	?>
