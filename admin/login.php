@@ -20,7 +20,7 @@ if ( $_POST ) {
 	$email     = clean( $_POST['email'] );
 	$password  = clean( $_POST['password'] );
 
-	if( !$user->validate( $email, $password ) ) {
+	if ( !$user->validate( $email, $password ) ) {
 		$errors[] = 'Invalid Login Information. Need to <a href="reset_password" title="Reset Password">reset your password?</a>';
 	} else {
 		// Once the user has been validated, we need to refresh the page
@@ -43,7 +43,7 @@ if ( $_POST ) {
 	}
 
 	// Should we show the login prompt or are we logging in?
-	if( !$logging_in ) {
+	if ( !$logging_in ) {
 	?>		
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 		<input type="text" placeholder="Email Address" name="email" />

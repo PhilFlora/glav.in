@@ -28,7 +28,7 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	}
 
 	// See if the page exists
-	if( !$data->file_exist( PAGES_DIR . $page ) ) {
+	if ( !$data->file_exist( PAGES_DIR . $page ) ) {
 		// It doesn't
 		$errors[] = 'Page Not Found';
 	}

@@ -110,7 +110,7 @@ class Page {
 		}
 
 		// Make sure template exists
-		if( file_exists( $template_path ) ) {
+		if ( file_exists( $template_path ) ) {
 			include($template_path);
 		} else {
 			exit( '<strong>ERROR:</strong> Template "'.$template.'" not found.' );

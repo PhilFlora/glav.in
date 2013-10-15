@@ -86,7 +86,7 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 	$email  = clean( $_POST['email'] );
 	$token  = password_hash( time().rand(0, 2000), PASSWORD_DEFAULT, $password_options );
 
-	if( $email == '' ) {
+	if ( $email == '' ) {
 		$errors[] = 'Please enter a valid email address.';
 	}
 
@@ -101,7 +101,7 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 				)				
 			);
 
-			if( $data->update_file( USERS_DIR . $email, $content ) ) {
+			if ( $data->update_file( USERS_DIR . $email, $content ) ) {
 
 				$url = base_url() . 'admin/reset_password.php?email=' . $email . '&token=' . $token;
 				$message = 'To reset your password please go to the following address: ' . $url;
@@ -116,7 +116,7 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 							->setMessage( $message )
 							->setWrap( 100 )
 							->send();
-				if($send)
+				if ($send)
 				{
 					$msgs[] = "An email has been sent with instructions for resetting your password";
 				}
@@ -139,7 +139,7 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
-	if( !isset( $_GET['token'] ) ) {
+	if ( !isset( $_GET['token'] ) ) {
 	?>
 	<p>To reset your password, please enter your email address below.</p>
 	<section id="login-form">			

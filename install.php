@@ -42,37 +42,34 @@ if ( $_POST ) {
 			)
 		);
 
-		$added = $data->create_file('data/users/'.$email, $user);
+		$added = $data->create_file( 'data/users/'.$email, $user );
 
-		if($added) 
-		{
-			unlink(realpath(__FILE__));
-			header('Location: index.php');
+		if ( $added ) {
+			unlink( realpath( __FILE__ ) );
+			header( 'Location: index.php' );
 		}
 	}
 
 }
 
-require_once(ADMIN_DIR . '/template/header.php');
+require_once( ADMIN_DIR . '/template/header.php' );
 ?>
 <div id="login-content">
 	<?php
-	foreach($msgs as $msg)
-	{
+	foreach( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
 	}
 
-	foreach($errors as $errors)
-	{
+	foreach( $errors as $errors ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 	?>
 	<p>Thanks for installing Glav.in! Please create an admin account.</p>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-	<input type="email" name="admin_email_address" placeholder="Email Address" />
-	<input type="password" name="admin_password" placeholder="Password" />
-	<input type="submit" value="Submit" />
+		<input type="email" name="admin_email_address" placeholder="Email Address" />
+		<input type="password" name="admin_password" placeholder="Password" />
+		<input type="submit" value="Submit" />
 	</form>
 <?php
-require_once(ADMIN_DIR . '/template/footer.php');
+require_once( ADMIN_DIR . '/template/footer.php' );
 ?>

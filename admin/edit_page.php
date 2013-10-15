@@ -24,7 +24,7 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	$page = $_GET['passed'];
 
 	// See if the page exists
-	if( !$data->file_exist( PAGES_DIR . $page ) ) {
+	if ( !$data->file_exist( PAGES_DIR . $page ) ) {
 		$errors[] = 'Page Not Found';
 	} else {
 		$content = $data->get_content(PAGES_DIR . $page);
@@ -38,7 +38,7 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 }
 
 // The form has been submitted
-if($_POST) 
+if ($_POST) 
 {
 	$page_file = $_GET['passed'];
 
@@ -53,7 +53,7 @@ if($_POST)
 		{
 			$errors[] = 'The Page URL contains invalid characters'; 
 		}
-		else if( $data->file_exist(PAGES_DIR . trim( $_POST['page_name'] ) ) && $_POST['page_name'] != $page_name ) // Check to make sure there isn't already a page
+		else if ( $data->file_exist(PAGES_DIR . trim( $_POST['page_name'] ) ) && $_POST['page_name'] != $page_name ) // Check to make sure there isn't already a page
 		{
 			$errors[] = 'A page with this URL already exists'; // with this name. If so, send error.
 		}
@@ -106,10 +106,10 @@ if($_POST)
 	);
 	
 	// If there's no errors update the page
-	if(empty($errors))
+	if ( empty( $errors ) )
 	{
 	
-		if($data->update_file(PAGES_DIR . $page_file, $content))
+		if ( $data->update_file( PAGES_DIR . $page_file, $content ) )
 		{
 			$msgs[] = 'Page Updated. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 			header('Location: ' . urlencode( $page_name ) ); // Redirect to the new edit_page url
@@ -135,7 +135,7 @@ if($_POST)
 	}
 
 	// If there are no errors, continue...
-	if( empty( $errors ) ) {
+	if ( empty( $errors ) ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />

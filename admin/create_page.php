@@ -18,7 +18,7 @@ $page_title = '';
 $page_content = '';
 $page_visible = 'true';
 	
-if($_POST)
+if ( $_POST )
 {
 	
 	// Validate the File Name
@@ -81,8 +81,8 @@ if($_POST)
 
 		
 	// If there's no errors create the page
-	if( empty( $errors ) ) {
-		if( $page->create( $p ) ) {
+	if ( empty( $errors ) ) {
+		if ( $page->create( $p ) ) {
 			$msgs[] = 'Page Created. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 		} else {
 			$errors[] = 'Something went wrong. The page wasn\'t created.';

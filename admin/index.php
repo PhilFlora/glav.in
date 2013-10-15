@@ -56,7 +56,7 @@
 	
 	if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
 		if ( $user->is_logged_in() ) {
-			if( $requested_page == '' ) {
+			if ( $requested_page == '' ) {
 				$include = 'pages.php';
 			} else {
 				$include = $requested_page . '.php';

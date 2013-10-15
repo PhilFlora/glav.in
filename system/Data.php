@@ -71,7 +71,7 @@ class Data {
 	 */	
 	public function update_file( $file_name, $content=array() ) {
 
-		if( !$this->file_exist( $file_name ) ) {
+		if ( !$this->file_exist( $file_name ) ) {
 			return false;
 		} else {
 			rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');

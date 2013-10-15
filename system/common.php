@@ -35,7 +35,7 @@ if (!function_exists('base_url')) {
 	}
  }
 
- if(!function_exists('clean')) {
+ if ( !function_exists( 'clean' ) ) {
  	/**
  	 * Clean user input
  	 *
@@ -50,7 +50,7 @@ if (!function_exists('base_url')) {
  		// Strip tags
  		$clean = strip_tags( $dirty );
 
- 		if( $convert ) {
+ 		if ( $convert ) {
 	 		// Convert anything that needs converted
 	 		$clean = htmlentities($clean); 			
  		}
