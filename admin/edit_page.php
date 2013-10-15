@@ -38,61 +38,44 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 }
 
 // The form has been submitted
-if ($_POST) 
-{
+if ( $_POST ) {
 	$page_file = $_GET['passed'];
 
 	// Validate the File Name
-	if ($page_name != 'home')
-	{
-		if ( !isset($_POST['page_name']) || empty($_POST['page_name']) ) // First check if the user provided a File Name
-		{
+	if ($page_name != 'home') {
+		// First check if the user provided a File Name
+		if ( !isset($_POST['page_name']) || empty($_POST['page_name']) ){
 			$errors[] = 'The Page URL cannot be blank';
-		}
-		else if ( !preg_match( '/^[A-Za-z0-9-\(\)_]+$/', $_POST['page_name']) ) // Then make sure that it contains only valid characters
-		{
+		} else if ( !preg_match( '/^[A-Za-z0-9-\(\)_]+$/', $_POST['page_name']) ) { // Then make sure that it contains only valid characters
 			$errors[] = 'The Page URL contains invalid characters'; 
-		}
-		else if ( $data->file_exist(PAGES_DIR . trim( $_POST['page_name'] ) ) && $_POST['page_name'] != $page_name ) // Check to make sure there isn't already a page
-		{
+		} else if ( $data->file_exist(PAGES_DIR . trim( $_POST['page_name'] ) ) && $_POST['page_name'] != $page_name ) { // Check to make sure there isn't already a page
 			$errors[] = 'A page with this URL already exists'; // with this name. If so, send error.
-		}
-		else
-		{
+		} else {
 			$page_name = strtolower( $_POST['page_name'] );
 		}
 	}
 	
 	
 	// Validate the Page Title
-	if ( !isset($_POST['page_title']) || empty($_POST['page_title']) )
-	{
+	if ( !isset( $_POST['page_title'] ) || empty( $_POST['page_title'] ) ) {
 		$errors[] = 'Page Title cannot be blank';
-	}
-	else
-	{
+	} else {
 		$page_title = htmlentities( $_POST['page_title'], ENT_QUOTES, 'UTF-8' );
 	}
 	
-	
 	// Validate the Page Content
-	if ( !isset($_POST['page_content']) || empty ($_POST['page_content']) )
-	{
+	if ( !isset( $_POST['page_content'] ) || empty ( $_POST['page_content'] ) ) {
 		$errors[] = 'Page Content cannot be empty';
-	}
-	else 
-	{
+	} else {
 		$page_content = $_POST['page_content'];
 	}
 	
 	
 	// Validate Page Visible
-	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) )
-	{
+	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
 		$page_visible = 'true';
 	}
-	else
-	{
+	else {
 		$page_visible = $_POST['page_visible'];
 	}
 	
@@ -106,16 +89,12 @@ if ($_POST)
 	);
 	
 	// If there's no errors update the page
-	if ( empty( $errors ) )
-	{
-	
-		if ( $data->update_file( PAGES_DIR . $page_file, $content ) )
-		{
+	if ( empty( $errors ) ) {
+		if ( $data->update_file( PAGES_DIR . $page_file, $content ) ) {
 			$msgs[] = 'Page Updated. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 			header('Location: ' . urlencode( $page_name ) ); // Redirect to the new edit_page url
 			die();
 		}
-	
 	}
 }		
 ?>
@@ -134,23 +113,17 @@ if ($_POST)
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
-	// If there are no errors, continue...
-	if ( empty( $errors ) ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?>
 			<?php
-				if ($page_name == 'home')
-				{ ?>
-			<?php
-				}
-				else
-				{ ?>
+			if ( $page_name != 'home' ) { 
+			?>
 				<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page ? $page : ''; ?>" />
 			<?php
-				}
+			}
 			?>
 		</p>
 		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
@@ -163,6 +136,3 @@ if ($_POST)
 		</p>	
 		<input type="submit" value="Submit">
 	</form>
-	<?php
-	}
-	?>

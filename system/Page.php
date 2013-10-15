@@ -123,7 +123,7 @@ class Page {
 	 * @param	array containing all our page info and content
 	 * @return	bool
 	 */
-	public function create($p) {
+	public function create( $p ) {
 		$page_name    = trim($p['page_name']);
 		$page_title   = trim($p['page_title']);
 		$page_content = $p['page_content'];
