@@ -39,9 +39,7 @@
 					echo '<li>';
 					echo '<a href="'. base_url() . $page_name . '">' . str_replace('_', ' ', $page_name) . '</a>';
 					echo '<a href="edit_page/' . $page_name . '" class="action-btn">Edit</a>';
-					if ( $page_name != 'home' ) {
-						echo '<a href="delete_page/' . $page_name . '" class="action-btn">Delete</a>';	
-					}				
+					echo '<a href="delete_page/' . $page_name . '" class="action-btn">Delete</a>';	
 					echo '</li>';
 				}
 			}
