@@ -23,7 +23,7 @@ class Data {
 	 * @param	string	the page name being requested
 	 * @return	bool
 	 */
-	public function file_exist($file) {
+	public function file_exist( $file ) {
 		return file_exists( $file . '.json' );
 	}
 
@@ -33,7 +33,7 @@ class Data {
 	 * @param	string	the file being requested
 	 * @return	array
 	 */
-	public function get_content($file) {
+	public function get_content( $file ) {
 
 		$json = file_get_contents( $file . '.json' );
 
@@ -51,7 +51,7 @@ class Data {
 	 * @param	string	the page name being requested
 	 * @return	bool
 	 */	
-	public function create_file($file_name, $content) {
+	public function create_file( $file_name, $content ) {
 
 		$fp = fopen( $file_name . '.json', 'w' );
 
@@ -69,7 +69,7 @@ class Data {
 	 * @param array page content
 	 * @return	bool
 	 */	
-	public function update_file($file_name, $content=array()) {
+	public function update_file( $file_name, $content=array() ) {
 
 		rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
 		$file_name = PAGES_DIR . $content['page']['name'];
@@ -98,7 +98,7 @@ class Data {
 	 * @param string file name
 	 * @return	bool
 	 */	
-	public function delete_file($file_name) {
+	public function delete_file( $file_name ) {
 
 		$file = $file_name . '.json';
 
