@@ -95,7 +95,7 @@ if ( $_POST ) {
 	// If there's no errors update the page
 	if ( empty( $errors ) ) {
 		if ( $data->update_file( PAGES_DIR . $page, $content ) ) {
-			$msgs[] = 'Page Updated. <a href="'. base_url() . $page .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
+			$msgs[] = 'Page Updated. <a href="'. base_url() . $content['page']['name'] .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 			
 			$_SESSION['edit_msgs'] = $msgs; // We keep the messages in a session variable
 			header('Location: ' . $content['page']['name']);  // and then redirect
