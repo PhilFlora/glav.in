@@ -25,7 +25,7 @@
 		    	$('input[name="page_name"]').keydown(function(e) {
 		    		
 					if(e.keyCode == 0x20) { // If user added a space, replace it with underscore
-		    			$('input[name="page_name"]').val($(this).val() + '_');
+		    			$('input[name="page_name"]').val($(this).val() + '-');
 						return false;
 		    		}
 					else if (e.keyCode >= 0x41 && e.keyCode <= 0x5A) { // Convert uppercase letters to lowercase
