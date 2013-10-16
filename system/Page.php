@@ -124,18 +124,20 @@ class Page {
 	 * @return	bool
 	 */
 	public function create( $p ) {
-		$page_name    = trim($p['page_name']);
-		$page_title   = trim($p['page_title']);
-		$page_content = $p['page_content'];
-		$page_visible = $p['page_visible'] == 'true' ? true : false; // making boolean
-		$page_created = time();
-		$page_file    = PAGES_DIR . str_replace(' ', '_', strtolower($page_name));
+		$page_name          = trim( $p['page_name'] );
+		$page_title         = trim( $p['page_title'] );
+		$page_description   = trim( $p['page_description'] );
+		$page_content       = $p['page_content'];
+		$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
+		$page_created       = time();
+		$page_file          = PAGES_DIR . str_replace(' ', '_', strtolower($page_name));
 
 		$page = array(
 				'page' => array(
-						'title'    => $page_title,
-						'content'  => $page_content,
-						'created'  => $page_created,
+						'title'          => $page_title,
+						'description'    => $page_description,
+						'content'        => $page_content,
+						'created'        => $page_created,
 						
 						// For the time being "page" will be the only option.
 						// Eventually users will be able to choose from other templates.
