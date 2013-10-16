@@ -13,6 +13,13 @@
 * @since Version 1.0.0-alpha
 */
 
+// Make sure mod_rewrite is enabled. If it's not kill the script
+// and alert the user.
+
+if ( !in_array( 'mod_rewrite', apache_get_modules() ) ) {
+	die( 'ERROR: mod_rewrite is not enabled on this server. This must be enabled for Glav.in to run.' );
+}
+
 $title = 'Install';
 $errors = array();
 $msgs = array();
