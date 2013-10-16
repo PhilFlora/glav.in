@@ -18,6 +18,12 @@ $page_title = '';
 $page_content = '';
 $errors = array();
 
+// If any message has been set after a redirect
+if ( isset($_SESSION['edit_msgs']) && !empty($_SESSION['edit_msgs']) ) {
+	$msgs = $_SESSION['edit_msgs']; // assign it to the $msgs variable
+	unset($_SESSION['edit_msgs']);
+}
+
 // Do we have a page to edit?
 if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	
@@ -90,6 +96,10 @@ if ( $_POST ) {
 	if ( empty( $errors ) ) {
 		if ( $data->update_file( PAGES_DIR . $page, $content ) ) {
 			$msgs[] = 'Page Updated. <a href="'. base_url() . $page .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
+			
+			$_SESSION['edit_msgs'] = $msgs; // We keep the messages in a session variable
+			header('Location: ' . $content['page']['name']);  // and then redirect
+			die();
 		}
 	}
 }		
