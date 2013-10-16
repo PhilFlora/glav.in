@@ -24,24 +24,24 @@ require_once(SYSTEM_DIR . 'bootstrap.php');
 
 if( $_POST ) {
 
-        if( ( $_POST['admin_email_address'] == '' ) || ( $_POST['admin_password'] == '' ) ) {
-                $errors[] = "Fields Cannot Be Empty";
+    if( ( $_POST['admin_email_address'] == '' ) || ( $_POST['admin_password'] == '' ) ) {
+    	$errors[] = "Fields Cannot Be Empty";
+    }
+
+    if( empty( $errors ) ) {
+        $email = $_POST['admin_email_address'];
+        $password = $_POST['admin_password'];
+        $user_level = 1;
+
+        $created = $user->create( $email, $password, $user_level );
+
+        if( $created ) {
+                $msgs[] = 'User created! <a href="' . base_url() . 'admin/" title="Login">Go Login!</a>';
+                unlink( realpath( __FILE__ ) );
+        } else {
+                $errors[] = 'User not created';
         }
-
-        if( empty( $errors ) ) {
-                $email = $_POST['admin_email_address'];
-                $password = $_POST['admin_password'];
-                $user_level = 1;
-
-                $created = $user->create( $email, $password, $user_level );
-
-                if( $created ) {
-                        $msgs[] = 'User created! <a href="' . base_url() . 'admin/" title="Login">Go Login!</a>';
-                        unlink( realpath( __FILE__ ) );
-                } else {
-                        $errors[] = 'User not created';
-                }
-        }
+    }
 
 }
 
