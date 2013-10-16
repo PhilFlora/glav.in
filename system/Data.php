@@ -23,8 +23,8 @@ class Data {
 	 * @param	string	the page name being requested
 	 * @return	bool
 	 */
-	public function file_exist($file) {		
-		return file_exists($file . '.json');
+	public function file_exist( $file ) {
+		return file_exists( $file . '.json' );
 	}
 
 	/**
@@ -33,14 +33,14 @@ class Data {
 	 * @param	string	the file being requested
 	 * @return	array
 	 */
-	public function get_content($file) {
-
-		$json = file_get_contents($file . '.json');
-
-		if(!$json) {
+	public function get_content( $file ) {
+		
+		if ( !$this->file_exist( $file ) ) {
 			return false;
 		} else {
-			return json_decode($json, true);
+			$json = file_get_contents( $file . '.json' );
+
+			return json_decode( $json, true );
 		}
 
 	}
@@ -51,12 +51,12 @@ class Data {
 	 * @param	string	the page name being requested
 	 * @return	bool
 	 */	
-	public function create_file($file_name, $content) {
+	public function create_file( $file_name, $content ) {
 
-		$fp = fopen($file_name . '.json', 'w');
+		$fp = fopen( $file_name . '.json', 'w' );
 
-		fwrite($fp, json_encode($content));
-		fclose($fp);
+		fwrite( $fp, json_encode( $content ) );
+		fclose( $fp );
 
 		return true;
 
@@ -69,20 +69,30 @@ class Data {
 	 * @param array page content
 	 * @return	bool
 	 */	
-	public function update_file($file_name, $content=array()) {
+	public function update_file( $file_name, $content=array() ) {
 
-		// Get current file contents
-		$temp = $this->get_content($file_name);
+		if ( !$this->file_exist( $file_name ) ) {
+			return false;
+		} else {
+			rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
+			$file_name = PAGES_DIR . $content['page']['name'];
+			unset($content['page']['name']);
+			
+			$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
+			
+			// Get current file contents
+			$temp = $this->get_content( $file_name );
 
-		// New Content
-		$new = array_replace_recursive($temp, $content);
+			// New Content
+			$new = array_replace_recursive( $temp, $content );
 
-		$fp = fopen($file_name . '.json', 'w');
+			$fp = fopen( $file_name . '.json', 'w' );
 
-		fwrite($fp, json_encode($new));
-		fclose($fp);
+			fwrite( $fp, json_encode( $new ) );
+			fclose( $fp );
 
-		return true;
+			return true;			
+		}
 
 	}
 
@@ -92,12 +102,15 @@ class Data {
 	 * @param string file name
 	 * @return	bool
 	 */	
-	public function delete_file($file_name) {
+	public function delete_file( $file_name ) {
 
 		$file = $file_name . '.json';
 
-		return unlink($file);
+		if ( $this->file_exist( $file_name ) ) {
+			return unlink( $file );			
+		} else {
+			return false;
+		}
 
 	}
-
 }

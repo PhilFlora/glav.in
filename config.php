@@ -18,12 +18,12 @@
  * DEFINE CONSTANTS
  *---------------------------------------------------------------
  */
-	define("BASEPATH",     __DIR__);
-	define("SYSTEM_DIR",   BASEPATH . '/system/');
-	define("ADMIN_DIR",    BASEPATH . '/admin/');
-	define("PAGES_DIR",    BASEPATH . '/data/pages/');
-	define("SETTINGS_DIR", BASEPATH . '/data/settings/');
-	define("USERS_DIR",    BASEPATH . '/data/users/');
+	define( "BASEPATH",     __DIR__ );
+	define( "SYSTEM_DIR",   BASEPATH . '/system/' );
+	define( "ADMIN_DIR",    BASEPATH . '/admin/' );
+	define( "PAGES_DIR",    BASEPATH . '/data/pages/' );
+	define( "SETTINGS_DIR", BASEPATH . '/data/settings/' );
+	define( "USERS_DIR",    BASEPATH . '/data/users/' );
 
 /*
  *---------------------------------------------------------------

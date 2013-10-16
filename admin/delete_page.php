@@ -17,53 +17,43 @@ $page_name = '';
 $page_content = '';
 
 // Do we have a page to edit?
-if(isset($_GET['passed']) && $_GET['passed'] != '')
-{
+if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
+	
 	$page = $_GET['passed'];
 
 	// You can't delete the 404 page or the home page
 	// you stupid or somethin'?
-	if($page == '404' || $page == 'home')
-	{
+	if ( $page == '404' || $page == 'home' ) {
 		$errors[] = 'You cannot delete that page. Sorry.';
 	}
 
 	// See if the page exists
-	if(!$data->file_exist(PAGES_DIR . $page))
-	{
+	if ( !$data->file_exist( PAGES_DIR . $page ) ) {
 		// It doesn't
 		$errors[] = 'Page Not Found';
 	}
-
-}
-else
-{
+} else {
 	$errors[] = 'No Page Selected';
 }
 
 // The form has been submitted
-if($_POST) {
+if ( $_POST ) {
 
 	// Are you sure?
-	if($_POST['are_you_sure'] == 'Yes')
-	{
+	if ( $_POST['are_you_sure'] == 'Yes' ) {
+		
 		// Delete Page
-		$deleted = $data->delete_file(PAGES_DIR . $page);
+		$deleted = $data->delete_file( PAGES_DIR . $page );
 
 		// Was the page deleted?
-		if($deleted)
-		{
+		if ( $deleted ) {
 			// Yup...
 			$msgs[] = 'Page Deleted. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
-		}
-		else
-		{
+		} else {
 			// Nope...
 			$errors[] = 'Page Not Deleted';
 		}
-	}
-	else
-	{
+	} else {
 		// What do we say to the god of death?
 		// Not today.
 		$errors[] = 'Page Not Deleted. <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
@@ -77,19 +67,16 @@ if($_POST) {
 <div id="admin-content-body">
 	<?php
 	// Print out any messages or errors
-	foreach($msgs as $msg)
-	{
+	foreach( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
 	}
 
-	foreach($errors as $errors)
-	{
+	foreach( $errors as $errors ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
 	// If there are no errors, continue...
-	if(empty($msgs) && empty($errors))
-	{
+	if ( empty( $msgs ) && empty( $errors ) ) {
 	?>
 	<p>Are you sure you want to delete <strong><?php echo $page; ?></strong>?</p>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
