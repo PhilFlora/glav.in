@@ -20,7 +20,7 @@ class Page {
 	/**
 	 * Construct
 	 */
-	public function __construct($data) {
+	public function __construct( $data ) {
 		$this->data = $data;
 	}
 
@@ -33,8 +33,7 @@ class Page {
 
 		$pages = array();
 
-		foreach (glob(PAGES_DIR . "*.json") as $page)
-		{
+		foreach ( glob( PAGES_DIR . "*.json" ) as $page ) {
 			$pages[] = $page;
 		}		
 
@@ -47,7 +46,7 @@ class Page {
 	 * @param string optional id attribute
 	 * @return	html list of all pages
 	 */	
-	public function pages_list($id='') {
+	public function pages_list( $id='' ) {
 
 		$pages = $this->get_pages();
 
@@ -60,26 +59,23 @@ class Page {
 		$list .= '<a href="' . base_url() .'">';
 		$list .= 'Home</a></li>';
 
-		foreach($pages as $page) {
+		foreach( $pages as $page ) {
 
-			$page_name = basename($page, '.json');
+			$page_name = basename( $page, '.json' );
 
-			if($page_name != '404' && $page_name != 'home') {
+			if ( $page_name != '404' && $page_name != 'home' ) {
 
-				$content = $this->data->get_content(PAGES_DIR . $page_name);
+				$content = $this->data->get_content( PAGES_DIR . $page_name );
 				$page    = $content['page'];
 
 				// If the page is visible add it to the list.
-				if($page['visible'] === true)
-				{
+				if ( $page['visible'] === true ) {
 					$list .= '<li>';
 					$list .= '<a href="' . base_url() . $page_name . '">';
-					$list .= ucwords(str_replace('_', ' ', $page_name));
+					$list .= ucwords(str_replace('_', ' ', $content['page']['title']));
 					$list .= '</a></li>';
 				}
-
 			}
-
 		}
 
 		$list .= '</ul>';
@@ -93,41 +89,32 @@ class Page {
 	 *
 	 * @param	string	the page name being requested
 	 */
-	public function load($page) {
+	public function load( $page ) {
 
 		// If $page is empty, lets assume the index/home page has been requested.
-		if(($page == '') || ($page == 'index.php') || ($page == 'index.html'))
-		{
+		if ( ( $page == '' ) || ( $page == 'index.php' ) || ( $page == 'index.html' ) ) {
 			$page = 'home';
-		}
-		// If the page can't be found load the 404 page. 
-		elseif (!$this->data->file_exist(PAGES_DIR . $page)) 
-		{
+		} elseif ( !$this->data->file_exist( PAGES_DIR . $page ) ) {
+			// If the page can't be found load the 404 page. 
 			$page = '404';
 		}
 			
-		$content       = $this->data->get_content(PAGES_DIR . $page);
+		$content       = $this->data->get_content( PAGES_DIR . $page );
 		$page          = $content['page'];
 		$template      = $page['template'];
 		$template_path = BASEPATH . '/template/' . $template . '.php';
 
 		// If the page isn't visible, set a message.
-		if($page['visible'] === false)
-		{
+		if ( $page['visible'] === false ) {
 			$page['content'] = 'This page is currently unavailable.';
 		}
 
 		// Make sure template exists
-		if(file_exists($template_path)) 
-		{
+		if ( file_exists( $template_path ) ) {
 			include($template_path);
-		} 
-		else 
-		{
-			exit('<strong>ERROR:</strong> Template "'.$template.'" not found.');
+		} else {
+			exit( '<strong>ERROR:</strong> Template "'.$template.'" not found.' );
 		}
-		
-
 	}
 
 	/**
@@ -136,16 +123,17 @@ class Page {
 	 * @param	array containing all our page info and content
 	 * @return	bool
 	 */
-	public function create($p) {
+	public function create( $p ) {
 		$page_name    = trim($p['page_name']);
+		$page_title   = trim($p['page_title']);
 		$page_content = $p['page_content'];
-		$page_visible = $p['page_visible'] == "true" ? true : false; // making boolean
+		$page_visible = $p['page_visible'] == 'true' ? true : false; // making boolean
 		$page_created = time();
 		$page_file    = PAGES_DIR . str_replace(' ', '_', strtolower($page_name));
 
 		$page = array(
 				'page' => array(
-						'name'     => $page_name,
+						'title'    => $page_title,
 						'content'  => $page_content,
 						'created'  => $page_created,
 						
@@ -157,10 +145,6 @@ class Page {
 					)
 			);
 
-		return $this->data->create_file($page_file, $page);
-		
+		return $this->data->create_file( $page_file, $page );
 	}
-
 }
-
-?>

@@ -220,6 +220,12 @@ textarea:focus {
 
 textarea { height: 300px; }
 
+input[name="page_name"] {
+	width: 200px;
+	padding: 3px;
+	display: inline-block;
+}
+
 .btn,
 button,
 input[type="submit"] {

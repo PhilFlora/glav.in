@@ -22,12 +22,12 @@
  * all the other tools and helpers we'll need.
  */
 
-	require_once('../config.php');
-	require_once(SYSTEM_DIR . 'bootstrap.php');
+	require_once( '../config.php' );
+	require_once( SYSTEM_DIR . 'bootstrap.php' );
 
 	$errors = array();
-	$msgs = array();
-	$title = 'Admin Panel';
+	$msgs   = array();
+	$title  = 'Admin Panel';
 
 	$login_header = $user->is_logged_in() ? false : true;	
 
@@ -39,12 +39,11 @@
  * Check to see if the user is logged in. If not, ask them to.
  * After that, figure out where to send them.
  */
-	if(isset($_GET['page']))
-	{
+	if ( isset( $_GET['page'] ) ) {
 		$requested_page = $_GET['page'];
 
 		// Pages that use the "login_header"
-		switch($requested_page) {
+		switch( $requested_page ) {
 			case 'login':
 			case 'logout':
 			case 'reset_password':
@@ -55,31 +54,22 @@
 		}
 	}
 	
-	if($requested_page != 'login' && $requested_page != 'reset_password')
-	{
-		if($user->is_logged_in())
-		{
-			if($requested_page == '')
-			{
+	if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
+		if ( $user->is_logged_in() ) {
+			if ( $requested_page == '' ) {
 				$include = 'pages.php';
-			}
-			else 
-			{
+			} else {
 				$include = $requested_page . '.php';
 			}
-		}
-		else
-		{
+		} else {
 			$login_header = true;
 			$include = 'login.php';
 		}
-	}
-	else 
-	{
+	} else {
 		$include = $requested_page . '.php';	
 	}
 
-	require_once(ADMIN_DIR . '/template/header.php');
-	include($include);
-	require_once(ADMIN_DIR . '/template/footer.php');	
+	require_once( ADMIN_DIR . '/template/header.php' );
+	include( $include );
+	require_once( ADMIN_DIR . '/template/footer.php' );
 ?>

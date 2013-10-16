@@ -15,15 +15,62 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User {
+require_once( SYSTEM_DIR . 'password.php' );
 
+class User {
 
 	/**
 	 * Construct
 	 */
-	function __construct($data) {
+	function __construct( $data, $password_options ) {
 		$this->data = $data;
+		$this->password_options = $password_options;
 	}
+
+	/**
+	 * Create
+	 *
+	 * @param string user's email address
+	 * @param string user's password
+	 * @param string user's user level
+	 * @return	bool
+	 */	
+	public function create( $email, $password, $user_level ) {
+
+		// Check to see if the user already exists
+		if ( $this->data->file_exist( USERS_DIR . $email ) ) {
+			return false;
+		} else {
+			$user = array(
+				'user' => array(
+					'email' => $email,
+					'password' => password_hash( $password, PASSWORD_BCRYPT, $this->password_options ),
+					'user_level' => $user_level,
+					'token'	=> ''
+				)
+			);
+
+			$added = $this->data->create_file( 'data/users/'.$email, $user );
+
+			return $added ? true : false;	
+		}
+	}
+
+	/**
+	 * Delete
+	 *
+	 * @param string user's email address
+	 * @return	bool
+	 */
+	 public function delete( $email ) {
+
+	 	if ( $this->exists( $email ) ) {
+	 		return $this->data->delete_file( USERS_DIR . $email );	
+	 	} else {
+	 		return false;
+	 	}
+
+	 }		
 
 	/**
 	 * Exist
@@ -31,10 +78,8 @@ class User {
 	 * @param string user's email address
 	 * @return	bool
 	 */	
-	public function exists($email) {
-
-		return $this->data->file_exist(USERS_DIR . $email);
-
+	public function exists( $email ) {
+		return $this->data->file_exist( USERS_DIR . $email );
 	}
 
 	/**
@@ -45,25 +90,20 @@ class User {
 	 * @param string redirect url
 	 * @return	bool
 	 */	
-	public function validate($email, $password) {
+	public function validate( $email, $password ) {
 
 		// Make sure user exists
-		if(!$this->exists($email))
-		{
+		if ( !$this->exists( $email ) ) {
 			return false;
-		}
-		// If there's a user, continue.
-		else
-		{
+		} else {
 			// Get Contents
-			$user_data = $this->data->get_content(USERS_DIR . $email);
+			$user_data = $this->data->get_content( USERS_DIR . $email );
 			$user = $user_data['user'];
+			$pass = password_hash( $password, PASSWORD_DEFAULT, $this->password_options );
 
-			if($password == $user['password'])
-			{			
-				$this->start_session($user);
-
-				return true;				
+			if ( $user['password'] == $pass ) {
+				$this->start_session( $user );
+				return true;
 			}
 		}
 
@@ -74,14 +114,12 @@ class User {
 	 *
 	 * @param array user's information
 	 */	
-	public function start_session($user) {
+	public function start_session( $user ) {
 
-		if(!isset($_SESSION))
-		{
+		if ( !isset( $_SESSION ) ) {
 			// User confirmed. Start session.
 			session_start();
 		}
-
 		// Load session info
 		$_SESSION['user_email'] = $user['email'];
 		$_SESSION['user_level'] = $user['user_level'];
@@ -97,8 +135,7 @@ class User {
 	 */	
 	public function logout() {
 
-		if(!isset($_SESSION))
-		{
+		if ( !isset( $_SESSION ) ) {
 			session_start();
 		}
 
@@ -113,40 +150,26 @@ class User {
 	 * @param string page from which the method was called
 	 * @return	bool
 	 */	
-	public function is_logged_in($page='') {
+	public function is_logged_in( $page='' ) {
 
-		if(!isset($_SESSION))
-		{
+		if ( !isset( $_SESSION ) ) {
 			session_start();
 		}
 
 		// See if there's a session
-		if(isset($_SESSION['HTTP_USER_AGENT']))
-		{
-			if($_SESSION['HTTP_USER_AGENT'] != md5($_SERVER['HTTP_USER_AGENT']))
-			{
+		if ( isset( $_SESSION['HTTP_USER_AGENT'] ) ) {
+			if ( $_SESSION['HTTP_USER_AGENT'] != md5( $_SERVER['HTTP_USER_AGENT'] ) ) {
 				return false;
-			}
-			else
-			{
+			} else {
 				return true;	
-			}
-			
-		}
-		else
-		{
-			if($page)
-			{
+			}			
+		} else {
+			if ( $page ) {
 				$url = 'login.php?redirect=' . $page;
 				header('Location:' . $url);				
-			}
-			else
-			{
+			} else {
 				return false;
 			}			
-						
 		}
-
 	}
-
 }

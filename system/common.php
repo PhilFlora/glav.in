@@ -14,34 +14,28 @@
  */
 
 
-if (!function_exists('base_url'))
-{
+if (!function_exists('base_url')) {
 	/**
 	 * Returns the site's base url
 	 *
 	 * @return	string
 	 */
-	function base_url() 
-	{
+	function base_url() {
 
-		if(isset($_SERVER['HTTP_HOST'])) 
-		{
+		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
 
 			$base_url  = $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
 			$base_url .= $_SERVER['HTTP_HOST'];
-			$base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+			$base_url .= str_replace( basename( $_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME'] );
 			
 			// If we're in the admin directory remove that from the path
 			// probably not the best approach, however
-			return str_replace('admin/', '', $base_url); 
-		}
-		
+			return str_replace( 'admin/', '', $base_url );
+		}	
 	}
-
  }
 
- if(!function_exists('clean'))
- {
+ if ( !function_exists( 'clean' ) ) {
  	/**
  	 * Clean user input
  	 *
@@ -50,15 +44,13 @@ if (!function_exists('base_url'))
  	 * @return string
  	 */
 
- 	function clean($input, $convert=false)
- 	{
+ 	function clean( $input, $convert = false ) {
  		$dirty = $input;
 
  		// Strip tags
- 		$clean = strip_tags($dirty);
+ 		$clean = strip_tags( $dirty );
 
- 		if($convert)
- 		{
+ 		if ( $convert ) {
 	 		// Convert anything that needs converted
 	 		$clean = htmlentities($clean); 			
  		}

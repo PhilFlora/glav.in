@@ -21,16 +21,18 @@
 
 		    $(function() {
 
-		    	// When the page_name field is typed into, update
-		    	// the "page address" helper.
-		    	$('input[name="page_name"]').keyup(function() {
-		    		var val = $(this).val(),
-		    			new_val = val.toLowerCase();
-
-		    		if(new_val.slice(-1) != " ") {
-		    			$('#create-uri').text(new_val.replace(/ /g, "_"));	
-		    		}
+		    	// Correct the user while typing the filename
+		    	$('input[name="page_name"]').keydown(function(e) {
 		    		
+					if(e.keyCode == 0x20) { // If user added a space, replace it with underscore
+		    			$('input[name="page_name"]').val($(this).val() + '_');
+						return false;
+		    		}
+					else if (e.keyCode >= 0x41 && e.keyCode <= 0x5A) { // Convert uppercase letters to lowercase
+						$('input[name="page_name"]').val($(this).val() + String.fromCharCode(e.keyCode).toLowerCase());
+						return false;
+					}
+					
 		    	});	
 
 		    })

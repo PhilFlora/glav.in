@@ -18,7 +18,7 @@
  * COMMON FUNCTIONS
  *---------------------------------------------------------------
  */
-	require_once(SYSTEM_DIR . '/common.php');
+	require_once( SYSTEM_DIR . '/common.php' );
 
 /*
  *---------------------------------------------------------------
@@ -29,26 +29,22 @@
  */
 	
 	// Data
-	require_once(SYSTEM_DIR . 'Data.php');
+	require_once( SYSTEM_DIR . 'Data.php' );
 	$data = new Data();
 
 	// Page
-	require_once(SYSTEM_DIR . 'Page.php');
-	$page = new Page($data);
+	require_once( SYSTEM_DIR . 'Page.php' );
+	$page = new Page( $data );
 
 	// User
-	require_once(SYSTEM_DIR . 'User.php');
-	$user = new User($data);
-
-	// Admin
-	require_once(SYSTEM_DIR . 'Admin.php');
-	$admin = new Admin($data, $user);	
+	require_once( SYSTEM_DIR . 'User.php' );
+	$user = new User( $data, $password_options );
 
 /*
  *---------------------------------------------------------------
  * TEMPLATE FUNCTIONS
  *---------------------------------------------------------------
  */
-	require_once(SYSTEM_DIR . '/template_functions.php');
+	require_once( SYSTEM_DIR . '/template_functions.php' );
 
 ?>
