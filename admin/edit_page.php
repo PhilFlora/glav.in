@@ -131,7 +131,7 @@ if ( $_POST ) {
 
 	// Don't show the form if a page hasn't been passed.
 	// It looks wacky.
-	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
+	if ( isset( $_GET['passed'] ) && $_GET['passed'] != ''  && $data->file_exist(PAGES_DIR . $page) ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
