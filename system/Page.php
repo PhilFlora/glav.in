@@ -86,17 +86,17 @@ class Page {
 		$li_attr_home = $class_li ? ' class="' . $class_li : '';
 		if( $this->get_current_page() == 'home' ) {
 		    
-		    // only set class="$class_li_active" if not ''
-		    if( $li_attr_home ) {
-			$li_attr_home .= $class_li_active ? ' ' . $class_li_active . '"' : '"';
-		    } else {
-			$li_attr_home = $class_li_active ? ' class="' . $class_li_active . '"' : '';
-		    }
+			// only set class="$class_li_active" if not ''
+			if( $li_attr_home ) {
+				$li_attr_home .= $class_li_active ? ' ' . $class_li_active . '"' : '"';
+			} else {
+				$li_attr_home = $class_li_active ? ' class="' . $class_li_active . '"' : '';
+			}
 		    
 		} else {
 		    
-		    // Close class-tag if get_current_page != 'Home'
-		    $li_attr_home = $li_attr_home ? $li_attr_home . '"' : ''; 
+			// Close class-tag if get_current_page != 'Home'
+			$li_attr_home = $li_attr_home ? $li_attr_home . '"' : ''; 
 		    
 		}
 
@@ -121,18 +121,17 @@ class Page {
 				$li_attr = $class_li ? ' class="' . $class_li : '';
 				if( $this->get_current_page() == $page_name ) {
 				    
-				    // only set class="$class_li_active" if not ''
-				    if( $li_attr ) {
-					$li_attr .= $class_li_active ? ' ' . $class_li_active . '"' : '"';
-				    } else {
 					// only set class="$class_li_active" if not ''
-					$li_attr = $class_li_active ? ' class="' . $class_li_active . '"' : '';
-				    }  
-				    
+					if( $li_attr ) {
+						$li_attr .= $class_li_active ? ' ' . $class_li_active . '"' : '"';
+					} else {
+						$li_attr = $class_li_active ? ' class="' . $class_li_active . '"' : '';
+					}
+					
 				} else {
 
-				    // Close class-tag if get_current_page != 'Home'
-				    $li_attr = $li_attr ? $li_attr . '"' : ''; 
+					// Close class-tag if get_current_page != 'Home'
+					$li_attr = $li_attr ? $li_attr . '"' : ''; 
 
 				}
 
