@@ -15,8 +15,15 @@
 
 $page_name = '';
 $page_title = '';
+$page_description = '';
 $page_content = '';
 $errors = array();
+
+// If any message has been set after a redirect
+if ( isset($_SESSION['edit_msgs']) && !empty($_SESSION['edit_msgs']) ) {
+	$msgs = $_SESSION['edit_msgs']; // assign it to the $msgs variable
+	unset($_SESSION['edit_msgs']);
+}
 
 // Do we have a page to edit?
 if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
@@ -27,11 +34,12 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	if ( !$data->file_exist( PAGES_DIR . $page ) ) {
 		$errors[] = 'Page Not Found';
 	} else {
-		$content      = $data->get_content(PAGES_DIR . $page);
-		$page_name    = $page;
-		$page_title   = $content['page']['title'];
-		$page_content = $content['page']['content'];
-		$page_visible = $content['page']['visible'];
+		$content          = $data->get_content(PAGES_DIR . $page);
+		$page_name        = $page;
+		$page_title       = $content['page']['title'];
+		$page_description = $content['page']['description'];
+		$page_content     = $content['page']['content'];
+		$page_visible     = $content['page']['visible'];
 	}
 } else {
 	$errors[] = 'No Page Selected <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
@@ -54,12 +62,20 @@ if ( $_POST ) {
 		}
 	}
 	
-	
 	// Validate the Page Title
 	if ( !isset( $_POST['page_title'] ) || empty( $_POST['page_title'] ) ) {
 		$errors[] = 'Page Title cannot be blank';
 	} else {
 		$page_title = htmlentities( $_POST['page_title'], ENT_QUOTES, 'UTF-8' );
+	}
+	
+	// Validate the Description
+	if ( !isset( $_POST['page_description'] ) || empty( $_POST['page_description'] ) ) {
+		$page_description = ''; // The Description is optional
+	} else if ( strlen( $_POST['page_description'] ) > 160 ) { // Limit the length in order to prevent search engines to truncate the description
+		$errors[] = 'Description cannot have more than 160 characters lenght';
+	} else {
+		$page_description = htmlentities( $_POST['page_description'], ENT_QUOTES, 'UTF-8' );
 	}
 	
 	// Validate the Page Content
@@ -68,7 +84,6 @@ if ( $_POST ) {
 	} else {
 		$page_content = $_POST['page_content'];
 	}
-	
 	
 	// Validate Page Visible
 	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
@@ -81,6 +96,7 @@ if ( $_POST ) {
 		'page' => array(
 			'name' => trim($page_name),
 			'title' => trim($page_title),
+			'description' => trim($page_description),
 			'content' => $page_content,
 			'visible' => $page_visible
 		)				
@@ -89,7 +105,16 @@ if ( $_POST ) {
 	// If there's no errors update the page
 	if ( empty( $errors ) ) {
 		if ( $data->update_file( PAGES_DIR . $page, $content ) ) {
-			$msgs[] = 'Page Updated. <a href="'. base_url() . $page .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
+			$msgs[] = 'Page Updated. <a href="'. base_url() . $content['page']['name'] .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
+			
+			$_SESSION['edit_msgs'] = $msgs; // We keep the messages in a session variable
+			
+			/* Replace temporarily the header redirect with a Javascript redirect
+			header('Location: ' . $content['page']['name']);  // and then redirect
+			die();
+			*/
+			
+			echo '<script type="text/javascript">window.location.replace("' . $content['page']['name'] . '");</script>'; //and then we redirect
 		}
 	}
 }		
@@ -111,10 +136,11 @@ if ( $_POST ) {
 
 	// Don't show the form if a page hasn't been passed.
 	// It looks wacky.
-	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
+	if ( isset( $_GET['passed'] ) && $_GET['passed'] != ''  && $data->file_exist(PAGES_DIR . $page) ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
+		<input type="text" placeholder="Description" name="page_description"  value="<?php echo $page_description ? $page_description : ''; ?>" />
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?>
 			<?php

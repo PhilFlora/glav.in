@@ -23,20 +23,39 @@
 
 		    	// Correct the user while typing the filename
 		    	$('input[name="page_name"]').keydown(function(e) {
-		    		
-					if(e.keyCode == 0x20) { // If user added a space, replace it with underscore
-		    			$('input[name="page_name"]').val($(this).val() + '_');
+		    		var keyVal = ( e.charCode ? e.charCode : ( e.keyCode ? e.keyCode : e.which ) );
+					
+					if ( ( keyVal == 0x41 && e.ctrlKey === true ) || ( keyVal == 0x63 && e.ctrlKey === true ) || // Allow: Ctrl+A, or Ctrl+C
+						( keyVal == 0x56 && e.ctrlKey === true ) || ( keyVal == 0x58 && e.ctrlKey === true ) ) { // or Ctrl+V, or Ctrl+X
+						return;
+					} else if ( keyVal == 0x20 ) { // If user added a space, replace it with underscore
+		    			$('input[name="page_name"]').val($(this).val() + '-');
 						return false;
-		    		}
-					else if (e.keyCode >= 0x41 && e.keyCode <= 0x5A) { // Convert uppercase letters to lowercase
-						$('input[name="page_name"]').val($(this).val() + String.fromCharCode(e.keyCode).toLowerCase());
+		    		} else if ( keyVal >= 0x41 && keyVal <= 0x5A ) { // Convert uppercase letters to lowercase
+						$('input[name="page_name"]').val($(this).val() + String.fromCharCode(keyVal).toLowerCase());
 						return false;
 					}
 					
 		    	});	
 
-		    })
-		    
+		    });
+			
+			// Check Description Length
+			$().ready(function(){
+				$('input[name="page_description"]').keypress(function(e) {
+					var len = $(this).val().length,
+						maxlen = 160,
+						keyVal = ( e.charCode ? e.charCode : ( e.keyCode ? e.keyCode : e.which ) );
+					
+					if ( keyVal == 8 || keyVal == 9 || keyVal == 13 || //Allow: Backspace, Tab, Enter
+							( keyVal == 0x41 && e.ctrlKey === true ) || ( keyVal == 0x63 && e.ctrlKey === true ) || // Allow: Ctrl+A, or Ctrl+C
+								( keyVal == 0x56 && e.ctrlKey === true ) || ( keyVal == 0x58 && e.ctrlKey === true ) ) { // or Ctrl+V, or Ctrl+X
+						return;
+					} else if ( len > maxlen - 1 ) {
+						return false;
+					}
+				});
+			});
 		</script>		
 	</head>
 	<body<?php echo $login_header ? ' class="not_logged_in"' : ''; ?>>

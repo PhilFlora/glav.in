@@ -15,6 +15,7 @@
 
 $page_name = '';
 $page_title = '';
+$page_description = '';
 $page_content = '';
 $page_visible = 'true';
 $created = false;
@@ -40,6 +41,15 @@ if ( $_POST ) {
 		$page_title = htmlentities( $_POST['page_title'], ENT_QUOTES, 'UTF-8' );
 	}
 	
+	// Validate the Description
+	if ( !isset( $_POST['page_description'] ) || empty( $_POST['page_description'] ) ) {
+		$page_description = ''; // The Description is optional
+	} else if ( strlen( $_POST['page_description'] ) > 160 ) { // Limit the length in order to prevent search engines to truncate the description
+		$errors[] = 'Description cannot have more than 160 characters lenght';
+	} else {
+		$page_description = htmlentities( $_POST['page_description'], ENT_QUOTES, 'UTF-8' );
+	}
+	
 	// Validate the Page Content
 	if ( !isset($_POST['page_content']) || empty ($_POST['page_content']) ) {
 		$errors[] = 'Page Content cannot be empty';
@@ -55,10 +65,11 @@ if ( $_POST ) {
 	}
 	
 	$p = array(
-			'page_name'    => $page_name,
-			'page_title'   => $page_title,
-			'page_content' => $page_content,
-			'page_visible' => $page_visible
+			'page_name'          => $page_name,
+			'page_title'         => $page_title,
+			'page_description'   => $page_description,
+			'page_content'       => $page_content,
+			'page_visible'       => $page_visible
 		);
 
 	// If there's no errors create the page
@@ -92,6 +103,7 @@ if ( $_POST ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title" value="<?php echo $page_title ? $page_title : ''; ?>" />
+		<input type="text" placeholder="Description" name="page_description" value="<?php echo $page_description ? $page_description : ''; ?>" />
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri">
 			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
