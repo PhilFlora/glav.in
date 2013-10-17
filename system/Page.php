@@ -37,25 +37,25 @@ class Page {
 	 * @param string $page attribute
 	 */
 	private function set_current_page( $page ) {
-	    $this->current_page = $page;
+		$this->current_page = $page;
 	}
-        
+	
 	/**
 	 * Get current page
 	 * 
 	 * @return string
 	 */
 	private function get_current_page() {
-	    return $this->current_page;
+		return $this->current_page;
 	}
-
+	
 	/**
 	 * Get Pages
 	 *
 	 * @return	array of all pages with full path
 	 */	
 	public function get_pages() {
-
+		
 		$pages = array();
 
 		foreach ( glob( PAGES_DIR . "*.json" ) as $page ) {
@@ -75,9 +75,9 @@ class Page {
 	 * @return	html list of all pages
 	 */	
 	public function pages_list( $id = '', $class_ul = '', $class_li = '', $class_li_active = 'active' ) {
-                
+		
 		$pages = $this->get_pages();
-
+		
 		// set ul/li attributes
 		$id	  = $id	? ' id="' . $id . '"' : '';
 		$class_ul = $class_ul ? ' class="' . $class_ul . '"' : '';
@@ -85,42 +85,42 @@ class Page {
 		// attribute li
 		$li_attr_home = $class_li ? ' class="' . $class_li : '';
 		if( $this->get_current_page() == 'home' ) {
-		    
+			
 			// only set class="$class_li_active" if not ''
 			if( $li_attr_home ) {
 				$li_attr_home .= $class_li_active ? ' ' . $class_li_active . '"' : '"';
 			} else {
 				$li_attr_home = $class_li_active ? ' class="' . $class_li_active . '"' : '';
 			}
-		    
+			
 		} else {
-		    
+			
 			// Close class-tag if get_current_page != 'Home'
-			$li_attr_home = $li_attr_home ? $li_attr_home . '"' : ''; 
-		    
+			$li_attr_home = $li_attr_home ? $li_attr_home . '"' : '';
+			
 		}
 
 		// start building the list
 		$list  = '<ul' . $id . $class_ul . '>';
-
+		
 		// Make homepage first.
 		$list .= '<li' . $li_attr_home . '>';
 		$list .= '<a href="' . base_url() . '">';
 		$list .= 'Home</a></li>';
-
+		
 		foreach( $pages as $page ) {
-
+			
 			$page_name = basename( $page, '.json' );
-
+			
 			if ( $page_name != '404' && $page_name != 'home' ) {
-
+				
 				$content = $this->data->get_content( PAGES_DIR . $page_name );
 				$page    = $content['page'];
 				
 				// attribute li
 				$li_attr = $class_li ? ' class="' . $class_li : '';
 				if( $this->get_current_page() == $page_name ) {
-				    
+					
 					// only set class="$class_li_active" if not ''
 					if( $li_attr ) {
 						$li_attr .= $class_li_active ? ' ' . $class_li_active . '"' : '"';
@@ -129,10 +129,10 @@ class Page {
 					}
 					
 				} else {
-
+					
 					// Close class-tag if get_current_page != 'Home'
-					$li_attr = $li_attr ? $li_attr . '"' : ''; 
-
+					$li_attr = $li_attr ? $li_attr . '"' : '';
+					
 				}
 
 				// If the page is visible add it to the list.
