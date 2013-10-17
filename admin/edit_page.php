@@ -108,8 +108,13 @@ if ( $_POST ) {
 			$msgs[] = 'Page Updated. <a href="'. base_url() . $content['page']['name'] .'" title="Pages">View Page</a> or <a href="'. base_url() .'admin/pages" title="Pages">Return to Pages List</a>';
 			
 			$_SESSION['edit_msgs'] = $msgs; // We keep the messages in a session variable
+			
+			/* Replace temporarily the header redirect with a Javascript redirect
 			header('Location: ' . $content['page']['name']);  // and then redirect
 			die();
+			*/
+			
+			echo '<script type="text/javascript">window.location.replace("' . $content['page']['name'] . '");</script>'; //and then we redirect
 		}
 	}
 }		

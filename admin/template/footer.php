@@ -12,4 +12,3 @@
 	</div><!-- end container -->
 </body>
 </html>
-<?php ob_end_flush(); ?>
