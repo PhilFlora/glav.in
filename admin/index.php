@@ -41,6 +41,8 @@
  */
 	if ( isset( $_GET['page'] ) ) {
 		
+		// For some setups, the $_GET['page'] variable is appending
+		// '.php'. If it's there, remove it.
 		$requested_page = str_replace('.php', '', $_GET['page']);
 
 		// Pages that use the "login_header"

@@ -20,9 +20,18 @@ if ( !in_array( 'mod_rewrite', apache_get_modules() ) ) {
 	die( 'ERROR: mod_rewrite is not enabled on this server. This must be enabled for Glav.in to run.' );
 }
 
+// Check data dir permissions
+$data_permissions = array(
+	'data/',
+	'data/users',
+	'data/pages',
+	'data/settings',
+);
 
-if( fileperms("data/users") != 0777 ){
-    chmod("data/users", 0777);
+foreach ( $data_permissions as $dir ) {
+	if( fileperms( $dir ) != 0777 ){
+    	chmod( $dir, 0777 );
+	}
 }
 
 $title = 'Install';
