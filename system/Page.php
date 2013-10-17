@@ -130,7 +130,7 @@ class Page {
 					
 				} else {
 					
-					// Close class-tag if get_current_page != 'Home'
+					// Close class-tag if get_current_page != $page_name
 					$li_attr = $li_attr ? $li_attr . '"' : '';
 					
 				}
