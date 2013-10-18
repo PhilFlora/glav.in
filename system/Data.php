@@ -69,16 +69,26 @@ class Data {
 	 * @param array page content
 	 * @return	bool
 	 */	
-	public function update_file( $file_name, $content=array() ) {
+	public function update_file( $file_name, $content=array(), $filetype = 'page' ) {
 
 		if ( !$this->file_exist( $file_name ) ) {
 			return false;
 		} else {
-			rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
-			$file_name = PAGES_DIR . $content['page']['name'];
-			unset($content['page']['name']);
 			
-			$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
+			// Do the needed special actions based on the filetype
+			if ( $filetype === 'page' ) {
+				rename($file_name . '.json', PAGES_DIR . $content['page']['name'] . '.json');
+				$file_name = PAGES_DIR . $content['page']['name'];
+				unset($content['page']['name']);
+				
+				$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
+			}
+			else if ( $filetype === 'user' ) {
+				// For now no special action is needed for the user
+			}
+			else {
+				return false;
+			}
 			
 			// Get current file contents
 			$temp = $this->get_content( $file_name );
