@@ -7,7 +7,8 @@ class PageTest extends PHPUnit_Framework_TestCase {
 
 	function __construct() {
 		$this->data = new Data();
-		$this->page = new Page( $this->data );
+		$this->validate = new Validation();
+		$this->page = new Page( $this->data, $this->validate );
 	}
 	
 	/**

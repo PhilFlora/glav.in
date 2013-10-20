@@ -18,18 +18,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Page {
 
 	/**
+	 * Construct
+	 */
+	public function __construct( $data, $validate ) {
+		$this->data = $data;
+		$this->validate = $validate;
+	}
+
+	/**
 	 * Contains the name of the latest page loaded with Page->load
 	 * 
 	 * @var string 
 	 */
 	private $current_page = '';
-
-	/**
-	 * Construct
-	 */
-	public function __construct( $data ) {
-		$this->data = $data;
-	}
 
 	/**
 	 * Set current page
@@ -188,15 +189,82 @@ class Page {
 	}
 
 	/**
+	 * Validate a page
+	 *
+	 * @param	array containing all our page info and content
+	 * @param   string sets mode for validation
+	 * @return	array
+	 */
+	public function validate( $p, $mode = 'create' ) {
+		
+		$errors = array();
+
+		// Array containing content that can be empty
+		$can_be_empty = array( 'page_description' );
+
+		// Check for empty content
+		foreach ( $p as $property => $content ) {
+			if( !in_array( $property, $can_be_empty ) ) {
+				if ( ( $this->validate->is_empty( $content ) ) ) {
+					$errors[] = ucwords( str_replace( '_', ' ', $property ) ). ' cannont be empty';
+				}
+			}
+		}
+
+		// Page name cannot contain special characters
+		if ( $this->validate->has_special_characters( $p['page_name'] ) ) {
+			$errors[] = 'Page Name contains invalid characters';
+		}
+
+		// Check to see if page exists only when in "create" mode
+		if ( $mode == 'create' ) {
+			if ( $this->data->file_exist( PAGES_DIR . $p['page_name'] ) ) {
+				$errors[] = 'A page with this URL already exists';
+			}
+		}
+
+		// Page Description cannot contain more than 160 characters
+		if ( strlen( $p['page_description'] ) > 160 ) {
+			$errors[] = 'Description cannot be more than 160 characters in length';
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Filter Page Content
+	 *
+	 * @param	array containing all our page info and content
+	 * @return	array
+	 */
+	public function filter( $p ) {	
+
+		// Trim everything
+		foreach( $p as $property => $content ) {
+			$p[$property] = trim( $content );
+		}
+
+		// Make page name lowercase
+		$p['page_name'] = strtolower( $p['page_name'] );
+
+		// Convert characters to HTML
+		$p['page_title'] = htmlentities( $p['page_title'], ENT_QUOTES, 'UTF-8' );
+		$p['page_description'] = htmlentities( $p['page_description'], ENT_QUOTES, 'UTF-8' );
+
+		return $p;
+
+	}
+
+	/**
 	 * Create a page
 	 *
 	 * @param	array containing all our page info and content
 	 * @return	bool
 	 */
 	public function create( $p ) {
-		$page_name          = trim( $p['page_name'] );
-		$page_title         = trim( $p['page_title'] );
-		$page_description   = trim( $p['page_description'] );
+		$page_name          = $p['page_name'];
+		$page_title         = $p['page_title'];
+		$page_description   = $p['page_description'];
 		$page_content       = $p['page_content'];
 		$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
 		$page_created       = time();

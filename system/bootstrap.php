@@ -32,9 +32,13 @@
 	require_once( SYSTEM_DIR . 'Data.php' );
 	$data = new Data();
 
+	// Validation
+	require_once( SYSTEM_DIR . 'Validation.php' );
+	$validate = new Validation();	
+
 	// Page
 	require_once( SYSTEM_DIR . 'Page.php' );
-	$page = new Page( $data );
+	$page = new Page( $data, $validate );
 
 	// User
 	require_once( SYSTEM_DIR . 'User.php' );
