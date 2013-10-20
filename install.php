@@ -16,8 +16,20 @@
 // Make sure mod_rewrite is enabled. If it's not kill the script
 // and alert the user.
 
-if ( !in_array( 'mod_rewrite', apache_get_modules() ) ) {
-	die( 'ERROR: mod_rewrite is not enabled on this server. This must be enabled for Glav.in to run.' );
+$die_message = 'ERROR: mod_rewrite is not enabled on this server. This must be enabled for Glav.in to run.';
+if ( function_exists( 'apache_get_modules' ) ) {
+	
+	if ( !in_array( 'mod_rewrite', apache_get_modules() ) ) {
+		die( $die_message );
+	}
+	
+} else {
+
+	$mod_rewrite = getenv( 'HTTP_MOD_REWRITE' ) == 'On' ? true : false ;
+	if( !$mod_rewrite ) {
+		die( $die_message );
+	}
+	
 }
 
 // Check data dir permissions
