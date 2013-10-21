@@ -28,7 +28,7 @@ class Validation {
 	}
 
 	/**
-	 * Checks if input is contains special characters
+	 * Checks if input contains special characters
 	 *
 	 * @param	string	input
 	 * @return	bool
