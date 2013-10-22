@@ -206,7 +206,7 @@ class Page {
 		foreach ( $p as $property => $content ) {
 			if( !in_array( $property, $can_be_empty ) ) {
 				if ( ( $this->validate->is_empty( $content ) ) ) {
-					$errors[] = ucwords( str_replace( '_', ' ', $property ) ). ' cannont be empty';
+					$errors[] = ucwords( str_replace( '_', ' ', $property ) ). ' cannot be empty';
 				}
 			}
 		}

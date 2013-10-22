@@ -48,18 +48,19 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 // The form has been submitted
 if ( $_POST ) {
 
-	$page_name = isset( $_POST['page_name'] ) ? $_POST['page_name'] : '';
-	$page_title = isset( $_POST['page_title'] ) ? $_POST['page_title'] : '';
-	$page_description = isset( $_POST['page_description'] ) ? $_POST['page_description'] : '';
-	$page_content = isset( $_POST['page_content'] ) ? $_POST['page_content'] : '';
-	$page_visible = isset( $_POST['page_visible'] ) ? $_POST['page_visible'] : '';
+	// Edited Variables
+	$e_page_name = isset( $_POST['page_name'] ) ? $_POST['page_name'] : '';
+	$e_page_title = isset( $_POST['page_title'] ) ? $_POST['page_title'] : '';
+	$e_page_description = isset( $_POST['page_description'] ) ? $_POST['page_description'] : '';
+	$e_page_content = isset( $_POST['page_content'] ) ? $_POST['page_content'] : '';
+	$e_page_visible = isset( $_POST['page_visible'] ) ? $_POST['page_visible'] : '';
 
 	$p = array(
-			'page_name'          => $page_name,
-			'page_title'         => $page_title,
-			'page_description'   => $page_description,
-			'page_content'       => $page_content,
-			'page_visible'       => $page_visible
+			'page_name'          => $e_page_name,
+			'page_title'         => $e_page_title,
+			'page_description'   => $e_page_description,
+			'page_content'       => $e_page_content,
+			'page_visible'       => $e_page_visible
 		);
 
 	$errors = $page->validate( $p, 'edit' );	
@@ -118,9 +119,13 @@ if ( $_POST ) {
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?>
 			<?php
-			if ( $page_name != 'home' ) { 
+			if ( ( $page_passed != 'home' ) && ( $page_passed != '404' ) ) { 
 			?>
 			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_passed ? $page_passed : ''; ?>" />
+			<?php
+			} else {
+			?>
+			<input type="hidden" placeholder="page_name" name="page_name" value="<?php echo $page_passed ? $page_passed : ''; ?>" />
 			<?php
 			}
 			?>

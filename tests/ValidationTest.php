@@ -40,7 +40,7 @@ class ValidationTest extends PHPUnit_Framework_TestCase {
 	 * no special characters.
 	 */
 	public function testHasSpecialCharactersReturnsFalseWithoutSpecialCharacters() {
-		$this->assertEquals( 0, $this->validate->has_special_characters( 'nothing special' ) );
+		$this->assertEquals( 0, $this->validate->has_special_characters( 'nothingspecial' ) );
 	}
 
 	/**
