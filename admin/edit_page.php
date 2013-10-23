@@ -75,6 +75,13 @@ if ( $_POST ) {
 		$errors[] = 'Page Name cannot be changed.';
 	}
 
+	// Existing page cannot overwrite another existing page
+	if ( $page_passed != $e_page_name ) {
+		if ( $data->file_exist( PAGES_DIR . $e_page_name ) ) {
+			$errors[] = 'A page with this URL already exists';
+		}
+	}
+
 	$p = $page->filter( $p );	
 	
 	$content = array(
