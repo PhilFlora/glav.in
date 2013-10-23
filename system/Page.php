@@ -163,8 +163,11 @@ class Page {
 		if ( ( $page == '' ) || ( $page == 'index.php' ) || ( $page == 'index.html' ) ) {
 			$page = 'home';
 		} elseif ( !$this->data->file_exist( PAGES_DIR . $page ) ) {
+
+			// Set 404 Response Header
+			header("HTTP/1.0 404 Not Found");
+			
 			// If the page can't be found load the 404 page. 
-			http_response_code(404);
 			$page = '404';
 		}
 
