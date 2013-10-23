@@ -67,7 +67,7 @@ if ( isset( $_GET['token'] ) && isset( $_GET['email'] ) ) {
 						)				
 					);
 
-					if ( $data->update_file( USERS_DIR . $email, $content ) ) {
+					if ( $data->update_file( USERS_DIR . $email, $content, 'user' ) ) {
 						$msgs[] = 'Password Updated. <a href="' . base_url() . 'admin/login.php" title="Login">Go login!</a>';
 						$updated = true;
 					}
@@ -101,7 +101,7 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 				)				
 			);
 
-			if ( $data->update_file( USERS_DIR . $email, $content ) ) {
+			if ( $data->update_file( USERS_DIR . $email, $content, 'user' ) ) {
 
 				$url = base_url() . 'admin/reset_password.php?email=' . $email . '&token=' . $token;
 				$message = 'To reset your password please go to the following address: ' . $url;

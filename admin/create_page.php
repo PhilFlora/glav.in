@@ -15,51 +15,30 @@
 
 $page_name = '';
 $page_title = '';
+$page_description = '';
 $page_content = '';
 $page_visible = 'true';
 $created = false;
 	
 if ( $_POST ) {
-	
-	// Validate the File Name
-	// First check if the user provided a File Name
-	if ( !isset($_POST['page_name']) || empty($_POST['page_name']) ) {
-		$errors[] = 'The Page URL cannot be blank';
-	} else if ( !preg_match( '/^[A-Za-z0-9-\(\)_]+$/', $_POST['page_name']) ) { // Then make sure that it contains only valid characters
-		$errors[] = 'The Page URL contains invalid characters'; 
-	} else if( $data->file_exist(PAGES_DIR . trim( $_POST['page_name'] ) ) ) { // Check to make sure there isn't already a page
-		$errors[] = 'A page with this URL already exists'; // with this name. If so, send error.
-	} else {
-		$page_name = strtolower( $_POST['page_name'] );
-	}
-		
-	// Validate the Page Title
-	if ( !isset($_POST['page_title']) || empty($_POST['page_title']) ) {
-		$errors[] = 'Page Title cannot be blank';
-	} else {
-		$page_title = htmlentities( $_POST['page_title'], ENT_QUOTES, 'UTF-8' );
-	}
-	
-	// Validate the Page Content
-	if ( !isset($_POST['page_content']) || empty ($_POST['page_content']) ) {
-		$errors[] = 'Page Content cannot be empty';
-	} else {
-		$page_content = $_POST['page_content'];
-	}
-	
-	// Validate Page Visible
-	if ( !isset($_POST['page_visible']) || empty ($_POST['page_visible']) || ( $_POST['page_visible'] != 'true' && $_POST['page_visible'] != 'false' ) ) {
-		$page_visible = 'true';
-	} else {
-		$page_visible = $_POST['page_visible'];
-	}
-	
+
+	$page_name = isset( $_POST['page_name'] ) ? $_POST['page_name'] : '';
+	$page_title = isset( $_POST['page_title'] ) ? $_POST['page_title'] : '';
+	$page_description = isset( $_POST['page_description'] ) ? $_POST['page_description'] : '';
+	$page_content = isset( $_POST['page_content'] ) ? $_POST['page_content'] : '';
+	$page_visible = isset( $_POST['page_visible'] ) ? $_POST['page_visible'] : '';
+
 	$p = array(
-			'page_name'    => $page_name,
-			'page_title'   => $page_title,
-			'page_content' => $page_content,
-			'page_visible' => $page_visible
+			'page_name'          => $page_name,
+			'page_title'         => $page_title,
+			'page_description'   => $page_description,
+			'page_content'       => $page_content,
+			'page_visible'       => $page_visible
 		);
+
+	$errors = $page->validate( $p, 'create' );	
+
+	$p = $page->filter( $p );
 
 	// If there's no errors create the page
 	if ( empty( $errors ) ) {
@@ -92,6 +71,7 @@ if ( $_POST ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<input type="text" placeholder="Page Title" name="page_title" value="<?php echo $page_title ? $page_title : ''; ?>" />
+		<input type="text" placeholder="Description" name="page_description" value="<?php echo $page_description ? $page_description : ''; ?>" />
 		<p>
 			<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri">
 			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
