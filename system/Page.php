@@ -164,6 +164,7 @@ class Page {
 			$page = 'home';
 		} elseif ( !$this->data->file_exist( PAGES_DIR . $page ) ) {
 			// If the page can't be found load the 404 page. 
+			http_response_code(404);
 			$page = '404';
 		}
 
@@ -214,6 +215,13 @@ class Page {
 		// Page name cannot contain special characters
 		if ( $this->validate->has_special_characters( $p['page_name'] ) ) {
 			$errors[] = 'Page Name contains invalid characters';
+		}
+
+		// The 'home' is not a valid page_name
+		if ( $mode == 'create' ) {
+			if ( ( $p['page_name'] == 'home' ) || ( $p['page_name'] == '404' ) ) {
+				$errors[] = "Invalid Page Name";
+			}
 		}
 
 		// Check to see if page exists only when in "create" mode
@@ -268,7 +276,7 @@ class Page {
 		$page_content       = $p['page_content'];
 		$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
 		$page_created       = time();
-		$page_file          = PAGES_DIR . str_replace(' ', '_', strtolower($page_name));
+		$page_file          = PAGES_DIR . str_replace(' ', '-', strtolower($page_name));
 
 		$page = array(
 				'page' => array(

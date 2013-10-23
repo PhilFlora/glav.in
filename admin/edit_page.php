@@ -65,6 +65,16 @@ if ( $_POST ) {
 
 	$errors = $page->validate( $p, 'edit' );	
 
+	// Page name cannot be set to home or 404 when editing another page
+	if ( ( ( $e_page_name == 'home' ) && ( $page_passed != 'home' ) ) || ( $e_page_name == '404' ) && ( $page_passed != '404' ) ) {
+		$errors[] = 'Invalid Page Name';
+	}
+
+	// Home & 404 cannot have their page names changed
+	if ( ( ( $page_passed == 'home' ) && ( $e_page_name != 'home' ) ) || ( ( $page_passed == '404' ) && ( $e_page_name != '404' ) ) ) {
+		$errors[] = 'Page Name cannot be changed.';
+	}
+
 	$p = $page->filter( $p );	
 	
 	$content = array(

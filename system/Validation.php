@@ -34,7 +34,7 @@ class Validation {
 	 * @return	bool
 	 */
 	public function has_special_characters( $input ) {
-		return preg_match( '/[^a-zA-Z0-9]/', $input );
+		return preg_match( '/[^a-zA-Z0-9-_]/', $input );
 	}
 
 	/**
