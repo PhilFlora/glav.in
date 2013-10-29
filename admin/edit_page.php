@@ -39,6 +39,7 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 		$page_title       = $content['page']['title'];
 		$page_description = $content['page']['description'];
 		$page_content     = $content['page']['content'];
+		$page_layout      = $content['page']['layout'];
 		$page_visible     = $content['page']['visible'];
 	}
 } else {
@@ -53,6 +54,7 @@ if ( $_POST ) {
 	$e_page_title = isset( $_POST['page_title'] ) ? $_POST['page_title'] : '';
 	$e_page_description = isset( $_POST['page_description'] ) ? $_POST['page_description'] : '';
 	$e_page_content = isset( $_POST['page_content'] ) ? $_POST['page_content'] : '';
+	$e_page_layout = isset( $_POST['page_layout'] ) ? $_POST['page_layout'] : '';
 	$e_page_visible = isset( $_POST['page_visible'] ) ? $_POST['page_visible'] : '';
 
 	$p = array(
@@ -60,6 +62,7 @@ if ( $_POST ) {
 			'page_title'         => $e_page_title,
 			'page_description'   => $e_page_description,
 			'page_content'       => $e_page_content,
+			'page_layout'        => $e_page_layout, 
 			'page_visible'       => $e_page_visible
 		);
 
@@ -90,8 +93,9 @@ if ( $_POST ) {
 			'title' => $p['page_title'],
 			'description' => $p['page_description'],
 			'content' => $p['page_content'],
+			'layout' => $p['page_layout'],
 			'visible' => $p['page_visible']
-		)				
+		)
 	);
 	
 	// If there's no errors update the page
@@ -148,6 +152,22 @@ if ( $_POST ) {
 			?>
 		</p>
 		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
+		<p>
+			Layout
+			<select name="page_layout">
+				<?php
+					$layouts = $page->get_layouts();
+
+					foreach( $layouts as $layout ) {
+						echo '<option value="'.$layout.'"';
+						echo $page_layout == $layout ? ' selected="true"' : '';
+						echo '>';
+						echo $layout;
+						echo '</option>';
+					}
+				?>
+			</select>
+		</p>		
 		<p>
 			Is this page visible to the public?
 			<select name="page_visible">

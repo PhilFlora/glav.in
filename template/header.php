@@ -34,34 +34,4 @@
         </div>
 
         <div class="main-container">
-            <div class="main wrapper clearfix">
-
-                <article>
-                    <h1><?php echo $page['title']; ?></h1>
-                    <?php echo $page['content']; ?>
-                </article>
-
-                <aside>
-                    <h3>Welcome to Glav.in!</h3>
-                    <p>This is the default template that comes with Glav.in. Feel free to modifty it or delete it entirely.</p>
-                    <p>For help and documentation please visit <a href="http://glav.in">http://glav.in</a></p>
-                </aside>
-
-            </div> <!-- #main -->
-        </div> <!-- #main-container -->
-
-        <div class="footer-container">
-            <footer class="wrapper">
-                <p>
-                    &copy;2013 Glav.in<br />
-                    Hat Tip to <a href="http://www.initializr.com/">Initializr</a>
-                </p>
-            </footer>
-        </div>
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="template/js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-
-        <script src="template/js/main.js"></script>
-    </body>
-</html>
+            <div class="main wrapper clearfix">                

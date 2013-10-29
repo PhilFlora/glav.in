@@ -28,7 +28,7 @@ if ( function_exists( 'apache_get_modules' ) ) {
 
 	$mod_rewrite = getenv( 'HTTP_MOD_REWRITE' ) == 'On' ? true : false ;
 
-	if( !$mod_rewrite ) {
+	if ( !$mod_rewrite ) {
 		die( $die_message );
 	}
 	
@@ -43,7 +43,7 @@ $data_permissions = array(
 );
 
 foreach ( $data_permissions as $dir ) {
-	if( fileperms( $dir ) != 0777 ){
+	if ( fileperms( $dir ) != 0777 ) {
     	chmod( $dir, 0777 );
 	}
 }
@@ -54,8 +54,8 @@ $msgs = array();
 $login_header = true;
 $created = false;
 
-require_once('config.php');
-require_once(SYSTEM_DIR . 'bootstrap.php');
+require_once( 'config.php' );
+require_once( SYSTEM_DIR . 'bootstrap.php' );
 
 if ( $_POST ) {
 
