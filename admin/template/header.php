@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name = "viewport" content = "initial-scale = 1.0">
-		<title><?php echo $title; ?> - Glav.in - The Not Robust, Not Very Powerful, Simple CMS</title>
+		<title><?php echo $title; ?> - Glav.in - A Simple CMS</title>
 		<script type="text/javascript" src="<?php echo base_url(); ?>admin/template/js/jquery-1.10.2.min.js"></script>
 		<!--[if (gte IE 6)&(lte IE 8)]>
 		  <script type="text/javascript" src="js/selectivizr.js"></script>
