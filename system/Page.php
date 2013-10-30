@@ -305,27 +305,42 @@ class Page {
 	 * @return	bool
 	 */
 	public function create( $p ) {
-		$page_name          = $p['page_name'];
-		$page_title         = $p['page_title'];
-		$page_description   = $p['page_description'];
-		$page_content       = $p['page_content'];
-		$page_layout        = $p['page_layout'];
-		$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
-		$page_created       = time();
-		$page_file          = PAGES_DIR . str_replace(' ', '-', strtolower($page_name));
 
-		$page = array(
-				'page' => array(
+		if ( !empty( $p ) ) {
+			$page_name          = $p['page_name'];
+			$page_title         = $p['page_title'];
+			$page_description   = $p['page_description'];
+			$page_content       = $p['page_content'];
+			$page_layout        = $p['page_layout'];
+			$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
+			$page_created       = time();
+			$page_file          = PAGES_DIR . str_replace(' ', '-', strtolower($page_name));
 
-						'title'          => $page_title,
-						'description'    => $page_description,
-						'content'        => $page_content,
-						'created'        => $page_created,
-						'layout'         => $page_layout,
-						'visible'        => $page_visible
-					)
-			);
+			$page = array(
+					'page' => array(
+							'title'          => $page_title,
+							'description'    => $page_description,
+							'content'        => $page_content,
+							'created'        => $page_created,
+							'layout'         => $page_layout,
+							'visible'        => $page_visible
+						)
+				);
 
-		return $this->data->create_file( $page_file, $page );
+			return $this->data->create_file( $page_file, $page );			
+		} else {
+			return false;
+		}
+
 	}
+
+	/**
+	 * Delete a page
+	 *
+	 * @param	string page being deleted
+	 * @return	bool
+	 */
+	public function delete( $p ) {
+		return $this->data->delete_file( PAGES_DIR . $p );
+	}	
 }
