@@ -271,6 +271,11 @@ class Page {
 			$errors[] = 'Description cannot be more than 160 characters in length';
 		}
 
+		// Check to make sure layout exists
+		if ( !file_exists( BASEPATH . '/template/layout_' . $p['page_layout'] . '.php' ) ) {
+			$errors[] = 'Layout "'.$p['page_layout'].'" does not exist';
+		}
+
 		return $errors;
 	}
 
