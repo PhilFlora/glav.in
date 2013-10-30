@@ -40,7 +40,7 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 if ( $_POST ) {
 
 	// Are you sure?
-	if ( $_POST['are_you_sure'] == 'Yes' ) {
+	if ( $_POST['are_you_sure'] == 'Yes' && $page_passed != 'home' && $page_passed != '404' ) {
 		
 		// Delete Page
 		$deleted = $page->delete( $page_passed );
