@@ -42,7 +42,7 @@
 
 	// User
 	require_once( SYSTEM_DIR . 'User.php' );
-	$user = new User( $data, $password_options );
+	$user = new User( $data, $validate, $password_options );
 
 /*
  *---------------------------------------------------------------

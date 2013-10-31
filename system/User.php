@@ -22,8 +22,9 @@ class User {
 	/**
 	 * Construct
 	 */
-	function __construct( $data, $password_options ) {
+	function __construct( $data, $validate, $password_options ) {
 		$this->data = $data;
+		$this->validate = $validate;
 		$this->password_options = $password_options;
 	}
 
@@ -50,11 +51,108 @@ class User {
 				)
 			);
 
-			$added = $this->data->create_file( 'data/users/'.$email, $user );
+			$added = $this->data->create_file( USERS_DIR . $email, $user );
 
 			return $added ? true : false;	
 		}
 	}
+
+	/**
+	 * Update
+	 *
+	 * @param string user's email address
+	 * @param string user's password
+	 * @param string user's user level
+	 * @return	bool
+	 */	
+	public function update( $user, $u ) {
+
+		// If a password is set, hash it
+		if ( array_key_exists('password', $u['user']) ) {
+			$u['user']['password'] = password_hash( $u['user']['password'], PASSWORD_BCRYPT, $this->password_options );
+		}
+
+		return $this->data->update_file( USERS_DIR . $user, $u, 'user' );
+
+	}	
+
+	/**
+	 * Get Users
+	 *
+	 * @return	array of all users
+	 */	
+	public function get_users() {
+		
+		$users = array();
+
+		foreach ( glob( USERS_DIR . "*.json" ) as $user ) {
+
+			// Remove Path
+			$user = str_replace( USERS_DIR, '', $user );
+
+			// Remove extention
+			$user = str_replace( '.json', '', $user );
+
+			$users[] = $user;
+		}		
+
+		return $users;
+	}
+
+	/**
+	 * Validate a user
+	 *
+	 * @param	array containing all our user info and content
+	 * @param   string sets mode for validation
+	 * @return	array
+	 */
+	public function validateInput( $u, $mode = 'create' ) {
+		
+		$errors = array();
+
+		// Array containing content that can be empty
+		$can_be_empty = array( '' );
+
+		// Check for empty content
+		foreach ( $u as $property => $content ) {
+			if( !in_array( $property, $can_be_empty ) ) {
+				if ( ( $this->validate->is_empty( $content ) ) ) {
+					$errors[] = ucwords( str_replace( '_', ' ', $property ) ). ' cannot be empty';
+				}
+			}
+		}
+
+		// Page name cannot contain special characters
+		if ( !$this->validate->is_valid_email( $u['user_email'] ) ) {
+			$errors[] = 'Please enter a valid email address';
+		}
+
+		// Check to see if page exists only when in "create" mode
+		if ( $mode == 'create' ) {
+			if ( $this->data->file_exist( USERS_DIR . $u['user_email'] ) ) {
+				$errors[] = 'A user with this email address already exists';
+			}
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Filter User Content
+	 *
+	 * @param	array containing all our users' info and content
+	 * @return	array
+	 */
+	public function filter( $u ) {	
+
+		// Trim everything
+		foreach( $u as $property => $content ) {
+			$u[$property] = trim( $content );
+		}
+
+		return $u;
+
+	}	
 
 	/**
 	 * Delete
@@ -124,6 +222,9 @@ class User {
 		$_SESSION['user_email'] = $user['email'];
 		$_SESSION['user_level'] = $user['user_level'];
 		$_SESSION['time_logged_in'] = time();
+
+		// Set user_level
+		$this->set_user_level( $_SESSION['user_level'] );
 
 		// Adding some randomization
 		$_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT']);
