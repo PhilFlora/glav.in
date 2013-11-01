@@ -163,7 +163,17 @@ class User {
 	 public function delete( $email ) {
 
 	 	if ( $this->exists( $email ) ) {
-	 		return $this->data->delete_file( USERS_DIR . $email );	
+
+	 		// Check to make sure that there will be at least
+	 		// one user if this user is deleted. This shouldn't
+	 		// happen since a user can't delete themselves, but
+	 		// better safe that sorry.
+	 		if ( ( count( $this->get_users() ) - 1 ) > 0 ) {
+	 			return $this->data->delete_file( USERS_DIR . $email );		
+	 		} else {
+	 			return false;
+	 		}
+	 		
 	 	} else {
 	 		return false;
 	 	}

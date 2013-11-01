@@ -13,46 +13,53 @@
  * @since		3.2.0-alpha
  */
 
-$page_name = '';
-$page_content = '';
+// Only Admins can access this page
+if ( $user_level == 1 ) {
 
-// Do we have a page to edit?
-if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
-	
-	$user_passed = $_GET['passed'];
-
-	// See if the page exists
-	if ( !$user->exists( $user_passed ) ) {
-		// It doesn't
-		$errors[] = 'User Not Found';
+	if ( $user != $_SESSION['user_email'] ) {
+		$errors[] = 'You cannot delete yourself';
 	}
-} else {
-	$errors[] = 'No User Selected';
-}
 
-// The form has been submitted
-if ( $_POST ) {
+	$page_name = '';
+	$page_content = '';
 
-	// Are you sure?
-	if ( $_POST['are_you_sure'] == 'Yes' && $user_passed != $_SESSION['user_email'] ) {
+	// Do we have a page to edit?
+	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 		
-		// Delete Page
-		$deleted = $user->delete( $user_passed );
+		$user_passed = $_GET['passed'];
 
-		// Was the page deleted?
-		if ( $deleted ) {
-			// Yup...
-			$msgs[] = 'User Deleted. <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
-		} else {
-			// Nope...
-			$errors[] = 'User Not Deleted';
+		// See if the page exists
+		if ( !$user->exists( $user_passed ) ) {
+			// It doesn't
+			$errors[] = 'User Not Found';
 		}
 	} else {
-		// What do we say to the god of death?
-		// Not today.
-		$errors[] = 'User Not Deleted. <a href="'. base_url() .'admin/user" title="Users">Return to Users List</a>';
+		$errors[] = 'No User Selected';
 	}
-}
+
+	// The form has been submitted
+	if ( $_POST ) {
+
+		// Are you sure?
+		if ( $_POST['are_you_sure'] == 'Yes' && $user_passed != $_SESSION['user_email'] ) {
+			
+			// Delete Page
+			$deleted = $user->delete( $user_passed );
+
+			// Was the page deleted?
+			if ( $deleted ) {
+				// Yup...
+				$msgs[] = 'User Deleted. <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
+			} else {
+				// Nope...
+				$errors[] = 'User Not Deleted';
+			}
+		} else {
+			// What do we say to the god of death?
+			// Not today.
+			$errors[] = 'User Not Deleted. <a href="'. base_url() .'admin/user" title="Users">Return to Users List</a>';
+		}
+	}
 ?>
 <div id="page-description">
 	<h1>Delete User</h1>
@@ -79,4 +86,5 @@ if ( $_POST ) {
 	</form>
 	<?php
 	}
-	?>
+}
+?>
