@@ -10,7 +10,7 @@
  * @copyright	Copyright (c) 2013, Matt Sparks (http://www.mattsparks.com)
  * @license		http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link		http://glav.in
- * @since		3.2.0-alpha
+ * @since		4.0.0-alpha
  */
 
 // Only Admins can access this page

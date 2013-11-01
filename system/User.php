@@ -42,6 +42,7 @@ class User {
 		if ( $this->data->file_exist( USERS_DIR . $email ) ) {
 			return false;
 		} else {
+			// User doesn't exist, populate array
 			$user = array(
 				'user' => array(
 					'email' => $email,
@@ -51,9 +52,9 @@ class User {
 				)
 			);
 
-			$added = $this->data->create_file( USERS_DIR . $email, $user );
+			// Create User
+			return $this->data->create_file( USERS_DIR . $email, $user );
 
-			return $added ? true : false;	
 		}
 	}
 
@@ -93,6 +94,7 @@ class User {
 			// Remove extention
 			$user = str_replace( '.json', '', $user );
 
+			// Add User to Array
 			$users[] = $user;
 		}		
 
@@ -122,12 +124,12 @@ class User {
 			}
 		}
 
-		// Page name cannot contain special characters
+		// Is this a valid email address
 		if ( !$this->validate->is_valid_email( $u['user_email'] ) ) {
 			$errors[] = 'Please enter a valid email address';
 		}
 
-		// Check to see if page exists only when in "create" mode
+		// Check to see if user exists only when in "create" mode
 		if ( $mode == 'create' ) {
 			if ( $this->data->file_exist( USERS_DIR . $u['user_email'] ) ) {
 				$errors[] = 'A user with this email address already exists';
@@ -209,6 +211,7 @@ class User {
 			$user = $user_data['user'];
 			$pass = password_hash( $password, PASSWORD_DEFAULT, $this->password_options );
 
+			// If they passed the correct password, start session
 			if ( $user['password'] == $pass ) {
 				$this->start_session( $user );
 				return true;
@@ -233,9 +236,6 @@ class User {
 		$_SESSION['user_level'] = $user['user_level'];
 		$_SESSION['time_logged_in'] = time();
 
-		// Set user_level
-		$this->set_user_level( $_SESSION['user_level'] );
-
 		// Adding some randomization
 		$_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT']);
 			
@@ -246,12 +246,15 @@ class User {
 	 */	
 	public function logout() {
 
+		// Start session if needed
 		if ( !isset( $_SESSION ) ) {
 			session_start();
 		}
 
+		// Empty session array
 		$_SESSION = array();
 
+		// Destroy Session
 		session_destroy();
 	}	
 
@@ -263,6 +266,7 @@ class User {
 	 */	
 	public function is_logged_in( $page='' ) {
 
+		// Start session if needed
 		if ( !isset( $_SESSION ) ) {
 			session_start();
 		}
@@ -274,13 +278,6 @@ class User {
 			} else {
 				return true;	
 			}			
-		} else {
-			if ( $page ) {
-				$url = 'login.php?redirect=' . $page;
-				header('Location:' . $url);				
-			} else {
-				return false;
-			}			
-		}
+		} 
 	}
 }
