@@ -10,30 +10,31 @@
  * @copyright	Copyright (c) 2013, Matt Sparks (http://www.mattsparks.com)
  * @license		http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link		http://glav.in
- * @since		3.2.0-alpha
+ * @since		4.0.0-alpha
  */
 
 // Only Admins can access this page
 if ( $user_level == 1 ) {
 
+	// Users can't delete themselves
 	if ( $user != $_SESSION['user_email'] ) {
 		$errors[] = 'You cannot delete yourself';
 	}
 
-	$page_name = '';
-	$page_content = '';
-
-	// Do we have a page to edit?
+	// Do we have a user?
 	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 		
+		// Set user
 		$user_passed = $_GET['passed'];
 
-		// See if the page exists
+		// See if the user exists
 		if ( !$user->exists( $user_passed ) ) {
-			// It doesn't
+			// They don't
 			$errors[] = 'User Not Found';
 		}
+
 	} else {
+		// No user was passed
 		$errors[] = 'No User Selected';
 	}
 
@@ -41,19 +42,20 @@ if ( $user_level == 1 ) {
 	if ( $_POST ) {
 
 		// Are you sure?
-		if ( $_POST['are_you_sure'] == 'Yes' && $user_passed != $_SESSION['user_email'] ) {
+		if ( $_POST['are_you_sure'] == 'Yes' ) {
 			
-			// Delete Page
+			// Delete User
 			$deleted = $user->delete( $user_passed );
 
-			// Was the page deleted?
+			// Was the user deleted?
 			if ( $deleted ) {
-				// Yup...
+				// Yes
 				$msgs[] = 'User Deleted. <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
 			} else {
-				// Nope...
+				// No
 				$errors[] = 'User Not Deleted';
 			}
+
 		} else {
 			// What do we say to the god of death?
 			// Not today.

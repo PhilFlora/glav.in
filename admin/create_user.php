@@ -10,12 +10,13 @@
  * @copyright	Copyright (c) 2013, Matt Sparks (http://www.mattsparks.com)
  * @license		http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link		http://glav.in
- * @since		3.2.0-alpha
+ * @since		4.0.0-alpha
  */
 
 // Only Admins can access this page
 if ( $user_level == 1 ) {
 
+	// Setting Variables
 	$user_email = '';
 	$user_password = '';
 	$user_level = 2;
@@ -23,21 +24,24 @@ if ( $user_level == 1 ) {
 		
 	if ( $_POST ) {
 
-		$user_email = isset( $_POST['user_email'] ) ? $_POST['user_email'] : '';
+		$user_email    = isset( $_POST['user_email'] ) ? $_POST['user_email'] : '';
 		$user_password = isset( $_POST['user_password'] ) ? $_POST['user_password'] : '';
-		$user_level = isset( $_POST['user_level'] ) ? $_POST['user_level'] : '';
+		$user_level    = isset( $_POST['user_level'] ) ? $_POST['user_level'] : '';
 
+		// Create User Array
 		$u = array(
 				'user_email'    => $user_email,
 				'user_password' => $user_password,
 				'user_level'    => $user_level,
 			);
 
+		// Validate Input
 		$errors = $user->validateInput( $u, 'create' );	
 
+		// Filter Input
 		$u = $user->filter( $u );
 
-		// If there's no errors create the page
+		// If there's no errors create the user
 		if ( empty( $errors ) ) {
 			if ( $user->create( $u['user_email'], $u['user_password'], $u['user_level'] ) ) {
 				$created = true;
@@ -63,7 +67,7 @@ if ( $user_level == 1 ) {
 		echo '<div class="error">' . $errors . '</div>';
 	}
 
-	// Don't show form if the page has been created
+	// Don't show form if the user has been created
 	if ( !$created ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">

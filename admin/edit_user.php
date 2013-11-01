@@ -16,43 +16,52 @@
 // Only Admins can access this page
 if ( $user_level == 1 ) {
 
+	// Setting Variables
 	$user_email = '';
 	$user_password = '';
 	$user_level = 2;
 	$user_passed = '';
 	$updated = false;
 
-	// Do we have a page to edit?
+	// Do we have a user to edit?
 	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 		
+		// Set User
 		$user_passed = $_GET['passed'];
 
-		// See if the page exists
-		if ( !$data->file_exist( USERS_DIR . $user_passed ) ) {
-			$errors[] = 'Page Not Found';
+		// See if the user exists
+		if ( !$user->exists( $user_passed ) ) {
+			// Nope
+			$errors[] = 'User Not Found';
 		} else {
-			$content          = $data->get_content( USERS_DIR . $user_passed );
-			$user_email       = $user_passed;
-			$user_level       = $content['user']['user_level'];
+			// User found, get their info.
+			$content    = $data->get_content( USERS_DIR . $user_passed );
+			$user_email = $user_passed;
+			$user_level = $content['user']['user_level'];
 
 		}
 	} else {
+		// No User Was Passed
 		$errors[] = 'No User Selected <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
 	}
 
 	// The form has been submitted
 	if ( $_POST ) {
 
+		// Get Array ready
 		$u = array(
 			'user' => array()
 		);
 
+		// Edited User Level
 		$e_user_level = isset( $_POST['user_level'] ) ? $_POST['user_level'] : '';
 
+		// If user_level isn't empty, add to array
 		if ( $e_user_level != '' ) {
 			$u['user']['user_level'] = $e_user_level;
 		}
 
+		// New Password?
 		if ( isset( $_POST['new_password_1'] ) && isset( $_POST['new_password_2'] ) ) {		
 
 			// Make sure new passwords match
@@ -61,7 +70,7 @@ if ( $user_level == 1 ) {
 			} else {
 
 				// If passwords match and aren't empty, 
-				// update the password.
+				// add to array and update the password.
 				if ( $_POST['new_password_1'] != '' ) {
 					$u['user']['password'] = $_POST['new_password_1'];
 				}
