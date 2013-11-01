@@ -20,7 +20,8 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$this->data = new Data();
-		$this->user = new User( $this->data, $password_options );
+		$this->validate = new Validation();
+		$this->user = new User( $this->data, $this->validate, $password_options );
 
 		$this->fakeuser = 'fakeuser@example.com';
 		$this->fakepass = 'test';
