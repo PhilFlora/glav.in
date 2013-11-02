@@ -73,7 +73,7 @@ if ( $_POST ) {
     if ( empty( $errors ) ) {
         $email = $_POST['admin_email_address'];
         $password = $_POST['admin_password'];
-        $user_level = 1;
+        $user_level = 0; // The only owner will be the first user
 
         $created = $user->create( $email, $password, $user_level );
 

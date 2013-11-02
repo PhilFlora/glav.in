@@ -33,7 +33,7 @@ if ( $user_level < 2 ) {
 				echo '<li>' . $user . ' (' . $level['user_level_display'] . ')';
 
 				// User can only edit users will a lower level
-				if ( ( $user_level < $level['user_level_int'] ) || ( $user_level == 0 ) ) {
+				if ( ( $user_level < $level['user_level_int'] ) || $user == $_SESSION['user_email'] || ( $user_level == 0 ) ) {
 
 					echo ' <a href="edit_user/' . $user . '" class="action-btn">Edit</a>';
 
