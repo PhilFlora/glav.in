@@ -72,7 +72,7 @@
 					<ul>
 						<li><a href="<?php echo base_url(); ?>admin/pages" title="Pages">Pages</a></li>
 						
-						<?php if ( $user_level == 1 ) { ?>
+						<?php if ( $user_level < 2 ) { ?>
 						<li><a href="<?php echo base_url(); ?>admin/users" title="Users">Users</a></li>
 						<?php } ?>
 

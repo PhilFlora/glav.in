@@ -14,7 +14,7 @@
  */
 
 // Only Admins can access this page
-if ( $user_level == 1 ) {
+if ( $user_level < 2 ) {
 
 	// Setting Variables
 	$user_email = '';

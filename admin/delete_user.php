@@ -13,8 +13,8 @@
  * @since		4.0.0-alpha
  */
 
-// Only Admins can access this page
-if ( $user_level == 1 ) {
+// Only Owner/Admins can access this page
+if ( $user_level < 2 ) {
 
 	// Do we have a user?
 	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
