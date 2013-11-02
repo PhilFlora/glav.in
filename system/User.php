@@ -171,7 +171,12 @@ class User {
 	 		// happen since a user can't delete themselves, but
 	 		// better safe that sorry.
 	 		if ( ( count( $this->get_users() ) - 1 ) > 0 ) {
-	 			return $this->data->delete_file( USERS_DIR . $email );		
+	 			// Make sure user isn't deleting themselves
+	 			if ( $_SESSION['user_email'] != $email ) {
+	 				return $this->data->delete_file( USERS_DIR . $email );			
+	 			} else {
+	 				return false;
+	 			}
 	 		} else {
 	 			return false;
 	 		}
