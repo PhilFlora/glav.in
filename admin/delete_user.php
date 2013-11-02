@@ -16,16 +16,16 @@
 // Only Admins can access this page
 if ( $user_level == 1 ) {
 
-	// Users can't delete themselves
-	if ( $user != $_SESSION['user_email'] ) {
-		$errors[] = 'You cannot delete yourself';
-	}
-
 	// Do we have a user?
 	if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 		
 		// Set user
 		$user_passed = $_GET['passed'];
+
+		// Users can't delete themselves
+		if ( $user_passed == $_SESSION['user_email'] ) {
+			$errors[] = 'You cannot delete yourself';
+		}
 
 		// See if the user exists
 		if ( !$user->exists( $user_passed ) ) {
