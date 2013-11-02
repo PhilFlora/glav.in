@@ -29,8 +29,9 @@ if ( $user_level < 2 ) {
 		$user_level    = isset( $_POST['user_level'] ) ? $_POST['user_level'] : '';
 
 		// Make sure someone isn't trying to make themself the owner
-		if ( $user_level == 0 ) {
+		if ( $user_level <= 0 ) {
 			$errors[] = 'Nice Try. There can be only one owner.';
+			$user_level = 2;
 		} 
 
 		// Create User Array

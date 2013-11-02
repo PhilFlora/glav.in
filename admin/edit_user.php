@@ -38,9 +38,9 @@ if ( $user_level < 2 ) {
 			$content    = $data->get_content( USERS_DIR . $user_passed );
 			$user_email = $user_passed;
 			$user_level_int = $content['user']['user_level'];
-
-			// User cannot edit a user with a same or higher level
-			if ( ( $user_level >= $user_level_int ) && ( $user_level != 0 ) ) {
+			
+			// User cannot edit a user with a same or higher level except yourself
+			if ( ( $user_level >= $user_level_int ) && ( $user_level != 0 ) && ( $user_email != $_SESSION['user_email'] ) ) {
 				$errors[] = 'You do not have permission to edit this user. <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
 				$updated = true;
 			}
@@ -62,11 +62,14 @@ if ( $user_level < 2 ) {
 		// Edited User Level
 		$e_user_level = isset( $_POST['user_level'] ) ? $_POST['user_level'] : '';
 
+		// Prevent owner to change user level of himself
+		$e_user_level = $user_level_int != 0 ? $e_user_level : ''; 
+		
 		// If user_level isn't empty, add to array
 		if ( $e_user_level != '' ) {
 
 			// Make sure someone isn't trying to make themself the owner
-			if ( $e_user_level == 0 ) {
+			if ( $e_user_level <= 0 ) {
 				$errors[] = 'Nice Try. There can be only one owner.';
 			} else {
 				$u['user']['user_level'] = $e_user_level;	
