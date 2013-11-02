@@ -19,7 +19,7 @@ if ( $user_level < 2 ) {
 	// Setting Variables
 	$user_email = '';
 	$user_password = '';
-	$user_level = 2;
+	$user_level_int = 2;
 	$user_passed = '';
 	$updated = false;
 
@@ -37,7 +37,13 @@ if ( $user_level < 2 ) {
 			// User found, get their info.
 			$content    = $data->get_content( USERS_DIR . $user_passed );
 			$user_email = $user_passed;
-			$user_level = $content['user']['user_level'];
+			$user_level_int = $content['user']['user_level'];
+
+			// User cannot edit a user with a same or higher level
+			if ( ( $user_level >= $user_level_int ) && ( $user_level != 0 ) ) {
+				$errors[] = 'You do not have permission to edit this user. <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
+				$updated = true;
+			}
 
 		}
 	} else {
@@ -58,7 +64,14 @@ if ( $user_level < 2 ) {
 
 		// If user_level isn't empty, add to array
 		if ( $e_user_level != '' ) {
-			$u['user']['user_level'] = $e_user_level;
+
+			// Make sure someone isn't trying to make themself the owner
+			if ( $e_user_level == 0 ) {
+				$errors[] = 'Nice Try. There can be only one owner.';
+			} else {
+				$u['user']['user_level'] = $e_user_level;	
+			}
+
 		}
 
 		// New Password?
@@ -108,10 +121,14 @@ if ( $user_level < 2 ) {
 		<input type="password" placeholder="Repeat New Password" name="new_password_2" />
 		<p>
 			<strong>User Level</strong><br>
+			<?php if ( $user_level_int == 0 ) { ?>
+			<em>You are the owner.</em>
+			<?php } else { ?>
 			<select name="user_level">
-				<option value="2"<?php echo $user_level == 2 ? ' selected="true"' : ''; ?>>Contributor</option>
-				<option value="1"<?php echo $user_level == 1 ? ' selected="true"' : ''; ?>>Admin</option>
+				<option value="2"<?php echo $user_level_int == 2 ? ' selected="true"' : ''; ?>>Contributor</option>
+				<option value="1"<?php echo $user_level_int == 1 ? ' selected="true"' : ''; ?>>Admin</option>
 			</select>
+			<?php } ?>
 		</p>
 		<input type="submit" value="Submit">
 	</form>

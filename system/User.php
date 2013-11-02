@@ -68,12 +68,19 @@ class User {
 	 */	
 	public function update( $user, $u ) {
 
-		// If a password is set, hash it
-		if ( array_key_exists('password', $u['user']) ) {
-			$u['user']['password'] = password_hash( $u['user']['password'], PASSWORD_BCRYPT, $this->password_options );
-		}
+		// Make sure current user can modify this user
+		$user_info = $this->data->get_content( USERS_DIR . $user );
 
-		return $this->data->update_file( USERS_DIR . $user, $u, 'user' );
+		if ( $_SESSION['user_level'] > $user_info['user']['user_level'] ) {
+			return false;
+		} else {
+			// If a password is set, hash it
+			if ( array_key_exists('password', $u['user']) ) {
+				$u['user']['password'] = password_hash( $u['user']['password'], PASSWORD_BCRYPT, $this->password_options );
+			}
+
+			return $this->data->update_file( USERS_DIR . $user, $u, 'user' );
+		}
 
 	}	
 
@@ -94,8 +101,28 @@ class User {
 			// Remove extention
 			$user = str_replace( '.json', '', $user );
 
+			// Get User's Content
+			$user_info = $this->data->get_content( USERS_DIR . $user );
+
+			// Set User Level
+			switch ($user_info['user']['user_level']) {
+				case 0:
+					$level_display = 'Owner';
+					break;
+				case 1:
+					$level_display = 'Admin';
+					break;
+				default:
+					$level_display = 'Contributor';
+					break;
+			}
+
 			// Add User to Array
-			$users[] = $user;
+			$users[$user] = array(
+				'user_level_int' => $user_info['user']['user_level'],
+				'user_level_display' => $level_display
+			);
+
 		}		
 
 		return $users;
