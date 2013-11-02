@@ -60,8 +60,8 @@
 	if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
 		if ( $user->is_logged_in() ) {
 
-			// Set User Level
-			$user_level = $_SESSION['user_level'];
+			// Set User Level (int)
+			$user_level = $_SESSION['user_level'];			
 
 			if ( $requested_page == '' ) {
 				$include = 'pages.php';

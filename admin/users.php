@@ -13,8 +13,8 @@
  * @since		4.0.0-alpha
  */
 
-// Only Admins can access this page
-if ( $user_level == 1 ) {
+// Only Owner/Admins can access this page
+if ( $user_level < 2 ) {
 ?>
 <div id="page-description">
 	<h1>Users</h1>
@@ -29,13 +29,19 @@ if ( $user_level == 1 ) {
 			$users = $user->get_users();
 
 			// List the rest of the pages
-			foreach( $users as $user ) {
-				echo '<li>' . $user;
-				echo ' <a href="edit_user/' . $user . '" class="action-btn">Edit</a>';
+			foreach( $users as $user => $level ) {
+				echo '<li>' . $user . ' (' . $level['user_level_display'] . ')';
 
-				// You can't delete yourself
-				if ( $user != $_SESSION['user_email'] ) {
-					echo ' <a href="delete_user/' . $user . '" class="action-btn">Delete</a>';
+				// User can only edit users will a lower level
+				if ( ( $user_level < $level['user_level_int'] ) || ( $user_level == 0 ) ) {
+
+					echo ' <a href="edit_user/' . $user . '" class="action-btn">Edit</a>';
+
+					// You can't delete yourself
+					if ( $user != $_SESSION['user_email'] ) {
+						echo ' <a href="delete_user/' . $user . '" class="action-btn">Delete</a>';
+					}
+
 				}
 				
 				echo '</li>';

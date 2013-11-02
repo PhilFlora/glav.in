@@ -13,8 +13,8 @@
  * @since		4.0.0-alpha
  */
 
-// Only Admins can access this page
-if ( $user_level == 1 ) {
+// Only Owner/Admins can access this page
+if ( $user_level < 2 ) {
 
 	// Setting Variables
 	$user_email = '';
@@ -27,6 +27,11 @@ if ( $user_level == 1 ) {
 		$user_email    = isset( $_POST['user_email'] ) ? $_POST['user_email'] : '';
 		$user_password = isset( $_POST['user_password'] ) ? $_POST['user_password'] : '';
 		$user_level    = isset( $_POST['user_level'] ) ? $_POST['user_level'] : '';
+
+		// Make sure someone isn't trying to make themself the owner
+		if ( $user_level == 0 ) {
+			$errors[] = 'Nice Try. There can be only one owner.';
+		} 
 
 		// Create User Array
 		$u = array(
@@ -45,7 +50,7 @@ if ( $user_level == 1 ) {
 		if ( empty( $errors ) ) {
 			if ( $user->create( $u['user_email'], $u['user_password'], $u['user_level'] ) ) {
 				$created = true;
-				$msgs[] = 'User Created!';
+				$msgs[] = 'User Created! <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
 			} else {
 				$errors[] = 'Something went wrong. The user wasn\'t created.';
 			}

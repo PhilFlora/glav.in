@@ -19,33 +19,33 @@
 $die_message = 'ERROR: mod_rewrite is not enabled on this server. This must be enabled for Glav.in to run.';
 
 if ( function_exists( 'apache_get_modules' ) ) {
-	
-	if ( !in_array( 'mod_rewrite', apache_get_modules() ) ) {
-		die( $die_message );
-	}
-	
+        
+        if ( !in_array( 'mod_rewrite', apache_get_modules() ) ) {
+                die( $die_message );
+        }
+        
 } else {
 
-	$mod_rewrite = getenv( 'HTTP_MOD_REWRITE' ) == 'On' ? true : false ;
+        $mod_rewrite = getenv( 'HTTP_MOD_REWRITE' ) == 'On' ? true : false ;
 
-	if ( !$mod_rewrite ) {
-		die( $die_message );
-	}
-	
+        if ( !$mod_rewrite ) {
+                die( $die_message );
+        }
+        
 }
 
 // Check data dir permissions
 $data_permissions = array(
-	'data/',
-	'data/users',
-	'data/pages',
-	'data/settings',
+        'data/',
+        'data/users',
+        'data/pages',
+        'data/settings',
 );
 
 foreach ( $data_permissions as $dir ) {
-	if ( fileperms( $dir ) != 0777 ) {
-    	chmod( $dir, 0777 );
-	}
+        if ( fileperms( $dir ) != 0777 ) {
+            chmod( $dir, 0777 );
+        }
 }
 
 $title = 'Install';
@@ -61,7 +61,7 @@ if ( $_POST ) {
 
     // Are fields empty?
     if ( ( $validate->is_empty( $_POST['admin_email_address'] ) ) || ( $validate->is_empty( $_POST['admin_password'] ) ) ) {
-    	$errors[] = "Fields Cannot Be Empty";
+            $errors[] = "Fields Cannot Be Empty";
     }
 
     // Is this a valid email address?
@@ -89,7 +89,7 @@ if ( $_POST ) {
 require_once( ADMIN_DIR . '/template/header.php' );
 ?>
 <div id="login-content">
-    <?php
+<?php
     foreach( $msgs as $msg )
     {
             echo '<div class="msg">' . $msg . '</div>';
@@ -102,12 +102,12 @@ require_once( ADMIN_DIR . '/template/header.php' );
 
     if ( !$created ) {
     ?>
-    <p>Thanks for installing Glav.in! Please create an admin account.</p>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <input type="email" name="admin_email_address" placeholder="Email Address" />
-        <input type="password" name="admin_password" placeholder="Password" />
-        <input type="submit" value="Submit" />
-    </form>
+<p>Thanks for installing Glav.in! Please create an admin account.</p>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<input type="email" name="admin_email_address" placeholder="Email Address" />
+<input type="password" name="admin_password" placeholder="Password" />
+<input type="submit" value="Submit" />
+</form>
 <?php
     }
 
