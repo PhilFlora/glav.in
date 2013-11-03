@@ -74,6 +74,7 @@ class User {
 		if ( $_SESSION['user_level'] > $user_info['user']['user_level'] ) {
 			return false;
 		} else {
+
 			// If a password is set, hash it
 			if ( array_key_exists('password', $u['user']) ) {
 				$u['user']['password'] = password_hash( $u['user']['password'], PASSWORD_BCRYPT, $this->password_options );
@@ -104,7 +105,7 @@ class User {
 			// Get User's Content
 			$user_info = $this->data->get_content( USERS_DIR . $user );
 
-			// Set User Level
+			// Set User Level (text)
 			switch ($user_info['user']['user_level']) {
 				case 0:
 					$level_display = 'Owner';

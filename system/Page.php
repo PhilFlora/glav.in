@@ -78,7 +78,7 @@ class Page {
 		foreach ( glob( BASEPATH . "/template/layout_*.php" ) as $layout ) {
 
 			// Remove Path
-			$layout = str_replace('layout_', '', basename( $layout ) );
+			$layout = str_replace( 'layout_', '', basename( $layout ) );
 
 			// Remove Extention
 			$layout = str_replace( '.php', '',  $layout);
@@ -110,11 +110,12 @@ class Page {
 		$pages = $this->get_pages();
 		
 		// set ul/li attributes
-		$id	  = $id	? ' id="' . $id . '"' : '';
+		$id	      = $id	? ' id="' . $id . '"' : '';
 		$class_ul = $class_ul ? ' class="' . $class_ul . '"' : '';
 		
 		// attribute li
 		$li_attr_home = $class_li ? ' class="' . $class_li : '';
+
 		if( $this->get_current_page() == 'home' ) {
 			
 			// only set class="$class_li_active" if not ''
@@ -216,9 +217,9 @@ class Page {
 
 		// Make sure layout exists
 		if ( file_exists( $layout_path ) ) {
-			include(BASEPATH . '/template/header.php');
-			include($layout_path);
-			include(BASEPATH . '/template/footer.php');
+			include( BASEPATH . '/template/header.php' );
+			include( $layout_path );
+			include( BASEPATH . '/template/footer.php' );
 		} else {
 			exit( '<strong>ERROR:</strong> layout "'.$layout.'" not found.' );
 		}
