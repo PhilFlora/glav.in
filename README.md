@@ -19,7 +19,6 @@ Requirements
 * Apache
 * PHP 5.2+
 
-
 Contribute!
 ===========
 You want to contribute?!? That's awesome! Let's make Glav.in great! Here are some ways you (yes, you!) can help:
@@ -31,7 +30,9 @@ You want to contribute?!? That's awesome! Let's make Glav.in great! Here are som
    * Please follow the [WordPress Coding Stanards](http://codex.wordpress.org/WordPress_Coding_Standards) as closely as you can.
 * Post bug reports, ideas, suggestions, etc to the Issue Tracker
 
-
+Documentation
+=============
+Please visit the [Glav.in Wiki](https://github.com/GlavinCMS/glav.in/wiki/_pages)
 
 Notes
 =====
