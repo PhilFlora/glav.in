@@ -19,16 +19,16 @@ $page_content = '';
 // Do we have a page to edit?
 if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 	
-	$page = $_GET['passed'];
+	$page_passed = $_GET['passed'];
 
 	// You can't delete the 404 page or the home page
 	// you stupid or somethin'?
-	if ( $page == '404' || $page == 'home' ) {
+	if ( $page_passed == '404' || $page_passed == 'home' ) {
 		$errors[] = 'You cannot delete that page. Sorry.';
 	}
 
 	// See if the page exists
-	if ( !$data->file_exist( PAGES_DIR . $page ) ) {
+	if ( !$data->file_exist( PAGES_DIR . $page_passed ) ) {
 		// It doesn't
 		$errors[] = 'Page Not Found';
 	}
@@ -40,10 +40,10 @@ if ( isset( $_GET['passed'] ) && $_GET['passed'] != '' ) {
 if ( $_POST ) {
 
 	// Are you sure?
-	if ( $_POST['are_you_sure'] == 'Yes' ) {
+	if ( $_POST['are_you_sure'] == 'Yes' && $page_passed != 'home' && $page_passed != '404' ) {
 		
 		// Delete Page
-		$deleted = $data->delete_file( PAGES_DIR . $page );
+		$deleted = $page->delete( $page_passed );
 
 		// Was the page deleted?
 		if ( $deleted ) {
@@ -78,9 +78,8 @@ if ( $_POST ) {
 	// If there are no errors, continue...
 	if ( empty( $msgs ) && empty( $errors ) ) {
 	?>
-	<p>Are you sure you want to delete <strong><?php echo $page; ?></strong>?</p>
+	<p>Are you sure you want to delete <strong><?php echo $page_passed; ?></strong>?</p>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-		<!-- <input type="hidden" name="are_you_sure" value="yup"> -->
 		<input type="submit" name="are_you_sure" value="Yes">
 		<input type="submit" name="are_you_sure" value="Nope">
 	</form>

@@ -26,6 +26,7 @@ if ( $_POST ) {
 	$page_title = isset( $_POST['page_title'] ) ? $_POST['page_title'] : '';
 	$page_description = isset( $_POST['page_description'] ) ? $_POST['page_description'] : '';
 	$page_content = isset( $_POST['page_content'] ) ? $_POST['page_content'] : '';
+	$page_layout = isset( $_POST['page_layout'] ) ? $_POST['page_layout'] : '';
 	$page_visible = isset( $_POST['page_visible'] ) ? $_POST['page_visible'] : '';
 
 	$p = array(
@@ -33,6 +34,7 @@ if ( $_POST ) {
 			'page_title'         => $page_title,
 			'page_description'   => $page_description,
 			'page_content'       => $page_content,
+			'page_layout'        => $page_layout,
 			'page_visible'       => $page_visible
 		);
 
@@ -77,6 +79,20 @@ if ( $_POST ) {
 			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
 		</p>
 		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
+		<p>
+			Layout
+			<select name="page_layout">
+				<?php
+					$layouts = $page->get_layouts();
+
+					foreach( $layouts as $layout ) {
+						echo '<option value="'.$layout.'">';
+						echo $layout;
+						echo '</option>';
+					}
+				?>
+			</select>
+		</p>
 		<p>
 			Is this page visible to the public?
 			<select name="page_visible">

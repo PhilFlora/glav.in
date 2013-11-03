@@ -43,7 +43,6 @@
 	} else {
 		$requested_page = '';
 	}
-	
 
 	$page->load( $requested_page );
 

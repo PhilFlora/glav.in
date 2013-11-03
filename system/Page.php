@@ -67,6 +67,36 @@ class Page {
 	}
 
 	/**
+	 * Get Layouts
+	 *
+	 * @return array of all available page layouts
+	 */
+	public function get_layouts() {
+		
+		$layouts = array();
+
+		foreach ( glob( BASEPATH . "/template/layout_*.php" ) as $layout ) {
+
+			// Remove Path
+			$layout = str_replace( 'layout_', '', basename( $layout ) );
+
+			// Remove Extention
+			$layout = str_replace( '.php', '',  $layout);
+
+			// Add to the array
+			$layouts[] = $layout;
+		}		
+
+		if ( empty( $layouts ) ) {
+			exit( '<strong>ERROR:</strong> No layouts found. Glav.in requires a template to have a minimum of one layout.' );
+		} else {
+			return $layouts;
+		}
+		
+	}
+
+
+	/**
 	 * Pages List
 	 *
 	 * @param string optional id attribute
@@ -80,11 +110,12 @@ class Page {
 		$pages = $this->get_pages();
 		
 		// set ul/li attributes
-		$id	  = $id	? ' id="' . $id . '"' : '';
+		$id	      = $id	? ' id="' . $id . '"' : '';
 		$class_ul = $class_ul ? ' class="' . $class_ul . '"' : '';
 		
 		// attribute li
 		$li_attr_home = $class_li ? ' class="' . $class_li : '';
+
 		if( $this->get_current_page() == 'home' ) {
 			
 			// only set class="$class_li_active" if not ''
@@ -176,19 +207,21 @@ class Page {
 			
 		$content       = $this->data->get_content( PAGES_DIR . $page );
 		$page          = $content['page'];
-		$template      = $page['template'];
-		$template_path = BASEPATH . '/template/' . $template . '.php';
+		$layout        = $page['layout'];
+		$layout_path   = BASEPATH . '/template/layout_' . $layout . '.php';
 
 		// If the page isn't visible, set a message.
 		if ( false === $page['visible'] ) {
 			$page['content'] = 'This page is currently unavailable.';
 		}
 
-		// Make sure template exists
-		if ( file_exists( $template_path ) ) {
-			include($template_path);
+		// Make sure layout exists
+		if ( file_exists( $layout_path ) ) {
+			include( BASEPATH . '/template/header.php' );
+			include( $layout_path );
+			include( BASEPATH . '/template/footer.php' );
 		} else {
-			exit( '<strong>ERROR:</strong> Template "'.$template.'" not found.' );
+			exit( '<strong>ERROR:</strong> layout "'.$layout.'" not found.' );
 		}
 	}
 
@@ -239,6 +272,11 @@ class Page {
 			$errors[] = 'Description cannot be more than 160 characters in length';
 		}
 
+		// Check to make sure layout exists
+		if ( !file_exists( BASEPATH . '/template/layout_' . $p['page_layout'] . '.php' ) ) {
+			$errors[] = 'Layout "'.$p['page_layout'].'" does not exist';
+		}
+
 		return $errors;
 	}
 
@@ -273,30 +311,42 @@ class Page {
 	 * @return	bool
 	 */
 	public function create( $p ) {
-		$page_name          = $p['page_name'];
-		$page_title         = $p['page_title'];
-		$page_description   = $p['page_description'];
-		$page_content       = $p['page_content'];
-		$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
-		$page_created       = time();
-		$page_file          = PAGES_DIR . str_replace(' ', '-', strtolower($page_name));
 
-		$page = array(
-				'page' => array(
+		if ( !empty( $p ) ) {
+			$page_name          = $p['page_name'];
+			$page_title         = $p['page_title'];
+			$page_description   = $p['page_description'];
+			$page_content       = $p['page_content'];
+			$page_layout        = $p['page_layout'];
+			$page_visible       = $p['page_visible'] == 'true' ? true : false; // making boolean
+			$page_created       = time();
+			$page_file          = PAGES_DIR . str_replace(' ', '-', strtolower($page_name));
 
-						'title'          => $page_title,
-						'description'    => $page_description,
-						'content'        => $page_content,
-						'created'        => $page_created,
-						
-						// For the time being "page" will be the only option.
-						// Eventually users will be able to choose from other templates.
-						'template' => 'page',
+			$page = array(
+					'page' => array(
+							'title'          => $page_title,
+							'description'    => $page_description,
+							'content'        => $page_content,
+							'created'        => $page_created,
+							'layout'         => $page_layout,
+							'visible'        => $page_visible
+						)
+				);
 
-						'visible'  => $page_visible
-					)
-			);
+			return $this->data->create_file( $page_file, $page );			
+		} else {
+			return false;
+		}
 
-		return $this->data->create_file( $page_file, $page );
 	}
+
+	/**
+	 * Delete a page
+	 *
+	 * @param	string page being deleted
+	 * @return	bool
+	 */
+	public function delete( $p ) {
+		return $this->data->delete_file( PAGES_DIR . $p );
+	}	
 }

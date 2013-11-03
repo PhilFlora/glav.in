@@ -22,8 +22,9 @@ class User {
 	/**
 	 * Construct
 	 */
-	function __construct( $data, $password_options ) {
+	function __construct( $data, $validate, $password_options ) {
 		$this->data = $data;
+		$this->validate = $validate;
 		$this->password_options = $password_options;
 	}
 
@@ -41,6 +42,7 @@ class User {
 		if ( $this->data->file_exist( USERS_DIR . $email ) ) {
 			return false;
 		} else {
+			// User doesn't exist, populate array
 			$user = array(
 				'user' => array(
 					'email' => $email,
@@ -50,11 +52,137 @@ class User {
 				)
 			);
 
-			$added = $this->data->create_file( 'data/users/'.$email, $user );
+			// Create User
+			return $this->data->create_file( USERS_DIR . $email, $user );
 
-			return $added ? true : false;	
 		}
 	}
+
+	/**
+	 * Update
+	 *
+	 * @param string user's email address
+	 * @param string user's password
+	 * @param string user's user level
+	 * @return	bool
+	 */	
+	public function update( $user, $u ) {
+
+		// Make sure current user can modify this user
+		$user_info = $this->data->get_content( USERS_DIR . $user );
+
+		if ( $_SESSION['user_level'] > $user_info['user']['user_level'] ) {
+			return false;
+		} else {
+
+			// If a password is set, hash it
+			if ( array_key_exists('password', $u['user']) ) {
+				$u['user']['password'] = password_hash( $u['user']['password'], PASSWORD_BCRYPT, $this->password_options );
+			}
+
+			return $this->data->update_file( USERS_DIR . $user, $u, 'user' );
+		}
+
+	}	
+
+	/**
+	 * Get Users
+	 *
+	 * @return	array of all users
+	 */	
+	public function get_users() {
+		
+		$users = array();
+
+		foreach ( glob( USERS_DIR . "*.json" ) as $user ) {
+
+			// Remove Path
+			$user = str_replace( USERS_DIR, '', $user );
+
+			// Remove extention
+			$user = str_replace( '.json', '', $user );
+
+			// Get User's Content
+			$user_info = $this->data->get_content( USERS_DIR . $user );
+
+			// Set User Level (text)
+			switch ($user_info['user']['user_level']) {
+				case 0:
+					$level_display = 'Owner';
+					break;
+				case 1:
+					$level_display = 'Admin';
+					break;
+				default:
+					$level_display = 'Contributor';
+					break;
+			}
+
+			// Add User to Array
+			$users[$user] = array(
+				'user_level_int' => $user_info['user']['user_level'],
+				'user_level_display' => $level_display
+			);
+
+		}		
+
+		return $users;
+	}
+
+	/**
+	 * Validate a user
+	 *
+	 * @param	array containing all our user info and content
+	 * @param   string sets mode for validation
+	 * @return	array
+	 */
+	public function validateInput( $u, $mode = 'create' ) {
+		
+		$errors = array();
+
+		// Array containing content that can be empty
+		$can_be_empty = array( '' );
+
+		// Check for empty content
+		foreach ( $u as $property => $content ) {
+			if( !in_array( $property, $can_be_empty ) ) {
+				if ( ( $this->validate->is_empty( $content ) ) ) {
+					$errors[] = ucwords( str_replace( '_', ' ', $property ) ). ' cannot be empty';
+				}
+			}
+		}
+
+		// Is this a valid email address
+		if ( !$this->validate->is_valid_email( $u['user_email'] ) ) {
+			$errors[] = 'Please enter a valid email address';
+		}
+
+		// Check to see if user exists only when in "create" mode
+		if ( $mode == 'create' ) {
+			if ( $this->data->file_exist( USERS_DIR . $u['user_email'] ) ) {
+				$errors[] = 'A user with this email address already exists';
+			}
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Filter User Content
+	 *
+	 * @param	array containing all our users' info and content
+	 * @return	array
+	 */
+	public function filter( $u ) {	
+
+		// Trim everything
+		foreach( $u as $property => $content ) {
+			$u[$property] = trim( $content );
+		}
+
+		return $u;
+
+	}	
 
 	/**
 	 * Delete
@@ -65,7 +193,22 @@ class User {
 	 public function delete( $email ) {
 
 	 	if ( $this->exists( $email ) ) {
-	 		return $this->data->delete_file( USERS_DIR . $email );	
+
+	 		// Check to make sure that there will be at least
+	 		// one user if this user is deleted. This shouldn't
+	 		// happen since a user can't delete themselves, but
+	 		// better safe that sorry.
+	 		if ( ( count( $this->get_users() ) - 1 ) > 0 ) {
+	 			// Make sure user isn't deleting themselves
+	 			if ( $_SESSION['user_email'] != $email ) {
+	 				return $this->data->delete_file( USERS_DIR . $email );			
+	 			} else {
+	 				return false;
+	 			}
+	 		} else {
+	 			return false;
+	 		}
+	 		
 	 	} else {
 	 		return false;
 	 	}
@@ -101,6 +244,7 @@ class User {
 			$user = $user_data['user'];
 			$pass = password_hash( $password, PASSWORD_DEFAULT, $this->password_options );
 
+			// If they passed the correct password, start session
 			if ( $user['password'] == $pass ) {
 				$this->start_session( $user );
 				return true;
@@ -135,12 +279,15 @@ class User {
 	 */	
 	public function logout() {
 
+		// Start session if needed
 		if ( !isset( $_SESSION ) ) {
 			session_start();
 		}
 
+		// Empty session array
 		$_SESSION = array();
 
+		// Destroy Session
 		session_destroy();
 	}	
 
@@ -152,6 +299,7 @@ class User {
 	 */	
 	public function is_logged_in( $page='' ) {
 
+		// Start session if needed
 		if ( !isset( $_SESSION ) ) {
 			session_start();
 		}
@@ -163,13 +311,6 @@ class User {
 			} else {
 				return true;	
 			}			
-		} else {
-			if ( $page ) {
-				$url = 'login.php?redirect=' . $page;
-				header('Location:' . $url);				
-			} else {
-				return false;
-			}			
-		}
+		} 
 	}
 }

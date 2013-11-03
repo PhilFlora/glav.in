@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name = "viewport" content = "initial-scale = 1.0">
-		<title><?php echo $title; ?> - Glav.in - The Not Robust, Not Very Powerful, Simple CMS</title>
+		<title><?php echo $title; ?> - Glav.in - A Simple CMS</title>
 		<script type="text/javascript" src="<?php echo base_url(); ?>admin/template/js/jquery-1.10.2.min.js"></script>
 		<!--[if (gte IE 6)&(lte IE 8)]>
 		  <script type="text/javascript" src="js/selectivizr.js"></script>
@@ -71,6 +71,11 @@
 				<nav id="admin-nav">
 					<ul>
 						<li><a href="<?php echo base_url(); ?>admin/pages" title="Pages">Pages</a></li>
+						
+						<?php if ( $user_level < 2 ) { ?>
+						<li><a href="<?php echo base_url(); ?>admin/users" title="Users">Users</a></li>
+						<?php } ?>
+
 						<?php /* <li><a href="#" title="Settings">Settings</a></li> */ ?>
 						<li><a href="<?php echo base_url(); ?>admin/logout" title="Logout">Logout</a></li>
 					</ul>
