@@ -7,7 +7,6 @@ Features
 ========
 
 * Super simple to install.
-* Open Source
 * No database. All is stored in JSON files.
 * User Management (3 Levels: Owner, Admin, Contributor)
 * Easy templating & support for multiple layouts
@@ -21,8 +20,11 @@ Requirements
 
 Contribute!
 ===========
-You want to contribute?!? That's awesome! Let's make Glav.in great! Here are some ways you (yes, you!) can help:
+You want to contribute?!? That's awesome! Let's make Glav.in great! Here are some ways you can help:
 
+* Test
+   * [Download and Install Glav.in](http://glav.in)
+   * [Let us know if something goes wrong or breaks](https://github.com/GlavinCMS/glav.in/issues)
 * Contribute Code
    * Fork Glav.in
    * Create a branch containing each change/addition/improvement you'd like to make.
