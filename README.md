@@ -7,7 +7,7 @@ Features
 ========
 
 * Super simple to install.
-* No database. All is stored in JSON files.
+* No database. All data is stored in JSON files.
 * User Management (3 Levels: Owner, Admin, Contributor)
 * Easy templating & support for multiple layouts
 * It's named after a catchphrase of a character from The Simpsons.
