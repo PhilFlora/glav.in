@@ -40,7 +40,10 @@
  * After that, figure out where to send them.
  */
 	if ( isset( $_GET['page'] ) ) {
-		$requested_page = $_GET['page'];
+		
+		// For some setups, the $_GET['page'] variable is appending
+		// '.php'. If it's there, remove it.
+		$requested_page = str_replace('.php', '', $_GET['page']);
 
 		// Pages that use the "login_header"
 		switch( $requested_page ) {
@@ -56,6 +59,10 @@
 	
 	if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
 		if ( $user->is_logged_in() ) {
+
+			// Set User Level (int)
+			$user_level = $_SESSION['user_level'];			
+
 			if ( $requested_page == '' ) {
 				$include = 'pages.php';
 			} else {

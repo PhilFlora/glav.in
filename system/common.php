@@ -14,7 +14,7 @@
  */
 
 
-if (!function_exists('base_url')) {
+if ( !function_exists( 'base_url' ) ) {
 	/**
 	 * Returns the site's base url
 	 *
@@ -29,7 +29,6 @@ if (!function_exists('base_url')) {
 			$base_url .= str_replace( basename( $_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME'] );
 			
 			// If we're in the admin directory remove that from the path
-			// probably not the best approach, however
 			return str_replace( 'admin/', '', $base_url );
 		}	
 	}

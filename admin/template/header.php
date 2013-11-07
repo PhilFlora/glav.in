@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name = "viewport" content = "initial-scale = 1.0">
-		<title><?php echo $title; ?> - Glav.in - The Not Robust, Not Very Powerful, Simple CMS</title>
+		<title><?php echo $title; ?> - Glav.in - A Simple CMS</title>
 		<script type="text/javascript" src="<?php echo base_url(); ?>admin/template/js/jquery-1.10.2.min.js"></script>
 		<!--[if (gte IE 6)&(lte IE 8)]>
 		  <script type="text/javascript" src="js/selectivizr.js"></script>
@@ -23,20 +23,39 @@
 
 		    	// Correct the user while typing the filename
 		    	$('input[name="page_name"]').keydown(function(e) {
-		    		
-					if(e.keyCode == 0x20) { // If user added a space, replace it with underscore
-		    			$('input[name="page_name"]').val($(this).val() + '_');
+		    		var keyVal = ( e.charCode ? e.charCode : ( e.keyCode ? e.keyCode : e.which ) );
+					
+					if ( ( keyVal == 0x41 && e.ctrlKey === true ) || ( keyVal == 0x63 && e.ctrlKey === true ) || // Allow: Ctrl+A, or Ctrl+C
+						( keyVal == 0x56 && e.ctrlKey === true ) || ( keyVal == 0x58 && e.ctrlKey === true ) ) { // or Ctrl+V, or Ctrl+X
+						return;
+					} else if ( keyVal == 0x20 ) { // If user added a space, replace it with underscore
+		    			$('input[name="page_name"]').val($(this).val() + '-');
 						return false;
-		    		}
-					else if (e.keyCode >= 0x41 && e.keyCode <= 0x5A) { // Convert uppercase letters to lowercase
-						$('input[name="page_name"]').val($(this).val() + String.fromCharCode(e.keyCode).toLowerCase());
+		    		} else if ( keyVal >= 0x41 && keyVal <= 0x5A ) { // Convert uppercase letters to lowercase
+						$('input[name="page_name"]').val($(this).val() + String.fromCharCode(keyVal).toLowerCase());
 						return false;
 					}
 					
 		    	});	
 
-		    })
-		    
+		    });
+			
+			// Check Description Length
+			$().ready(function(){
+				$('input[name="page_description"]').keypress(function(e) {
+					var len = $(this).val().length,
+						maxlen = 160,
+						keyVal = ( e.charCode ? e.charCode : ( e.keyCode ? e.keyCode : e.which ) );
+					
+					if ( keyVal == 8 || keyVal == 9 || keyVal == 13 || //Allow: Backspace, Tab, Enter
+							( keyVal == 0x41 && e.ctrlKey === true ) || ( keyVal == 0x63 && e.ctrlKey === true ) || // Allow: Ctrl+A, or Ctrl+C
+								( keyVal == 0x56 && e.ctrlKey === true ) || ( keyVal == 0x58 && e.ctrlKey === true ) ) { // or Ctrl+V, or Ctrl+X
+						return;
+					} else if ( len > maxlen - 1 ) {
+						return false;
+					}
+				});
+			});
 		</script>		
 	</head>
 	<body<?php echo $login_header ? ' class="not_logged_in"' : ''; ?>>
@@ -52,7 +71,14 @@
 				<nav id="admin-nav">
 					<ul>
 						<li><a href="<?php echo base_url(); ?>admin/pages" title="Pages">Pages</a></li>
-						<li><a href="<?php echo base_url(); ?>admin/settings" title="Settings">Settings</a></li>
+
+						
+						<?php if ( $user_level < 2 ) { ?>
+						<li><a href="<?php echo base_url(); ?>admin/users" title="Users">Users</a></li>
+						<?php } ?>
+
+						<?php /* <li><a href="#" title="Settings">Settings</a></li> */ ?>
+
 						<li><a href="<?php echo base_url(); ?>admin/logout" title="Logout">Logout</a></li>
 					</ul>
 				</nav>
