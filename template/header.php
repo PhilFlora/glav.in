@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><?php echo $page['title']; ?></title>
+        <title><?php echo $page['head_title']; ?></title>
         
         <?php if ( $page['description'] != '' ) { ?>
         <meta name="description" content="<?php echo $page['description']; ?>">

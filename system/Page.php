@@ -20,9 +20,10 @@ class Page {
 	/**
 	 * Construct
 	 */
-	public function __construct( $data, $validate ) {
+	public function __construct( $data, $validate, $settings) {
 		$this->data = $data;
 		$this->validate = $validate;
+		$this->settings = $settings;
 	}
 
 	/**
@@ -190,6 +191,10 @@ class Page {
 	 */
 	public function load( $page ) {
 
+		// Get Site Settings
+		$settings      = $this->settings->get_settings('site');
+		$site_settings = $settings['site'];
+
 		// If $page is empty, lets assume the index/home page has been requested.
 		if ( ( $page == '' ) || ( $page == 'index.php' ) || ( $page == 'index.html' ) ) {
 			$page = 'home';
@@ -213,6 +218,25 @@ class Page {
 		// If the page isn't visible, set a message.
 		if ( false === $page['visible'] ) {
 			$page['content'] = 'This page is currently unavailable.';
+		}
+
+		// How should we display the page title?
+		switch( $site_settings['display_page_title'] ) {
+			case '1':
+				$page['head_title'] = $page['title'];
+				break;
+			case '2':
+				$page['head_title'] = $page['title'] . ' | ' . $site_settings['site_name'];
+				break;
+			case '3':
+				$page['head_title'] = $page['title'] . ' | ' . $site_settings['site_name'] . ' - ' . $site_settings['site_tagline'];
+				break;
+			case '4':
+				$page['head_title'] =  $site_settings['site_name'] . ' | ' . $page['title'];
+				break;	
+			case '5':
+				$page['head_title'] =  $site_settings['site_name'] . ' - ' . $site_settings['site_tagline'] . ' | ' . $page['title'];
+				break;	
 		}
 
 		// Make sure layout exists

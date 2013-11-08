@@ -77,7 +77,7 @@
 						<li><a href="<?php echo base_url(); ?>admin/users" title="Users">Users</a></li>
 						<?php } ?>
 
-						<?php /* <li><a href="#" title="Settings">Settings</a></li> */ ?>
+						<li><a href="<?php echo base_url(); ?>admin/settings" title="Settings">Settings</a></li>
 
 						<li><a href="<?php echo base_url(); ?>admin/logout" title="Logout">Logout</a></li>
 					</ul>

@@ -12,18 +12,92 @@
  * @link		http://glav.in
  * @since		3.0.0-alpha
  */
+
+if ( !$data->file_exist( SETTINGS_DIR . 'site' ) ) {
+	$errors[] = 'Site Settings Not Found';
+} else {
+	$content             = $data->get_content( SETTINGS_DIR . 'site' );
+	$site_name           = $content['site']['site_name'];
+	$site_tagline        = $content['site']['site_tagline'];
+	$display_page_title  = $content['site']['display_page_title'];
+	$default_page_layout = $content['site']['default_page_layout'];
+}
+
+if ( $_POST ) {
+
+	$site_name           = isset( $_POST['site_name'] ) ? $_POST['site_name'] : '';
+	$site_tagline        = isset( $_POST['site_tagline'] ) ? $_POST['site_tagline'] : '';
+	$display_page_title  = isset( $_POST['display_page_title'] ) ? $_POST['display_page_title'] : '';
+	$default_page_layout = isset( $_POST['default_page_layout'] ) ? $_POST['default_page_layout'] : '';
+
+	// Get Array ready
+	$s = array(
+		'site' => array(
+			'site_name' => $site_name,
+			'site_tagline' => $site_tagline,
+			'display_page_title' => $display_page_title,
+			'default_page_layout' => $default_page_layout,
+		)
+	);
+
+	if ( $display_page_title == '' || $default_page_layout == '' ) {
+		$errors[] = 'Fields cannot be empty';
+	}
+
+	// If there's no errors update settings
+	if ( empty( $errors ) ) {
+		if ( $data->update_file( SETTINGS_DIR . 'site', $s, 'setting' ) ) {
+			$msgs[] = "Settings Updated";
+		} else {
+			$errors[] = "Settings Not Updated";
+		}
+	}
+
+}
 ?>
 <div id="page-description">
 	<h1>Settings</h1>
 	<p>Below is a list of all of your site's settings.</p>
 </div><!-- end page-description -->
 <div id="admin-content-body" class="settings-page">
+	<?php
+	// Print out any messages or errors
+	foreach( $msgs as $msg ) {
+		echo '<div class="msg">' . $msg . '</div>';
+	}
+
+	foreach( $errors as $errors ) {
+		echo '<div class="error">' . $errors . '</div>';
+	}
+	?>	
+	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 	<h2>General Settings</h2>
-	<input type="text" name="site_name" placeholder="Site Name">
+	<input type="text" name="site_name" placeholder="Site Name" value="<?php echo $site_name ? $site_name : ''; ?>">
+	<input type="text" name="site_tagline" placeholder="Site Tagline" value="<?php echo $site_tagline ? $site_tagline : ''; ?>">
 	<h2>Display Settings</h2>
 	<h3>Display Page Title As:</h3>
 	<div class="settings-radio">
-		<input type="radio" name="display_page_title" value="1"> Page Title<br>
-		<input type="radio" name="display_page_title" value="2"> Page Title | Site Name<br>
-		<input type="radio" name="display_page_title" value="3"> Site Name | Page Title<br>
+		<input type="radio" name="display_page_title" value="1" <?php echo $display_page_title == 1 ? ' checked="checked"' : ''; ?>> Page Title<br>
+		<input type="radio" name="display_page_title" value="2" <?php echo $display_page_title == 2 ? ' checked="checked"' : ''; ?>> Page Title | Site Name<br>
+		<input type="radio" name="display_page_title" value="3" <?php echo $display_page_title == 3 ? ' checked="checked"' : ''; ?>> Page Title | Site Name - Tagline<br>
+		<input type="radio" name="display_page_title" value="4" <?php echo $display_page_title == 4 ? ' checked="checked"' : ''; ?>> Site Name | Page Title<br>
+		<input type="radio" name="display_page_title" value="5" <?php echo $display_page_title == 5 ? ' checked="checked"' : ''; ?>> Site Name - Tagline | Page Title<br>
 	</div>
+	<h2>Default Layout</h2>
+	<p>
+		<select name="default_page_layout">
+		<?php
+			$layouts = $page->get_layouts();
+
+			foreach( $layouts as $layout ) {
+				echo '<option value="'.$layout.'"';
+				echo $default_page_layout == $layout ? ' selected="true"' : '';
+				echo '>';
+				echo $layout;
+				echo '</option>';
+			}
+		?>
+		</select>
+	</p>
+	<input type="submit" value="Save">
+	</form>

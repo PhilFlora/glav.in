@@ -19,6 +19,10 @@ $page_description = '';
 $page_content = '';
 $page_visible = 'true';
 $created = false;
+
+// Get Site Settings
+$settings      = $settings->get_settings('site');
+$site_settings = $settings['site'];
 	
 if ( $_POST ) {
 
@@ -82,15 +86,17 @@ if ( $_POST ) {
 		<p>
 			Layout
 			<select name="page_layout">
-				<?php
-					$layouts = $page->get_layouts();
+			<?php
+				$layouts = $page->get_layouts();
 
-					foreach( $layouts as $layout ) {
-						echo '<option value="'.$layout.'">';
-						echo $layout;
-						echo '</option>';
-					}
-				?>
+				foreach( $layouts as $layout ) {
+					echo '<option value="'.$layout.'"';
+					echo $site_settings['default_page_layout'] == $layout ? ' selected="true"' : '';
+					echo '>';
+					echo $layout;
+					echo '</option>';
+				}
+			?>
 			</select>
 		</p>
 		<p>

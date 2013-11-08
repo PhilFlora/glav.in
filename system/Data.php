@@ -83,8 +83,8 @@ class Data {
 				
 				$content['page']['visible'] = $content['page']['visible'] == 'true' ? true : false; // making boolean
 			}
-			else if ( $filetype === 'user' ) {
-				// For now no special action is needed for the user
+			else if ( $filetype === 'user' || $filetype === 'setting' ) {
+				// For now no special action is needed for the user/setting
 			}
 			else {
 				return false;
