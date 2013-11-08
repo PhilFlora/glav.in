@@ -21,7 +21,6 @@
  * Load the configuration file and the bootstrap file. As well as
  * all the other tools and helpers we'll need.
  */
-
 	require_once( '../config.php' );
 	require_once( SYSTEM_DIR . 'bootstrap.php' );
 
@@ -55,28 +54,31 @@
 			default:
 				$login_header = false;
 		}
-	}
-	
-	if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
-		if ( $user->is_logged_in() ) {
+		
+		if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
+			if ( $user->is_logged_in() ) {
 
-			// Set User Level (int)
-			$user_level = $_SESSION['user_level'];			
+				// Set User Level (int)
+				$user_level = $_SESSION['user_level'];			
 
-			if ( $requested_page == '' ) {
-				$include = 'pages.php';
+				if ( $requested_page == '' || $requested_page == 'index' ) {
+					$include = 'pages.php';
+				} else {
+					$include = $requested_page . '.php';
+				}
 			} else {
-				$include = $requested_page . '.php';
+				$login_header = true;
+				$include = 'login.php';
 			}
 		} else {
-			$login_header = true;
-			$include = 'login.php';
+			$include = $requested_page . '.php';	
 		}
-	} else {
-		$include = $requested_page . '.php';	
+		
+		require_once( ADMIN_DIR . '/template/header.php' );
+		include( $include );
+		require_once( ADMIN_DIR . '/template/footer.php' );
 	}
-
-	require_once( ADMIN_DIR . '/template/header.php' );
-	include( $include );
-	require_once( ADMIN_DIR . '/template/footer.php' );
+	else {
+		die('Error! Page has not been specified');
+	}
 ?>
