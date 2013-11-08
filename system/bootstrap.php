@@ -34,15 +34,20 @@
 
 	// Validation
 	require_once( SYSTEM_DIR . 'Validation.php' );
-	$validate = new Validation();	
+	$validate = new Validation();
+
+	// Settings
+	require_once( SYSTEM_DIR . 'Settings.php' );
+	$settings = new Settings( $data, $validate );	
 
 	// Page
 	require_once( SYSTEM_DIR . 'Page.php' );
-	$page = new Page( $data, $validate );
+	$page = new Page( $data, $validate, $settings );
 
 	// User
 	require_once( SYSTEM_DIR . 'User.php' );
 	$user = new User( $data, $validate, $password_options );
+
 
 /*
  *---------------------------------------------------------------

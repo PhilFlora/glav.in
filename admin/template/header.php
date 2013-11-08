@@ -71,12 +71,14 @@
 				<nav id="admin-nav">
 					<ul>
 						<li><a href="<?php echo base_url(); ?>admin/pages" title="Pages">Pages</a></li>
+
 						
 						<?php if ( $user_level < 2 ) { ?>
 						<li><a href="<?php echo base_url(); ?>admin/users" title="Users">Users</a></li>
 						<?php } ?>
 
-						<?php /* <li><a href="#" title="Settings">Settings</a></li> */ ?>
+						<li><a href="<?php echo base_url(); ?>admin/settings" title="Settings">Settings</a></li>
+
 						<li><a href="<?php echo base_url(); ?>admin/logout" title="Logout">Logout</a></li>
 					</ul>
 				</nav>
