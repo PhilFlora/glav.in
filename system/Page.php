@@ -223,20 +223,28 @@ class Page {
 		// How should we display the page title?
 		switch( $site_settings['display_page_title'] ) {
 			case '1':
+				// Page Title
 				$page['head_title'] = $page['title'];
 				break;
 			case '2':
+				// Page Title | Site Name
 				$page['head_title'] = $page['title'] . ' | ' . $site_settings['site_name'];
 				break;
 			case '3':
+				// Page Title | Site Name - Tagline
 				$page['head_title'] = $page['title'] . ' | ' . $site_settings['site_name'] . ' - ' . $site_settings['site_tagline'];
 				break;
 			case '4':
+				// Site Name | Page Title
 				$page['head_title'] =  $site_settings['site_name'] . ' | ' . $page['title'];
 				break;	
 			case '5':
+				// Site Name - Tagline | Page Title
 				$page['head_title'] =  $site_settings['site_name'] . ' - ' . $site_settings['site_tagline'] . ' | ' . $page['title'];
-				break;	
+				break;
+			default:
+				// Page Title
+				$page['head_title'] = $page['title'];				
 		}
 
 		// Make sure layout exists
