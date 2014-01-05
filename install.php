@@ -13,6 +13,16 @@
 * @since Version 1.0.0-alpha
 */
 
+
+$title = 'Install';
+$errors = array();
+$msgs = array();
+$login_header = true;
+$created = false;
+
+require_once( 'config.php' );
+require_once( SYSTEM_DIR . 'bootstrap.php' );
+
 $server = '';
 
 // What are we running on?
@@ -57,14 +67,32 @@ foreach ( $data_permissions as $dir ) {
     }
 }
 
-$title = 'Install';
-$errors = array();
-$msgs = array();
-$login_header = true;
-$created = false;
+// Generate random password salt and save to site settings
 
-require_once( 'config.php' );
-require_once( SYSTEM_DIR . 'bootstrap.php' );
+// First make sure a salt doesn't already exist
+$settings = json_decode( file_get_contents( SETTINGS_DIR . 'site.json' ), true );
+$site_salt = $settings['site']['salt'];
+
+if( empty($site_salt) ) {
+
+    $salt = generate_salt();
+
+    if( $salt ) {
+
+        $s = array(
+            'site' => array(
+                'salt' => $salt,
+            )
+        );
+
+        if( !$data->update_file(SETTINGS_DIR . 'site', $s, 'setting') ) {
+            die( "ERROR: Unable to save password salt." );
+        }
+    } else {
+        die( "ERROR: Unable to generate password salt." );
+    }
+
+}
 
 if ( $_POST ) {
 

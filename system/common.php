@@ -34,27 +34,46 @@ if ( !function_exists( 'base_url' ) ) {
 	}
  }
 
- if ( !function_exists( 'clean' ) ) {
- 	/**
- 	 * Clean user input
- 	 *
- 	 * @param string input being cleaned
- 	 * @param bool convert html or not
- 	 * @return string
- 	 */
+if ( !function_exists( 'clean' ) ) {
+	/**
+	 * Clean user input
+	 *
+	 * @param string input being cleaned
+	 * @param bool convert html or not
+	 * @return string
+	 */
 
- 	function clean( $input, $convert = false ) {
- 		$dirty = $input;
+	function clean( $input, $convert = false ) {
+		$dirty = $input;
 
- 		// Strip tags
- 		$clean = strip_tags( $dirty );
+		// Strip tags
+		$clean = strip_tags( $dirty );
 
- 		if ( $convert ) {
-	 		// Convert anything that needs converted
-	 		$clean = htmlentities($clean); 			
- 		}
+		if ( $convert ) {
+ 		// Convert anything that needs converted
+ 		$clean = htmlentities($clean); 			
+		}
 
- 		return $clean;
+		return $clean;
 
- 	}
- }
+	}
+}
+
+if ( !function_exists( 'generate_salt' ) ) {
+	/**
+	 * Generate random password salt
+	 *
+	 * @return string
+	 */
+
+	function generate_salt() {
+
+		$salt  = time();
+		$salt .= rand(0, 20000);
+		$salt .= time();
+		$salt .= sha1(md5($salt));
+
+		return $salt;
+
+	}
+}
