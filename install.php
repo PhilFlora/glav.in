@@ -78,6 +78,8 @@ if ( $server == 'apache' ) {
         }
             
     }
+} else {
+    die( "ERROR: Glav.in does not currently support your server software: " . $_SERVER['SERVER_SOFTWARE'] . "." );
 }
 
 /*
