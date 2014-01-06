@@ -36,6 +36,18 @@ require_once( SYSTEM_DIR . 'bootstrap.php' );
 
 /*
  *---------------------------------------------------------------
+ * CHECK FOR USERS, IF FOUND STOP INSTALL
+ *---------------------------------------------------------------
+ */
+
+$users = $user->get_users();
+
+if( !empty( $users ) ) {
+    exit( "ERROR: Users already exist." );
+}
+
+/*
+ *---------------------------------------------------------------
  * DETERMINE SERVER SOFTWARE
  *---------------------------------------------------------------
  */
