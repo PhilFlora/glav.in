@@ -13,17 +13,32 @@
 * @since Version 1.0.0-alpha
 */
 
+/*
+ *---------------------------------------------------------------
+ * GETTING THINGS SETUP
+ *---------------------------------------------------------------
+ */
 
 $title = 'Install';
-$errors = array();
-$msgs = array();
+
+$errors      = array();
+$msgs        = array();
+$chmod_error = array();
+
 $login_header = true;
-$created = false;
+$created      = false;
+
+$server = '';
+$chmod_error_message = '';
 
 require_once( 'config.php' );
 require_once( SYSTEM_DIR . 'bootstrap.php' );
 
-$server = '';
+/*
+ *---------------------------------------------------------------
+ * DETERMINE SERVER SOFTWARE
+ *---------------------------------------------------------------
+ */
 
 // What are we running on?
 if( strpos( $_SERVER['SERVER_SOFTWARE'], 'Apache' ) !== FALSE ) {
@@ -53,6 +68,12 @@ if ( $server == 'apache' ) {
     }
 }
 
+/*
+ *---------------------------------------------------------------
+ * DIRECTORY PERMISSIONS
+ *---------------------------------------------------------------
+ */
+
 // Check data dir permissions
 $data_permissions = array(
     'data/',
@@ -63,16 +84,33 @@ $data_permissions = array(
 
 foreach ( $data_permissions as $dir ) {
     if ( fileperms( $dir ) != 0777 ) {
-        chmod( $dir, 0777 );
+        if( !chmod( $dir, 0777 ) ) {
+            $chmod_error[] = $dir;
+        }
     }
 }
 
-// Generate random password salt and save to site settings
+if( !empty( $chmod_error ) ) {
+    $chmod_error_message = 'ERROR: Unable to change directory permissions for: ';
+    
+    foreach( $chmod_error as $dir ) {
+        $chmod_error_message .= $dir . ', ';
+    }
 
-// First make sure a salt doesn't already exist
-$settings = json_decode( file_get_contents( SETTINGS_DIR . 'site.json' ), true );
+    die( $chmod_error_message );
+}
+
+/*
+ *---------------------------------------------------------------
+ * GENERATING PASSWORD SALT
+ *---------------------------------------------------------------
+ */
+
+// Make sure a salt doesn't already exist
+$settings  = json_decode( file_get_contents( SETTINGS_DIR . 'site.json' ), true );
 $site_salt = $settings['site']['salt'];
 
+// No salt, generate one
 if( empty($site_salt) ) {
 
     $salt = generate_salt();
@@ -94,6 +132,11 @@ if( empty($site_salt) ) {
 
 }
 
+/*
+ *---------------------------------------------------------------
+ * VALIDATE USER INPUT, CREATE USER, DELETE INSTALL.PHP
+ *---------------------------------------------------------------
+ */
 if ( $_POST ) {
 
     // Are fields empty?
