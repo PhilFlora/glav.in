@@ -54,37 +54,34 @@ if ( $_POST ) {
 	}
 
 }
-?>
-<div id="page-description">
-	<h1>Settings</h1>
-	<p>Below is a list of all of your site's settings.</p>
-</div><!-- end page-description -->
-<div id="admin-content-body" class="settings-page">
-	<?php
-	// Print out any messages or errors
-	foreach( $msgs as $msg ) {
-		echo '<div class="msg">' . $msg . '</div>';
-	}
 
-	foreach( $errors as $errors ) {
-		echo '<div class="error">' . $errors . '</div>';
-	}
-	?>	
-	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-	<h2>General Settings</h2>
-	<input type="text" name="site_name" placeholder="Site Name" value="<?php echo $site_name ? $site_name : ''; ?>">
-	<input type="text" name="site_tagline" placeholder="Site Tagline" value="<?php echo $site_tagline ? $site_tagline : ''; ?>">
-	<h2>Display Settings</h2>
-	<h3>Display Page Title As:</h3>
-	<div class="settings-radio">
+// Print out any messages or errors
+foreach( $msgs as $msg ) {
+	echo '<div class="msg">' . $msg . '</div>';
+}
+
+foreach( $errors as $errors ) {
+	echo '<div class="error">' . $errors . '</div>';
+}
+?>
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+	<h3 class="form-element-title">General Settings</h3>
+	<div class="form-element">
+		<input type="text" name="site_name" placeholder="Site Name" value="<?php echo $site_name ? $site_name : ''; ?>">
+	</div>
+	<div class="form-element">
+		<input type="text" name="site_tagline" placeholder="Site Tagline" value="<?php echo $site_tagline ? $site_tagline : ''; ?>">
+	</div>
+	<h3 class="form-element-title">Display Page Title As:</h3>
+	<div class="form-element-radio">
 		<input type="radio" name="display_page_title" value="1" <?php echo $display_page_title == 1 ? ' checked="checked"' : ''; ?>> Page Title<br>
 		<input type="radio" name="display_page_title" value="2" <?php echo $display_page_title == 2 ? ' checked="checked"' : ''; ?>> Page Title | Site Name<br>
 		<input type="radio" name="display_page_title" value="3" <?php echo $display_page_title == 3 ? ' checked="checked"' : ''; ?>> Page Title | Site Name - Tagline<br>
 		<input type="radio" name="display_page_title" value="4" <?php echo $display_page_title == 4 ? ' checked="checked"' : ''; ?>> Site Name | Page Title<br>
 		<input type="radio" name="display_page_title" value="5" <?php echo $display_page_title == 5 ? ' checked="checked"' : ''; ?>> Site Name - Tagline | Page Title<br>
 	</div>
-	<h2>Default Layout</h2>
-	<p>
+	<h3 class="form-element-title">Default Layout</h3>
+	<div class="form-element-select">
 		<select name="default_page_layout">
 		<?php
 			$layouts = $page->get_layouts();
@@ -98,6 +95,8 @@ if ( $_POST ) {
 			}
 		?>
 		</select>
-	</p>
-	<input type="submit" value="Save">
-	</form>
+	</div>
+	<div class="form-element">
+		<input type="submit" value="Save">
+	</div>
+</form>

@@ -101,12 +101,7 @@ if ( $user_level < 2 ) {
 			}
 		}
 	}		
-?>
-<div id="page-description">
-	<h1>Edit User</h1>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<?php
+
 	// Print out any messages or errors
 	foreach( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
@@ -120,20 +115,28 @@ if ( $user_level < 2 ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 		<h2><?php echo $user_email; ?></h2>
-		<input type="password" placeholder="New Password" name="new_password_1" />
-		<input type="password" placeholder="Repeat New Password" name="new_password_2" />
+		<div class="form-element">
+			<input type="password" placeholder="New Password" name="new_password_1" />
+		</div>
+		<div class="form-element">
+			<input type="password" placeholder="Repeat New Password" name="new_password_2" />
+		</div>
 		<p>
 			<strong>User Level</strong><br>
 			<?php if ( $user_level_int == 0 ) { ?>
 			<em>You are the owner.</em>
 			<?php } else { ?>
-			<select name="user_level">
-				<option value="2"<?php echo $user_level_int == 2 ? ' selected="true"' : ''; ?>>Contributor</option>
-				<option value="1"<?php echo $user_level_int == 1 ? ' selected="true"' : ''; ?>>Admin</option>
-			</select>
+			<div class="form-element-select">
+				<select name="user_level">
+					<option value="2"<?php echo $user_level_int == 2 ? ' selected="true"' : ''; ?>>Contributor</option>
+					<option value="1"<?php echo $user_level_int == 1 ? ' selected="true"' : ''; ?>>Admin</option>
+				</select>
+			</div>
 			<?php } ?>
 		</p>
-		<input type="submit" value="Submit">
+		<div class="form-element">
+			<input type="submit" value="Submit">
+		</div>
 	</form>
 	<?php
 	}

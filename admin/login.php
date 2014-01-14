@@ -44,16 +44,22 @@ if ( $_POST ) {
 
 	// Should we show the login prompt or are we logging in?
 	if ( !$logging_in ) {
-	?>		
+	?>			
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-		<input type="text" placeholder="Email Address" name="email" />
-		<input type="password" placeholder="Password" name="password" />
-		<input type="submit" value="Submit">
+		<div class="form-element">
+			<input type="text" placeholder="Email Address" name="email" />
+		</div>
+		<div class="form-element">
+			<input type="password" placeholder="Password" name="password" />
+		</div>
+		<div class="form-element">
+			<input type="submit" value="Submit">
+		</div>
 	</form>
 	<?php
 	} else {
 	?>
-	<div id="logging-in">Logging In...</div>
+	<div id="logging-in"><span class="hidden">Logging In...</span></div>
 	<?php	
 	}
 	?>

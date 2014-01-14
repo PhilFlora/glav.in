@@ -13,35 +13,46 @@
  * @since		1.0.0-alpha
  */
 ?>
-<div id="page-description">
-	<h1>Pages</h1>
-	<p>Below is a list of all of your site's pages. From here you are able to edit and delete existing pages. To create a new page, click the button in the upper right.</p>
-	<a href="create_page" title="Create Page" id="create-page-btn" class="btn">Create Page</a>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<ul id="admin-pages-list">
+	<div class="form-element">
+		<a href="create_page" title="Create Page" id="create-page-btn" class="btn">Create Page</a>
+	</div>
+	<div id="pages-list" class="list">
 		<?php
 			
 			// Get all of the pages
 			$pages = $page->get_pages();
 
 			// Put home first
-			echo '<li>';
-			echo '<a href="' . base_url() . '">Home</a>';
-			echo '<a href="edit_page/home" class="action-btn">Edit</a>';
-			echo '</li>';
+			echo '<div class="list-item">';
+				echo '<div class="list-item-text">Home</div>';
+				echo '<div class="list-item-actions">';
+					echo '<nav>';
+						echo '<ul>';
+							echo '<li><a href="edit_page/home" title="Edit" class="icon icon-edit"><span class="hidden">Edit Page</span></a></li>';							
+						echo '</ul>';
+					echo '</nav>';
+				echo '</div>';
+			echo '</div>';
 
 			// List the rest of the pages
 			foreach( $pages as $page ) {
 				$page_name = basename( $page, '.json' );
 
 				if ( $page_name != '404' && $page_name != 'home' ) {
-					echo '<li>';
-					echo '<a href="'. base_url() . $page_name . '">' . str_replace('_', ' ', $page_name) . '</a>';
-					echo '<a href="edit_page/' . $page_name . '" class="action-btn">Edit</a>';
-					echo '<a href="delete_page/' . $page_name . '" class="action-btn">Delete</a>';	
-					echo '</li>';
+
+					echo '<div class="list-item">';
+						echo '<div class="list-item-text">' . str_replace('_', ' ', ucfirst($page_name)) . '</div>';
+						echo '<div class="list-item-actions">';
+							echo '<nav>';
+								echo '<ul>';
+									echo '<li><a href="edit_page/' . $page_name . '" title="Edit" class="icon icon-edit"><span class="hidden">Edit Page</span></a></li>';
+									echo '<li><a href="delete_page/' . $page_name . '" title="Delete" class="icon icon-delete"><span class="hidden">Delete Page</span></a></li>';
+								echo '</ul>';
+							echo '</nav>';
+						echo '</div>';
+					echo '</div>';
+
 				}
 			}
 		?>
-	</ul>
+	</div>

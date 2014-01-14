@@ -59,16 +59,10 @@ if ( $user_level < 2 ) {
 		} else {
 			// What do we say to the god of death?
 			// Not today.
-			$errors[] = 'User Not Deleted. <a href="'. base_url() .'admin/user" title="Users">Return to Users List</a>';
+			$errors[] = 'User Not Deleted. <a href="'. base_url() .'admin/users" title="Users">Return to Users List</a>';
 		}
 	}
-?>
-<div id="page-description">
-	<h1>Delete User</h1>
-	<p>Deleting this user cannot be reversed. Once they're gone, they're gone. No return. No zombies. Gone. Seriously, make sure you want to do this.</p>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<?php
+
 	// Print out any messages or errors
 	foreach( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
@@ -81,10 +75,15 @@ if ( $user_level < 2 ) {
 	// If there are no errors, continue...
 	if ( empty( $msgs ) && empty( $errors ) ) {
 	?>
+	<p>Deleting this user cannot be reversed. Once they're gone, they're gone. No return. No zombies. Gone. Seriously, make sure you want to do this.</p>	
 	<p>Are you sure you want to delete <strong><?php echo $user_passed; ?></strong>?</p>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-		<input type="submit" name="are_you_sure" value="Yes">
-		<input type="submit" name="are_you_sure" value="Nope">
+		<div class="form-element">
+			<input type="submit" name="are_you_sure" value="Yes">
+		</div>
+		<div class="form-element">
+			<input type="submit" name="are_you_sure" value="Nope">
+		</div>
 	</form>
 	<?php
 	}

@@ -113,70 +113,70 @@ if ( $_POST ) {
 			echo '<script type="text/javascript">window.location.replace("' . $content['page']['name'] . '");</script>'; //and then we redirect
 		}
 	}
-}		
+}
+
+// Print out any messages or errors
+foreach( $msgs as $msg ) {
+	echo '<div class="msg">' . $msg . '</div>';
+}
+
+foreach( $errors as $errors ) {
+	echo '<div class="error">' . $errors . '</div>';
+}
+
+// Don't show the form if a page hasn't been passed.
+// It looks wacky.
+if ( isset( $_GET['passed'] ) && $_GET['passed'] != ''  && $data->file_exist(PAGES_DIR . $page_passed) ) {
 ?>
-<div id="page-description">
-	<h1>Edit Page</h1>
-	<p>Edit your existing page below.</p>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<?php
-	// Print out any messages or errors
-	foreach( $msgs as $msg ) {
-		echo '<div class="msg">' . $msg . '</div>';
-	}
-
-	foreach( $errors as $errors ) {
-		echo '<div class="error">' . $errors . '</div>';
-	}
-
-	// Don't show the form if a page hasn't been passed.
-	// It looks wacky.
-	if ( isset( $_GET['passed'] ) && $_GET['passed'] != ''  && $data->file_exist(PAGES_DIR . $page_passed) ) {
-	?>
-	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+	<div class="form-element">
 		<input type="text" placeholder="Page Title" name="page_title"  value="<?php echo $page_title ? $page_title : ''; ?>" />
+	</div>
+	<div class="form-element">
 		<input type="text" placeholder="Description" name="page_description"  value="<?php echo $page_description ? $page_description : ''; ?>" />
-		<p>
-			<strong>Page Address:</strong> <?php echo base_url(); ?>
+	</div>
+	<p>
+		<strong>Page Address:</strong> <?php echo base_url(); ?>
+		<?php
+		if ( ( $page_passed != 'home' ) && ( $page_passed != '404' ) ) { 
+		?>
+		<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_passed ? $page_passed : ''; ?>" />
+		<?php
+		} else {
+		?>
+		<input type="hidden" placeholder="page_name" name="page_name" value="<?php echo $page_passed ? $page_passed : ''; ?>" />
+		<?php
+		}
+		?>
+	</p>
+	<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
+	<h3 class="form-element-title">Layout</h3>
+	<div class="form-element-select">
+		<select name="page_layout">
 			<?php
-			if ( ( $page_passed != 'home' ) && ( $page_passed != '404' ) ) { 
-			?>
-			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_passed ? $page_passed : ''; ?>" />
-			<?php
-			} else {
-			?>
-			<input type="hidden" placeholder="page_name" name="page_name" value="<?php echo $page_passed ? $page_passed : ''; ?>" />
-			<?php
-			}
-			?>
-		</p>
-		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
-		<p>
-			Layout
-			<select name="page_layout">
-				<?php
-					$layouts = $page->get_layouts();
+				$layouts = $page->get_layouts();
 
-					foreach( $layouts as $layout ) {
-						echo '<option value="'.$layout.'"';
-						echo $page_layout == $layout ? ' selected="true"' : '';
-						echo '>';
-						echo $layout;
-						echo '</option>';
-					}
-				?>
-			</select>
-		</p>		
-		<p>
-			Is this page visible to the public?
-			<select name="page_visible">
-				<option value="true"<?php echo $page_visible ? ' selected="true"' : ''; ?>>Yes</option>
-				<option value="false"<?php echo $page_visible ? '' : ' selected="true"'; ?>>No</option>
-			</select>
-		</p>	
+				foreach( $layouts as $layout ) {
+					echo '<option value="'.$layout.'"';
+					echo $page_layout == $layout ? ' selected="true"' : '';
+					echo '>';
+					echo $layout;
+					echo '</option>';
+				}
+			?>
+		</select>
+	</div>
+	<h3 class="form-element-title">Is this page visible to the public?</h3>
+	<div class="form-element-select">
+		<select name="page_visible">
+			<option value="true"<?php echo $page_visible ? ' selected="true"' : ''; ?>>Yes</option>
+			<option value="false"<?php echo $page_visible ? '' : ' selected="true"'; ?>>No</option>
+		</select>
+	</div>	
+	<div class="form-element">
 		<input type="submit" value="Submit">
-	</form>
-	<?php
-	}
-	?>
+	</div>
+</form>
+<?php
+}
+?>

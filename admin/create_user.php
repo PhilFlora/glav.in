@@ -57,13 +57,7 @@ if ( $user_level < 2 ) {
 			}
 		}
 	}
-?>
-<div id="page-description">
-	<h1>Create User</h1>
-	<p>Fill out the form below to create a new user.</p>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<?php
+
 	// Print out any messages or errors
 	foreach( $msgs as $msg ) {
 		echo '<div class="msg">' . $msg . '</div>';
@@ -77,16 +71,22 @@ if ( $user_level < 2 ) {
 	if ( !$created ) {
 	?>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-		<input type="email" placeholder="Email Address" name="user_email" value="<?php echo $user_email ? $user_email : ''; ?>" />
-		<input type="password" placeholder="Password" name="user_password" value="<?php echo $user_password ? $user_password : ''; ?>" />
-		<p>
-			User Level
-			<select name="user_level">
-				<option value="2">Contributor</option>
-				<option value="1">Admin</option>
-			</select>
-		</p>
-		<input type="submit" value="Submit">
+		<div class="form-element">
+			<input type="email" placeholder="Email Address" name="user_email" value="<?php echo $user_email ? $user_email : ''; ?>" />
+		</div>
+		<div class="form-element">
+			<input type="password" placeholder="Password" name="user_password" value="<?php echo $user_password ? $user_password : ''; ?>" />
+		</div>
+			<h3 class="form-element-title">User Level</h3>
+			<div class="form-element-select">
+				<select name="user_level">
+					<option value="2">Contributor</option>
+					<option value="1">Admin</option>
+				</select>
+			</div>
+		<div class="form-element">
+			<input type="submit" value="Submit">
+		</div>
 	</form>
 	<?php
 	}

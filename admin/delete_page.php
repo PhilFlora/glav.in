@@ -60,10 +60,6 @@ if ( $_POST ) {
 	}
 }
 ?>
-<div id="page-description">
-	<h1>Delete Page</h1>
-	<p>Deleting your page cannot be reversed. Once it's gone, it's gone. No return. No zombie pages. Gone. Seriously, make sure you want to do this.</p>
-</div><!-- end page-description -->
 <div id="admin-content-body">
 	<?php
 	// Print out any messages or errors
@@ -78,10 +74,15 @@ if ( $_POST ) {
 	// If there are no errors, continue...
 	if ( empty( $msgs ) && empty( $errors ) ) {
 	?>
+	<p>Deleting your page cannot be reversed. Once it's gone, it's gone. No return. No zombie pages. Gone. Seriously, make sure you want to do this.</p>
 	<p>Are you sure you want to delete <strong><?php echo $page_passed; ?></strong>?</p>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-		<input type="submit" name="are_you_sure" value="Yes">
-		<input type="submit" name="are_you_sure" value="Nope">
+		<div class="form-element">
+			<input type="submit" name="are_you_sure" value="Yes">
+		</div>
+		<div class="form-element">
+			<input type="submit" name="are_you_sure" value="Nope">
+		</div>
 	</form>
 	<?php
 	}

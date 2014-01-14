@@ -1,87 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name = "viewport" content = "initial-scale = 1.0">
-		<title><?php echo $title; ?> - Glav.in - A Simple CMS</title>
-		<script type="text/javascript" src="<?php echo base_url(); ?>admin/template/js/jquery-1.10.2.min.js"></script>
-		<!--[if (gte IE 6)&(lte IE 8)]>
-		  <script type="text/javascript" src="js/selectivizr.js"></script>
-		<![endif]--> 		
-		<!--[if lt IE 9]><script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-		<link rel="stylesheet" href="<?php echo base_url(); ?>admin/template/styles/normalize.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>admin/template/styles/style.css">
-		<script type="text/javascript" src="<?php echo base_url(); ?>admin/template/js/respond.min.js"></script>
-		<script type="text/javascript" src="<?php echo base_url(); ?>admin/template/js/placeMe.min.js"></script>
-		<script src="<?php echo base_url(); ?>admin/template/js/ckeditor/ckeditor.js"></script>
-		<script>
-		    window.onload = function() {
-		        CKEDITOR.replace( 'page-content' );
-		    };
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title><?php echo $title; ?></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-		    $(function() {
+        <link rel="stylesheet" href="<?php echo base_url(); ?>admin/template/css/normalize.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>admin/template/css/main.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-		    	// Correct the user while typing the filename
-		    	$('input[name="page_name"]').keydown(function(e) {
-		    		var keyVal = ( e.charCode ? e.charCode : ( e.keyCode ? e.keyCode : e.which ) );
-					
-					if ( ( keyVal == 0x41 && e.ctrlKey === true ) || ( keyVal == 0x63 && e.ctrlKey === true ) || // Allow: Ctrl+A, or Ctrl+C
-						( keyVal == 0x56 && e.ctrlKey === true ) || ( keyVal == 0x58 && e.ctrlKey === true ) ) { // or Ctrl+V, or Ctrl+X
-						return;
-					} else if ( keyVal == 0x20 ) { // If user added a space, replace it with underscore
-		    			$('input[name="page_name"]').val($(this).val() + '-');
-						return false;
-		    		} else if ( keyVal >= 0x41 && keyVal <= 0x5A ) { // Convert uppercase letters to lowercase
-						$('input[name="page_name"]').val($(this).val() + String.fromCharCode(keyVal).toLowerCase());
-						return false;
-					}
-					
-		    	});	
+        <div id="about-wrap">
+            <div id="about">
+                <button id="about-close-btn">Close</button>
 
-		    });
-			
-			// Check Description Length
-			$().ready(function(){
-				$('input[name="page_description"]').keypress(function(e) {
-					var len = $(this).val().length,
-						maxlen = 160,
-						keyVal = ( e.charCode ? e.charCode : ( e.keyCode ? e.keyCode : e.which ) );
-					
-					if ( keyVal == 8 || keyVal == 9 || keyVal == 13 || //Allow: Backspace, Tab, Enter
-							( keyVal == 0x41 && e.ctrlKey === true ) || ( keyVal == 0x63 && e.ctrlKey === true ) || // Allow: Ctrl+A, or Ctrl+C
-								( keyVal == 0x56 && e.ctrlKey === true ) || ( keyVal == 0x58 && e.ctrlKey === true ) ) { // or Ctrl+V, or Ctrl+X
-						return;
-					} else if ( len > maxlen - 1 ) {
-						return false;
-					}
-				});
-			});
-		</script>		
-	</head>
-	<body<?php echo $login_header ? ' class="not_logged_in"' : ''; ?>>
-		<?php if($login_header) { ?>
-		<div id="login-container">
-			<header>
-				<h1 id="login-logo"><span class="none">Glav.in</span></h1>
-			</header>
-		<?php } else { ?>
-		<div id="admin-container">
-			<header id="admin-header">
-				<h1 id="admin-logo"><a href="<?php echo base_url(); ?>admin/pages"><span class="none">Glav.in</span></a></h1>
-				<nav id="admin-nav">
-					<ul>
-						<li><a href="<?php echo base_url(); ?>admin/pages" title="Pages">Pages</a></li>
+                <div id="about-content">
+                    <img src="<?php echo base_url(); ?>admin/template/img/about_logo.png" id="about-logo">
+                    <p>When you just need a simple CMS for a simple website, Glav.in may be your answer. It's easy to install and can be up in running in minutes! Why waste your time?</p>
+                    <a href="http://glav.in" class="btn">Glav.in Documentation</a>
+                    <a href="https://github.com/GlavinCMS/glav.in" class="btn">Glav.in on Github</a>
+                </div><!-- #about-content -->
+            </div><!-- #about -->
+        </div><!-- #about -->
 
-						
-						<?php if ( $user_level < 2 ) { ?>
-						<li><a href="<?php echo base_url(); ?>admin/users" title="Users">Users</a></li>
-						<?php } ?>
+        <div id="admin-wrap">
 
-						<li><a href="<?php echo base_url(); ?>admin/settings" title="Settings">Settings</a></li>
+            <div id="header-container">
+                <header class="wrapper clearfix">
+                    <div id="header-toolbar">
+                        <h1 id="logo"><a href="<?php echo base_url(); ?>admin/pages" title="Pages"><span class="hidden">Glav.in</span></a></h1>
+                        <?php echo $is_logged_in ? '<button id="nav-button">Navigation</button>' : ''; ?>
+                    </div><!-- #header-toolbar -->
+                    <?php if( $is_logged_in ) { ?>
+                    <div id="nav-container">
+                        <nav>
+                            <ul>
+                                <li><a href="<?php echo base_url(); ?>admin/pages">Pages</a></li>
+                                <li><a href="<?php echo base_url(); ?>admin/users">Users</a></li>
+                                <li><a href="<?php echo base_url(); ?>admin/settings">Settings</a></li>
+                                <li><a href="<?php echo base_url(); ?>admin/logout">Logout</a></li>
+                                <li><a href="#" class="about-link">About Glav.in</a></li>
+                            </ul>
+                        </nav>
+                    </div><!-- #nav-container -->
+                    <? } ?>
+                </header>
+            </div>
 
-						<li><a href="<?php echo base_url(); ?>admin/logout" title="Logout">Logout</a></li>
-					</ul>
-				</nav>
-			</header>
-			<div id="admin-content">
-		<?php } ?>
+            <div id="page-title-wrap">
+                <div id="page-title">
+                    <h1><? echo $title; ?></h1>
+                </div><!-- #page-title -->
+            </div><!-- #page-title-wrap -->
+
+            <div id="main-container">
+                <div id="main wrapper clearfix">

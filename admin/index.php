@@ -28,7 +28,7 @@
 	$msgs   = array();
 	$title  = 'Admin Panel';
 
-	$login_header = $user->is_logged_in() ? false : true;	
+	$is_logged_in = $user->is_logged_in() ? true : false;	
 
 /*
  *---------------------------------------------------------------
@@ -44,15 +44,45 @@
 		// '.php'. If it's there, remove it.
 		$requested_page = str_replace('.php', '', $_GET['page']);
 
-		// Pages that use the "login_header"
 		switch( $requested_page ) {
 			case 'login':
-			case 'logout':
-			case 'reset_password':
-				$login_header = true;
+				$title  = 'Login';
 				break;
+			case 'logout':
+				$title  = 'Logout';
+				break;
+			case 'reset_password':
+				$title  = 'Reset Password';
+				break;
+			case 'pages':
+				$title  = 'Pages';
+				break;
+			case 'edit_page':
+				$title  = 'Edit Page';
+				break;
+			case 'delete_page':
+				$title  = 'Delete Page';
+				break;
+			case 'create_page':
+				$title  = 'Create Page';
+				break;
+			case 'users':
+				$title  = 'Users';
+				break;				
+			case 'edit_user':
+				$title  = 'Edit User';
+				break;		
+			case 'create_user':
+				$title  = 'Create User';
+				break;		
+			case 'delete_user':
+				$title  = 'Delete User';
+				break;
+			case 'settings':
+				$title  = 'Site Settings';
+				break;				
 			default:
-				$login_header = false;
+				$title = 'Admin Panel';
 		}
 		
 		if ( $requested_page != 'login' && $requested_page != 'reset_password' ) {
@@ -67,7 +97,7 @@
 					$include = $requested_page . '.php';
 				}
 			} else {
-				$login_header = true;
+				$title = 'Login';
 				$include = 'login.php';
 			}
 		} else {
@@ -75,7 +105,13 @@
 		}
 		
 		require_once( ADMIN_DIR . '/template/header.php' );
-		include( $include );
+		
+		if( file_exists($include) ) {
+			include( $include );
+		} else {
+			echo '<h2>Page Not Found</h2>';
+		}
+		
 		require_once( ADMIN_DIR . '/template/footer.php' );
 	}
 	else {

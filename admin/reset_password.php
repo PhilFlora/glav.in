@@ -144,8 +144,12 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 	<p>To reset your password, please enter your email address below.</p>
 	<section id="login-form">			
 		<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-			<input type="email" placeholder="Email Address" name="email" />
-			<input type="submit" value="Submit">
+			<div class="form-element">
+				<input type="email" placeholder="Email Address" name="email" />
+			</div>
+			<div class="form-element">
+				<input type="submit" value="Submit">
+			</div>
 		</form>
 	</section><!-- end login-form -->
 	<?php
@@ -155,9 +159,15 @@ if ( ( $_POST) && !isset( $_GET['token'] ) ) {
 		<p>Please choose a new password.</p>
 		<section id="login-form">			
 			<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-				<input type="password" placeholder="New Password" name="password1" />
-				<input type="password" placeholder="Repeat New Password" name="password2" />
-				<input type="submit" value="Submit">
+				<div class="form-element">
+					<input type="password" placeholder="New Password" name="password1" />
+				</div>
+				<div class="form-element">
+					<input type="password" placeholder="Repeat New Password" name="password2" />
+				</div>
+				<div class="form-element">
+					<input type="submit" value="Submit">
+				</div>
 			</form>
 		</section><!-- end login-form -->	
 		<?php

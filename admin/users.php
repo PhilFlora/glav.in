@@ -16,38 +16,40 @@
 // Only Owner/Admins can access this page
 if ( $user_level < 2 ) {
 ?>
-<div id="page-description">
-	<h1>Users</h1>
-	<p>Below is a list of all of your site's users. From here you are able to edit and delete existing users. To create a new user, click the button in the upper right.</p>
-	<a href="create_user" title="Create User" id="create-page-btn" class="btn">Create User</a>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<ul id="admin-pages-list">
-		<?php
-			
-			// Get all of the users
-			$users = $user->get_users();
+<a href="create_user" title="Create User" id="create-page-btn" class="btn">Create User</a>
+<div class="list">
+<?php
+	
+	// Get all of the users
+	$users = $user->get_users();
 
-			// List the rest of the pages
-			foreach( $users as $user => $level ) {
-				echo '<li>' . $user . ' (' . $level['user_level_display'] . ')';
+	// List the rest of the pages
+	foreach( $users as $user => $level ) {
 
-				// User can only edit users will a lower level
-				if ( ( $user_level < $level['user_level_int'] ) || $user == $_SESSION['user_email'] || ( $user_level == 0 ) ) {
+		echo '<div class="list-item">';
+			echo '<div class="list-item-text">' . $user . ' (' . $level['user_level_display'] . ')</div>';
+			echo '<div class="list-item-actions">';
+				echo '<nav>';
+					echo '<ul>';
+					// User can only edit users will a lower level
+					if ( ( $user_level < $level['user_level_int'] ) || $user == $_SESSION['user_email'] || ( $user_level == 0 ) ) {							
+						
+						echo '<li><a href="edit_user/' . $user . '" title="Edit" class="icon icon-edit"><span class="hidden">Edit Page</span></a></li>';
+						
+						// You can't delete yourself
+						if ( $user != $_SESSION['user_email'] ) {
+							echo '<li><a href="delete_user/' . $user . '" title="Delete" class="icon icon-delete"><span class="hidden">Delete Page</span></a></li>';
+						}
 
-					echo ' <a href="edit_user/' . $user . '" class="action-btn">Edit</a>';
-
-					// You can't delete yourself
-					if ( $user != $_SESSION['user_email'] ) {
-						echo ' <a href="delete_user/' . $user . '" class="action-btn">Delete</a>';
 					}
+					echo '</ul>';
+				echo '</nav>';
+			echo '</div>';
+		echo '</div>';
 
-				}
-				
-				echo '</li>';
-			}
-		?>
-	</ul>
+	}
+?>
+</div>
 <?php
 } else {
 ?>

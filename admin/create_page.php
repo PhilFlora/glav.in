@@ -56,58 +56,57 @@ if ( $_POST ) {
 		}
 	}
 }
+// Print out any messages or errors
+foreach( $msgs as $msg ) {
+	echo '<div class="msg">' . $msg . '</div>';
+}
+
+foreach( $errors as $errors ) {
+	echo '<div class="error">' . $errors . '</div>';
+}
+
+// Don't show form if the page has been created
+if ( !$created ) {
 ?>
-<div id="page-description">
-	<h1>Create Page</h1>
-	<p>Fill out the form below to create a new page.</p>
-</div><!-- end page-description -->
-<div id="admin-content-body">
-	<?php
-	// Print out any messages or errors
-	foreach( $msgs as $msg ) {
-		echo '<div class="msg">' . $msg . '</div>';
-	}
-
-	foreach( $errors as $errors ) {
-		echo '<div class="error">' . $errors . '</div>';
-	}
-
-	// Don't show form if the page has been created
-	if ( !$created ) {
-	?>
-	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+	<div class="form-element">
 		<input type="text" placeholder="Page Title" name="page_title" value="<?php echo $page_title ? $page_title : ''; ?>" />
+	</div>
+	<div class="form-element">
 		<input type="text" placeholder="Description" name="page_description" value="<?php echo $page_description ? $page_description : ''; ?>" />
-		<p>
-			<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri">
-			<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
-		</p>
-		<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
-		<p>
-			Layout
-			<select name="page_layout">
-			<?php
-				$layouts = $page->get_layouts();
+	</div>
+	<p>
+		<strong>Page Address:</strong> <?php echo base_url(); ?><span id="create-uri">
+		<input type="text" placeholder="page_name" name="page_name" value="<?php echo $page_name ? $page_name : ''; ?>" />
+	</p>
+	<textarea name="page_content" placeholder="Page Content" id="page-content"><?php echo $page_content ? $page_content : ''; ?></textarea>
+	<h3 class="form-element-title">Layout</h3>
+	<div class="form-element-select">
+		<select name="page_layout">
+		<?php
+			$layouts = $page->get_layouts();
 
-				foreach( $layouts as $layout ) {
-					echo '<option value="'.$layout.'"';
-					echo $site_settings['default_page_layout'] == $layout ? ' selected="true"' : '';
-					echo '>';
-					echo $layout;
-					echo '</option>';
-				}
-			?>
-			</select>
-		</p>
-		<p>
-			Is this page visible to the public?
-			<select name="page_visible">
-				<option value="true">Yes</option>
-				<option value="false">No</option>
-			</select>
-		</p>
+			foreach( $layouts as $layout ) {
+				echo '<option value="'.$layout.'"';
+				echo $site_settings['default_page_layout'] == $layout ? ' selected="true"' : '';
+				echo '>';
+				echo $layout;
+				echo '</option>';
+			}
+		?>
+		</select>
+	</div>	
+	<h3 class="form-element-title">Is this page visible to the public?</h3>
+	<div class="form-element-select">
+		<select name="page_visible">
+			<option value="true">Yes</option>
+			<option value="false">No</option>
+		</select>
+	</div>
+	<div class="form-element">
 		<input type="submit" value="Submit">
-	</form>
-	<?php
-	}
-	?>
+	</div>
+</form>
+<?php
+}
+?>
