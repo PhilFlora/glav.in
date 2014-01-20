@@ -10,7 +10,7 @@
  * @copyright	Copyright (c) 2013, Matt Sparks (http://www.mattsparks.com)
  * @license		http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link		http://glav.in
- * @since		1.0.0-alpha
+ * @since		1.0.0-beta
  */
 ?>
 	<div class="form-element">
