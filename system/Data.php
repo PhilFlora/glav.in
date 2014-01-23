@@ -123,4 +123,89 @@ class Data {
 		}
 
 	}
+
+	/**
+	 * Get file paths for all json data
+	 *
+	 * @return array file paths
+	 */	
+	public function get_data_filepaths() {
+		
+		// Get all data directories
+		$dirs = array_filter(  glob( BASEPATH . '/data/*' ), 'is_dir' );
+		
+		// This holds each data directory and its files
+		$data_dirs = array();
+
+		// This is the merged files from each data directory
+		$files = array();
+
+		// Loop through each data directory and get its files
+		foreach( $dirs as $dir ) {
+			$data_dirs[] = glob( $dir . '/*.json' );
+		}
+
+		// Merge all the files into one array
+		foreach( $data_dirs as $dir ) {
+			foreach( $dir as $file ) {
+				// $files[] = str_replace(BASEPATH, '', $file);
+				$files[] = $file;
+			}
+		}
+
+		return $files;
+
+	}
+
+	/**
+	 * Export Data
+	 *
+	 * @return string url of zipped file
+	 */
+	public function export() {
+
+		// Create a random file name for our zip file
+		// This will be a public file with important data so we need to try
+		// and make it hard to find & predict.
+		$zip_name = md5( time() . 'glavinsupersecretfilename' . time() ) . '.zip';
+		$zip_path = BASEPATH . '/data/' . $zip_name;
+		$files    = $this->get_data_filepaths();
+		$zip      = new ZipArchive();
+
+		// Make we got what we need
+		if( is_array( $files ) ) {
+
+			// Make sure there's something there
+			if(  count( $files ) ) {
+
+				$zip->open( $zip_path, ZIPARCHIVE::CREATE );
+
+				foreach( $files as $file ) {
+					
+					// Path to the file
+					$file_path = $file;
+
+					// Strip the full path, we just want the folder & filename
+					$file_name = str_replace( BASEPATH, '', $file);
+
+					$zip->addFile( $file_path, $file_name );
+				}
+
+				$zip->close();
+
+				// Make sure file exists before sending
+				if( file_exists( $zip_path ) ) {
+					return base_url() . 'data/' . $zip_name;
+				}
+
+			} else {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+
+
+	}
 }

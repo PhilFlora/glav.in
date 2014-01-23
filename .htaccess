@@ -11,5 +11,6 @@
 	RewriteCond %{REQUEST_URI}  !/admin/
 	RewriteCond %{REQUEST_URI}  !/template/
 	RewriteCond %{REQUEST_URI}  !/system/
+	RewriteCond %{REQUEST_URI}  !/data/
 	RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]			
 </IfModule>
