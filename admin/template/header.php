@@ -32,14 +32,18 @@
         </div><!-- #about -->
 
         <div id="admin-wrap">
-            <?php if ( isset( $is_logged_in ) ) { ?>
+            <?php 
+            if ( isset( $is_logged_in ) ) { 
+            ?>
             <div id="header-container">
                 <header class="wrapper clearfix">
                     <div id="header-toolbar">
                         <h1 id="logo"><a href="<?php echo base_url(); ?>admin/pages" title="Pages"><span class="hidden">Glav.in</span></a></h1>
                         <?php echo $is_logged_in ? '<button id="nav-button">Navigation</button>' : ''; ?>
                     </div><!-- #header-toolbar -->
-                    <?php if( $is_logged_in ) { ?>
+                    <?php 
+                    if( $is_logged_in ) { 
+                    ?>
                     <div id="nav-container">
                         <nav>
                             <ul>
@@ -51,13 +55,17 @@
                             </ul>
                         </nav>
                     </div><!-- #nav-container -->
-                    <? } ?>
+                    <?php
+                    } 
+                    ?>
                 </header>
             </div>
-            <?php } ?>
+            <?php 
+            } 
+            ?>
             <div id="page-title-wrap">
                 <div id="page-title">
-                    <h1><? echo $title; ?></h1>
+                    <h1><?php echo $title; ?></h1>
                 </div><!-- #page-title -->
             </div><!-- #page-title-wrap -->
 
