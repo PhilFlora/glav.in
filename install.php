@@ -97,7 +97,7 @@ $data_permissions = array(
 );
 
 foreach ( $data_permissions as $dir ) {
-    if ( fileperms( $dir ) != 0777 ) {
+    if ( substr( sprintf( '%o', fileperms( $dir ) ), -4 ) != '0777' ) {
         if( !chmod( $dir, 0777 ) ) {
             $chmod_error[] = $dir;
         }
