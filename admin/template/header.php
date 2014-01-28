@@ -32,7 +32,7 @@
         </div><!-- #about -->
 
         <div id="admin-wrap">
-
+            <?php if ( isset( $is_logged_in ) ) { ?>
             <div id="header-container">
                 <header class="wrapper clearfix">
                     <div id="header-toolbar">
@@ -54,7 +54,7 @@
                     <? } ?>
                 </header>
             </div>
-
+            <?php } ?>
             <div id="page-title-wrap">
                 <div id="page-title">
                     <h1><? echo $title; ?></h1>

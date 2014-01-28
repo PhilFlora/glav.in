@@ -197,9 +197,15 @@ if ( !$created ) {
 ?>
 <p>Thanks for installing Glav.in! Please create an admin account.</p>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-<input type="email" name="admin_email_address" placeholder="Email Address" />
-<input type="password" name="admin_password" placeholder="Password" />
-<input type="submit" value="Submit" />
+    <div class="form-element">
+        <input type="email" name="admin_email_address" placeholder="Email Address" />
+    </div>
+    <div class="form-element">
+        <input type="password" name="admin_password" placeholder="Password" />
+    </div>
+    <div class="form-element">
+        <input type="submit" value="Submit" />
+    </div>
 </form>
 <?php
 }
