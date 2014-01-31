@@ -29,7 +29,7 @@ You want to contribute?!? That's awesome! Let's make Glav.in great! Here are som
    * Fork Glav.in
    * Create a branch containing each change/addition/improvement you'd like to make.
    * Send a pull request from that branch to the DEV branch.
-   * Please follow the [WordPress Coding Stanards](http://codex.wordpress.org/WordPress_Coding_Standards) as closely as you can.
+   * Please follow the [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards) as closely as you can.
 * Post bug reports, ideas, suggestions, etc to the Issue Tracker
 
 Documentation
