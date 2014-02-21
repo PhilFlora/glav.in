@@ -10,7 +10,7 @@ Features
 * No database. All data is stored in JSON files.
 * User Management (3 Levels: Owner, Admin, Contributor)
 * Easy templating & support for multiple layouts
-* With Gunt Glac.in is now:
+* With Gunt Glav.in is now:
  - concatening and minimising the css files into template/build/production.min.css
  - concatening and minimising the js files into template/build/production.min.js
  - using livereload to develop front-end code
