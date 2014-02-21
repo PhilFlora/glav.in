@@ -10,6 +10,11 @@ Features
 * No database. All data is stored in JSON files.
 * User Management (3 Levels: Owner, Admin, Contributor)
 * Easy templating & support for multiple layouts
+* With Gunt Glac.in is now:
+ - concatening and minimising the css files into template/build/production.min.css
+ - concatening and minimising the js files into template/build/production.min.js
+ - using livereload to develop front-end code
+
 * It's named after a catchphrase of a character from The Simpsons.
 
 Requirements
@@ -17,6 +22,15 @@ Requirements
 
 * Apache
 * PHP 5.2+
+* Grunt
+
+How to use Grunt
+================
+
+* Install Node.js
+* Navigate to your Glav.in copy and run: npm install
+* Run: grunt
+* This will watch every changes made in CSS and JS files and creates automatically the production versions of them
 
 Contribute!
 ===========
