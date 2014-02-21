@@ -50,3 +50,7 @@ data/users/*.json
 vendor
 composer.phar
 composer.lock
+
+# Node modules folder #
+#######################
+node_modules/*

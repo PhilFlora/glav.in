@@ -25,6 +25,14 @@ body {
     text-shadow: none;
 }
 
+a {
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 hr {
     display: block;
     height: 1px;
